@@ -2,12 +2,88 @@
 
 @implementation MicroBlogOperateForSina
 
-+ (void)postWordWeiboWithAccessToken:(NSString *)access_token
-                             content:(NSString *)content
+
+/*
+ 发送一条携带一张图片的微博
+ 其中:
+ access_token ---用户授权码
+ content ---文字内容
+ pic ---图片地址
+ type ---访问权限类型
+ */
++ (void)postWordWeiboAndSinglePictureWithAccessToken:(NSString *)access_token
+                                             content:(NSString *)content
+                                                 pic:(NSURL *)pic
+                                             andType:(VisibleType *)type
 {
-    NSURL * url = [NSURL URLWithString:InterfaceForSinaToSendWord];
+    NSDictionary * d = @{@"access_token":access_token,@"status":content,@"visible":[NSString stringWithFormat:@"%d",(int)type]};
+    AFHTTPRequestOperationManager * m = [AFHTTPRequestOperationManager new];
+    AFHTTPRequestOperation * op = [m POST:InterfaceForSinaToSendWordAndSinglePic parameters:d constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        [formData appendPartWithFileURL:pic name:@"pic" error:nil];
+    } success:nil failure:nil];
+    op.responseSerializer = [AFHTTPResponseSerializer serializer];
+    [op start];
+}
+
+
+/*
+ 签到同时上传一张图片
+ 其中:
+ access_token ---用户授权码
+ content ---签到内容
+ pic ---图片url
+ iD ---位置id
+ */
++ (void)chekinWithAccessToken:(NSString *)access_token
+                      content:(NSString *)content
+                       picURL:(NSURL *)pic
+                        andId:(NSInteger)iD
+{
+    NSDictionary * d = @{@"access_token":access_token,@"status":content,@"id":[NSString stringWithFormat:@"%d",iD]};
+    AFHTTPRequestOperationManager * m = [AFHTTPRequestOperationManager new];
+    AFHTTPRequestOperation * op = [m POST:InterfaceForSinaToChekin parameters:d constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        [formData appendPartWithFileURL:pic name:@"pic" error:nil];
+    } success:nil failure:nil];
+    op.responseSerializer = [AFHTTPResponseSerializer serializer];
+    [op start];
+}
+
+
+/*
+ 添加照片
+ access_token ---用户授权码
+ content ---签到内容
+ pic ---图片url
+ iD ---位置id
+ */
++ (void)addPicWithAccessToken:(NSString *)access_token
+                      content:(NSString *)content
+                       picURL:(NSURL *)pic
+                        andId:(NSInteger)iD
+{
+    NSDictionary * d = @{@"access_token":access_token,@"status":content,@"id":[NSString stringWithFormat:@"%d",iD]};
+    AFHTTPRequestOperationManager * m = [AFHTTPRequestOperationManager new];
+    AFHTTPRequestOperation * op = [m POST:InterfaceForSinaToAddPic parameters:d constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        [formData appendPartWithFileURL:pic name:@"pic" error:nil];
+    } success:nil failure:nil];
+    op.responseSerializer = [AFHTTPResponseSerializer serializer];
+    [op start];
+}
+
+
+/*
+ 关注用户
+ 其中:
+ access_token ---用户授权码
+ name ---用户名
+ */
++ (BOOL)followUserWithAccessToken:(NSString *)access_token
+                          andName:(NSString *)name
+{
+    static BOOL isOk = 1;
+    NSURL * url = [NSURL URLWithString:InterfaceForSinaToFollowUser];
     NSMutableURLRequest * request = [[NSMutableURLRequest alloc]initWithURL:url];
-    NSString * str = [NSString stringWithFormat:@"access_token=%@&status=%@",access_token,content];
+    NSString * str = [NSString stringWithFormat:@"access_token=%@&name=%@",access_token,name];
     NSData * para = [str dataUsingEncoding:NSUTF8StringEncoding];
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:para];
@@ -16,27 +92,344 @@
         {
             UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to post..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
             [alert show];
+            isOk = 0;
         }
     }];
+    return isOk;
 }
 
-+ (void)postWordWeiboAndSinglePictureWithAccessToken:(NSString *)access_token
-                                             content:(NSString *)content
-                                                 pic:(NSURL *)pic
+
+/*
+ 添加收藏
+ 其中:
+ access_token ---用户授权码
+ iD ---微博id
+ */
++ (BOOL)createFavoriteWithAccessToken:(NSString *)access_token
+                                andId:(NSInteger)iD
 {
-    NSDictionary * d = @{@"access_token":access_token,@"status":content};
-    AFHTTPRequestOperationManager * m = [AFHTTPRequestOperationManager new];
-    AFHTTPRequestOperation * op = [m POST:@"https://upload.api.weibo.com/2/statuses/upload.json" parameters:d constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-        [formData appendPartWithFileURL:pic name:@"pic" error:nil];
-    } success:nil failure:nil];
-    op.responseSerializer = [AFHTTPResponseSerializer serializer];
-    [op start];
+    static BOOL isOk = 1;
+    NSURL * url = [NSURL URLWithString:InterfaceForSinaToCreateFavorite];
+    NSMutableURLRequest * request = [[NSMutableURLRequest alloc]initWithURL:url];
+    NSString * str = [NSString stringWithFormat:@"access_token=%@&id=%d",access_token,iD];
+    NSData * para = [str dataUsingEncoding:NSUTF8StringEncoding];
+    [request setHTTPMethod:@"POST"];
+    [request setHTTPBody:para];
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue new]  completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+        if (connectionError)
+        {
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to post..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+            [alert show];
+            isOk = 0;
+        }
+    }];
+    return isOk;
 }
 
-#warning 以下3大接口有问题
-+ (void)destroyFollowingWithAcccessToken:(NSString *)access_token
+
+/*
+ 删除收藏
+ 其中:
+ access_token ---用户授权码
+ iD ---微博id
+ */
++ (BOOL)deleteFavoriteWithAccessToken:(NSString *)access_token
+                                andId:(NSInteger)iD
+{
+    static BOOL isOk = 1;
+    NSURL * url = [NSURL URLWithString:InterfaceForSinaToDeleteFavorite];
+    NSMutableURLRequest * request = [[NSMutableURLRequest alloc]initWithURL:url];
+    NSString * str = [NSString stringWithFormat:@"access_token=%@&id=%d",access_token,iD];
+    NSData * para = [str dataUsingEncoding:NSUTF8StringEncoding];
+    [request setHTTPMethod:@"POST"];
+    [request setHTTPBody:para];
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue new]  completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+        if (connectionError)
+        {
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to post..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+            [alert show];
+            isOk = 0;
+        }
+    }];
+    return isOk;
+}
+
+
+/*
+ 更新收藏
+ 其中:
+ access_token ---用户授权码
+ iD ---微博id
+ */
++ (BOOL)updateFavoriteWithAccessToken:(NSString *)access_token
+                                andId:(NSInteger)iD
+{
+    static BOOL isOk = 1;
+    NSURL * url = [NSURL URLWithString:InterfaceForSinaToUpdateFavorite];
+    NSMutableURLRequest * request = [[NSMutableURLRequest alloc]initWithURL:url];
+    NSString * str = [NSString stringWithFormat:@"access_token=%@&id=%d",access_token,iD];
+    NSData * para = [str dataUsingEncoding:NSUTF8StringEncoding];
+    [request setHTTPMethod:@"POST"];
+    [request setHTTPBody:para];
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue new]  completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+        if (connectionError)
+        {
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to post..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+            [alert show];
+            isOk = 0;
+        }
+    }];
+    return isOk;
+}
+
+
+/*
+ 更新用户收藏下的指定标签
+ 其中:
+ access_token ---用户授权码
+ iD ---标签id
+ */
++ (BOOL)updateTagAtFavoriteWithAccessToken:(NSString *)access_token
+                                     andId:(NSInteger)iD
+{
+    static BOOL isOk = 1;
+    NSURL * url = [NSURL URLWithString:InterfaceForSinaToUpdateTagAtFavorite];
+    NSMutableURLRequest * request = [[NSMutableURLRequest alloc]initWithURL:url];
+    NSString * str = [NSString stringWithFormat:@"access_token=%@&tid=%d",access_token,iD];
+    NSData * para = [str dataUsingEncoding:NSUTF8StringEncoding];
+    [request setHTTPMethod:@"POST"];
+    [request setHTTPBody:para];
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue new]  completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+        if (connectionError)
+        {
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to post..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+            [alert show];
+            isOk = 0;
+        }
+    }];
+    return isOk;
+}
+
+
+/*
+ 删除用户收藏下的指定标签
+ 其中:
+ access_token ---用户授权码
+ iD ---标签ID
+ */
++ (BOOL)deleteTagAtFavoriteWithAccessToken:(NSString *)access_token
+                                     andId:(NSInteger)iD
+{
+    static BOOL isOk = 1;
+    NSURL * url = [NSURL URLWithString:InterfaceForSinaToDeleteTagAtFavorite];
+    NSMutableURLRequest * request = [[NSMutableURLRequest alloc]initWithURL:url];
+    NSString * str = [NSString stringWithFormat:@"access_token=%@&tid=%d",access_token,iD];
+    NSData * para = [str dataUsingEncoding:NSUTF8StringEncoding];
+    [request setHTTPMethod:@"POST"];
+    [request setHTTPBody:para];
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue new]  completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+        if (connectionError)
+        {
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to post..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+            [alert show];
+            isOk = 0;
+        }
+    }];
+    return isOk;
+}
+
+
+/*
+ 添加用户标签
+ 其中:
+ access_token ---用户授权码
+ tag ---标签
+ */
++ (BOOL)createTagWithAccessToken:(NSString *)access_token
+                          andTag:(NSArray *)tag
+{
+    static BOOL isOk = 1;
+    NSMutableString * str1;
+    for (int i = 0; i < tag.count; i++)
+    {
+        [str1 appendString:tag[i]];
+        if (i != tag.count - 1)
+        {
+            [str1 appendString:@","];
+        }
+    }
+    NSURL * url = [NSURL URLWithString:InterfaceForSinaToCreateTag];
+    NSMutableURLRequest * request = [[NSMutableURLRequest alloc]initWithURL:url];
+    NSString * str = [NSString stringWithFormat:@"access_token=%@&tags=%@",access_token,str1];
+    NSData * para = [str dataUsingEncoding:NSUTF8StringEncoding];
+    [request setHTTPMethod:@"POST"];
+    [request setHTTPBody:para];
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue new]  completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+        if (connectionError)
+        {
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to post..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+            [alert show];
+            isOk = 0;
+        }
+    }];
+    return isOk;
+}
+
+
+/*
+ 删除用户标签
+ 其中:
+ access_token ---用户授权码
+ iD ---标签id
+ */
++ (BOOL)deleteTagWithAccessToken:(NSString *)access_token
+                           andId:(NSInteger)iD
+{
+    static BOOL isOk = 1;
+    NSURL * url = [NSURL URLWithString:InterfaceForSinaToDeleteTag];
+    NSMutableURLRequest * request = [[NSMutableURLRequest alloc]initWithURL:url];
+    NSString * str = [NSString stringWithFormat:@"access_token=%@&tag_id=%d",access_token,iD];
+    NSData * para = [str dataUsingEncoding:NSUTF8StringEncoding];
+    [request setHTTPMethod:@"POST"];
+    [request setHTTPBody:para];
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue new]  completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+        if (connectionError)
+        {
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to post..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+            [alert show];
+            isOk = 0;
+        }
+    }];
+    return isOk;
+}
+
+
+/*
+ 标记不感兴趣的人
+ 其中:
+ access_token ---用户授权码
+ iD ---用户id
+ */
++ (BOOL)setUserUninterestedWithAccessToken:(NSString *)access_token
+                                     andId:(NSInteger)iD
+{
+    static BOOL isOk = 1;
+    NSURL * url = [NSURL URLWithString:InterfaceForSinaToCreateTag];
+    NSMutableURLRequest * request = [[NSMutableURLRequest alloc]initWithURL:url];
+    NSString * str = [NSString stringWithFormat:@"access_token=%@&uid=%d",access_token,iD];
+    NSData * para = [str dataUsingEncoding:NSUTF8StringEncoding];
+    [request setHTTPMethod:@"POST"];
+    [request setHTTPBody:para];
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue new]  completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+        if (connectionError)
+        {
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to post..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+            [alert show];
+            isOk = 0;
+        }
+    }];
+    return isOk;
+}
+
+
+/*
+ 添加点评
+ access_token ---用户授权码
+ content ---签到内容
+ iD ---位置id
+ */
++ (BOOL)addTipWithAccessToken:(NSString *)access_token
+                      content:(NSString *)content
+                        andId:(NSInteger)iD
+{
+    static BOOL isOk = 1;
+    NSURL * url = [NSURL URLWithString:InterfaceForSinaToAddTip];
+    NSMutableURLRequest * request = [[NSMutableURLRequest alloc]initWithURL:url];
+    NSString * str = [NSString stringWithFormat:@"access_token=%@&status=%@&id=%d",access_token,content,iD];
+    NSData * para = [str dataUsingEncoding:NSUTF8StringEncoding];
+    [request setHTTPMethod:@"POST"];
+    [request setHTTPBody:para];
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue new]  completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+        if (connectionError)
+        {
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to post..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+            [alert show];
+            isOk = 0;
+        }
+    }];
+    return isOk;
+}
+
+
+/*
+ 发送一条纯文字微博
+ 其中:
+ access_token ---用户授权码
+ content ---发送内容
+ type ---访问权限类型
+ */
++ (BOOL)postWordWeiboWithAccessToken:(NSString *)access_token
+                             content:(NSString *)content
+                             andType:(VisibleType *)type
+{
+    static BOOL isOk = 1;
+    NSURL * url = [NSURL URLWithString:InterfaceForSinaToSendWord];
+    NSMutableURLRequest * request = [[NSMutableURLRequest alloc]initWithURL:url];
+    NSString * str = [NSString stringWithFormat:@"access_token=%@&status=%@&visible=%d",access_token,content,(int)type];
+    NSData * para = [str dataUsingEncoding:NSUTF8StringEncoding];
+    [request setHTTPMethod:@"POST"];
+    [request setHTTPBody:para];
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue new]  completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+        if (connectionError)
+        {
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to post..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+            [alert show];
+            isOk = 0;
+        }
+    }];
+    return isOk;
+}
+
+
+/*
+ 判断地理信息坐标是否是国内坐标
+ 其中:
+ access_token ---用户授权码
+ coordinate ---坐标
+ */
++ (BOOL)MakeSureGeoIsDomesticWithAccessToken:(NSString *)access_token
+                                  coordinate:(NSString *)coordinate
+{
+    static BOOL isOk = 1;
+    NSURL * url = [NSURL URLWithString:InterfaceForSinaToMakeSureGeoIsDomestic];
+    NSMutableURLRequest * request = [[NSMutableURLRequest alloc]initWithURL:url];
+    NSString * str = [NSString stringWithFormat:@"access_token=%@&coordinate=%@",access_token,coordinate];
+    NSData * para = [str dataUsingEncoding:NSUTF8StringEncoding];
+    [request setHTTPMethod:@"POST"];
+    [request setHTTPBody:para];
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue new]  completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+        if (connectionError)
+        {
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to post..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+            [alert show];
+            isOk = 0;
+        }
+    }];
+    return isOk;
+}
+
+
+/*
+ 转发一条微博
+ 其中:
+ access_token ---用户授权码
+ content ---转发评论信息(可为nil)
+ iD ---转发的微博id
+ */
++ (BOOL)destroyFollowingWithAcccessToken:(NSString *)access_token
                                       iD:(NSInteger)ID
 {
+    static BOOL isOK = 1;
     NSURL * url = [NSURL URLWithString:InterfaceForSinaToDestroyFollowing];
     NSMutableURLRequest * request = [[NSMutableURLRequest alloc]initWithURL:url];
     NSString * str = [NSString stringWithFormat:@"access_token=%@&uid=%d",access_token,ID];
@@ -48,13 +441,23 @@
         {
             UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to excute..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
             [alert show];
+            isOK = 0;
         }
     }];
+    return isOK;
 }
 
-+ (void)destroyWeiBoWithAcccessToken:(NSString *)access_token
+
+/*
+ 删除微博
+ 其中:
+ access_token ---用户授权码
+ ID ---要删除的微博的ID
+ */
++ (BOOL)destroyWeiBoWithAcccessToken:(NSString *)access_token
                                   iD:(NSInteger)ID
 {
+    static BOOL isOK = 1;
     NSURL * url = [NSURL URLWithString:InterfaceForSinaToDestroyWeibo];
     NSMutableURLRequest * request = [[NSMutableURLRequest alloc]initWithURL:url];
     NSString * str = [NSString stringWithFormat:@"access_token=%@&cid=%d",access_token,ID];
@@ -66,12 +469,22 @@
         {
             UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to excute..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
             [alert show];
+            isOK = 0;
         }
     }];
+    return isOK;
 }
 
-+ (void)logoutMicroBlogWithAccessToken:(NSString *)access_token
+
+/*
+ 移除关注用户
+ 其中:
+ access_token ---用户授权码
+ ID ---需要移除的用户ID
+ */
++ (BOOL)logoutMicroBlogWithAccessToken:(NSString *)access_token
 {
+    static BOOL isOK = 1;
     NSError * error;
     NSURL * url = [NSURL URLWithString:InterfaceForSinaToLogOut];
     NSMutableURLRequest * request = [[NSMutableURLRequest alloc]initWithURL:url];
@@ -84,13 +497,22 @@
     {
         UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to exute..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
         [alert show];
+        isOK = 0;
     }
+    return isOK;
 }
 
-+ (void)reportWeiboWithAccessToken:(NSString *)access_token
+
+/*
+ 退出登录状态
+ 其中:
+ access_token ---用户授权码
+ */
++ (BOOL)reportWeiboWithAccessToken:(NSString *)access_token
                        withContent:(NSString *)content
                              andId:(NSInteger)iD
 {
+    static BOOL isOK = 1;
     NSURL * url = [NSURL URLWithString:InterfaceForSinaToReportWeibo];
     NSMutableURLRequest * request = [[NSMutableURLRequest alloc]initWithURL:url];
     NSString * str = [NSString stringWithFormat:@"access_token=%@&status=%@&id=%d",access_token,content,iD];
@@ -102,17 +524,26 @@
         {
             UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to post..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
             [alert show];
+            isOK = 0;
         }
     }];
-    
+    return isOK;
 }
 
+
+/*
+ 取得用户的详细信息
+ 其中:
+ access_token ---用户授权码
+ name ---用户名
+ */
 + (NSDictionary *)getWeiboOfUserWithAccessToken:(NSString *)access_token
                                            name:(NSString *)name
+                                        andtype:(WeiboType *)type
 {
     NSError * error;
     static NSDictionary * dic;
-    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&screen_name=%@",InterfaceForSinaToGetWeiboOfUser,access_token,name]];
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&screen_name=%@&feature=%d",InterfaceForSinaToGetWeiboOfUser,access_token,name,(int)type]];
     NSMutableURLRequest * request = [[NSMutableURLRequest alloc]initWithURL:url];
     NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
     if (error)
@@ -127,12 +558,21 @@
     return dic;
 }
 
+
+/*
+ 获得用户发表的微博
+ 其中:
+ access_token ---用户授权码
+ name ---用户名
+ type ---微博类型
+ */
 + (NSDictionary *)getIdOfWeiboOfUserWithAccessToken:(NSString *)access_token
-                                           name:(NSString *)name
+                                               name:(NSString *)name
+                                            andtype:(WeiboType *)type
 {
     NSError * error;
     static NSDictionary * dic;
-    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&screen_name=%@",InterfaceForSinaToGetIdOfWeiboOfUser,access_token,name]];
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&screen_name=%@&feature=%d",InterfaceForSinaToGetIdOfWeiboOfUser,access_token,name,(int)type]];
     NSMutableURLRequest * request = [[NSMutableURLRequest alloc]initWithURL:url];
     NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
     if (error)
@@ -147,6 +587,14 @@
     return dic;
 }
 
+
+/*
+ 获得用户发表的微博的id
+ 其中:
+ access_token ---用户授权码
+ name ---用户名
+ type ---微博类型
+ */
 + (NSDictionary *)getDetailOfUserWithAccessToken:(NSString *)access_token
                                             name:(NSString *)name
 {
@@ -167,6 +615,13 @@
     return dic;
 }
 
+
+/*
+ 获得用户关注列表
+ 其中:
+ access_token ---用户授权码
+ name ---用户名
+ */
 + (NSDictionary *)getFollowingWithAccessToken:(NSString *)access_token
                                          name:(NSString *)name
 {
@@ -187,6 +642,14 @@
     return dic;
 }
 
+
+
+/*
+ 获得用户粉丝列表
+ 其中:
+ access_token ---用户授权码
+ name ---用户名
+ */
 + (NSDictionary *)getFollowerWithAccessToken:(NSString *)access_token
                                         name:(NSString *)name
 {
@@ -207,6 +670,12 @@
     return dic;
 }
 
+
+/*
+ 获取最新的热门微博
+ 其中:
+ access_token ---用户授权码
+ */
 + (NSDictionary *)getRecentHotWeiboWithAccessToken:(NSString *)access_token
 {
     NSError * error;
@@ -226,11 +695,19 @@
     return dic;
 }
 
+
+/*
+ 获取关注好友的最新微博
+ 其中:
+ access_token ---用户授权码
+ type ---微博类型
+ */
 + (NSDictionary *)getRecentWeiboOfFriendsWithAccessToken:(NSString *)access_token
+                                                 andtype:(WeiboType *)type
 {
     NSError * error;
     static NSDictionary * dic;
-    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@",InterfaceForSinaToGetRecentWeiboOfFriends,access_token]];
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&feature=%d",InterfaceForSinaToGetRecentWeiboOfFriends,access_token,(int)type]];
     NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
     NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
     if (error)
@@ -245,11 +722,19 @@
     return dic;
 }
 
+
+/*
+ 获取当前用户的最新微博
+ 其中:
+ access_token ---用户授权码
+ type ---微博类型
+ */
 + (NSDictionary *)getRecentWeiboOfSelfWithAccessToken:(NSString *)access_token
+                                              andtype:(WeiboType *)type
 {
     NSError * error;
     static NSDictionary * dic;
-    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@",InterfaceForSinaToGetRecentWeiboOfSelf,access_token]];
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&feature=%d",InterfaceForSinaToGetRecentWeiboOfSelf,access_token,(int)type]];
     NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
     NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
     if (error)
@@ -264,11 +749,19 @@
     return dic;
 }
 
+
+/*
+ 获取当前用户与所关注用户的最新微博ID
+ 其中:
+ access_token ---用户授权码
+ type ---微博类型
+ */
 + (NSDictionary *)getIdOfRecentWeiboWithAccessToken:(NSString *)access_token
+                                            andtype:(WeiboType *)type
 {
     NSError * error;
     static NSDictionary * dic;
-    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@",InterfaceForSinaToGetIdOfRecentWeibo,access_token]];
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&feature=%d",InterfaceForSinaToGetIdOfRecentWeibo,access_token,(int)type]];
     NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
     NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
     if (error)
@@ -283,6 +776,13 @@
     return dic;
 }
 
+
+/*
+ 获取指定微博的转发列表
+ 其中:
+ access_token ---用户授权码
+ iD ---微博id
+ */
 + (NSDictionary *)getReportListOfWeiboWithAccessToken:(NSString *)access_token
                                                 andId:(NSInteger)iD
 {
@@ -303,6 +803,13 @@
     return dic;
 }
 
+
+/*
+ 获取指定微博的评论列表
+ 其中:
+ access_token ---用户授权码
+ iD ---微博id
+ */
 + (NSDictionary *)getAnswerListOfWeiboWithAccessToken:(NSString *)access_token
                                                 andId:(NSInteger)iD
 {
@@ -323,6 +830,13 @@
     return dic;
 }
 
+
+/*
+ 获取指定微博的评论和转发数
+ 其中:
+ access_token ---用户授权码
+ iD ---微博id
+ */
 + (NSDictionary *)getCountOfAnswerAndReportOfWeiboWithAccessToken:(NSString *)access_token
                                                             andId:(NSInteger)iD
 {
@@ -343,6 +857,13 @@
     return dic;
 }
 
+
+/*
+ 获取指定微博的详细信息
+ 其中:
+ access_token ---用户授权码
+ iD ---微博id
+ */
 + (NSDictionary *)getDetaileOfWeiboWithAccessToken:(NSString *)access_token
                                              andId:(NSInteger)iD
 {
@@ -609,7 +1130,7 @@
 {
     NSError * error;
     static NSDictionary * dic;
-    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&tar_screen_name=%@&source_screen_name",InterfaceForSinaToGetRelationOfUsers,access_token,target_name,source_name]];
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&tar_screen_name=%@&source_screen_name=%@",InterfaceForSinaToGetRelationOfUsers,access_token,target_name,source_name]];
     NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
     NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
     if (error)
@@ -1508,7 +2029,7 @@
 
 
 /*
- 获取市区配置表
+ 获取时区配置表
  其中:
  access_token ---用户授权码
  */
@@ -1531,5 +2052,754 @@
     return dic;
 
 }
+
+
+/*
+ 获取好友位置动态
+ 其中:
+ access_token ---用户授权码
+ */
++ (NSDictionary *)getLocationOfFriendWithAccessToken:(NSString *)access_token
+{
+    NSError * error;
+    static NSDictionary * dic;
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@",InterfaceForSinaToGetLocationOfFriend,access_token]];
+    NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
+    NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
+    if (error)
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to exute..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+        [alert show];
+    }
+    else
+    {
+        dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+    }
+    return dic;
+}
+
+
+/*
+ 获取用户的位置动态
+ 其中:
+ access_token ---用户授权码
+ uid ---用户id
+ */
++ (NSDictionary *)getLocationOfUserWithAccessToken:(NSString *)access_token
+                                             andId:(NSInteger)uid
+{
+    NSError * error;
+    static NSDictionary * dic;
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&uid=%d",InterfaceForSinaToGetLocationOfUser,access_token,uid]];
+    NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
+    NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
+    if (error)
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to exute..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+        [alert show];
+    }
+    else
+    {
+        dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+    }
+    return dic;
+}
+
+
+/*
+ 获取某个位置地点的动态
+ 其中:
+ access_token ---用户授权码
+ iD ---位置id
+ */
++ (NSDictionary *)getLocationOfPlaceWithAccessToken:(NSString *)access_token
+                                              andId:(NSInteger)iD
+{
+    NSError * error;
+    static NSDictionary * dic;
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&poiid=%d",InterfaceForSinaToGetLocationOfPlace,access_token,iD]];
+    NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
+    NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
+    if (error)
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to exute..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+        [alert show];
+    }
+    else
+    {
+        dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+    }
+    return dic;
+}
+
+
+/*
+ 获取某个位置周边的动态
+ 其中:
+ access_token ---用户授权码
+ lat ---纬度
+ l_ong ---经度
+ */
++ (NSDictionary *)getLocationAroundPlaceWithAccessToken:(NSString *)access_token
+                                                 andLat:(float)lat
+                                                andLong:(float)l_ong
+{
+    NSError * error;
+    static NSDictionary * dic;
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&lat=%f&l_ong=%f",InterfaceForSinaToGetLocationAroundPlace,access_token,lat,l_ong]];
+    NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
+    NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
+    if (error)
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to exute..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+        [alert show];
+    }
+    else
+    {
+        dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+    }
+    return dic;
+}
+
+
+/*
+ 根据id获取动态详情
+ 其中:
+ access_token ---用户授权码
+ iD ---动态id
+ */
++ (NSDictionary *)getDetaileOfLocationWithAccessToken:(NSString *)access_token
+                                                andId:(NSInteger)iD
+{
+    NSError * error;
+    static NSDictionary * dic;
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&id=%d",InterfaceForSinaToGetDetaileOfLocation,access_token,iD]];
+    NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
+    NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
+    if (error)
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to exute..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+        [alert show];
+    }
+    else
+    {
+        dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+    }
+    return dic;
+}
+
+
+/*
+ 获取lbs位置服务内的用户信息
+ 其中:
+ access_token ---用户授权码
+ uid ---用户id
+ */
++ (NSDictionary *)getDetaileOfUserOfLBSWithAccessToken:(NSString *)access_token
+                                                 andId:(NSInteger)uid
+{
+    NSError * error;
+    static NSDictionary * dic;
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&uid=%d",InterfaceForSinaToGetDetaileOfUserOfLBS,access_token,uid]];
+    NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
+    NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
+    if (error)
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to exute..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+        [alert show];
+    }
+    else
+    {
+        dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+    }
+    return dic;
+}
+
+
+/*
+ 获取用户签发过的地点列表
+ 其中:
+ access_token ---用户授权码
+ uid ---用户id
+ */
++ (NSDictionary *)getPlaceListUserGoneWithAccessToken:(NSString *)access_token
+                                                andId:(NSInteger)uid
+{
+    NSError * error;
+    static NSDictionary * dic;
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&uid=%d",InterfaceForSinaToGetPlaceListUserGone,access_token,uid]];
+    NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
+    NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
+    if (error)
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to exute..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+        [alert show];
+    }
+    else
+    {
+        dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+    }
+    return dic;
+}
+
+
+/*
+ 获取用户的照片列表
+ 其中:
+ access_token ---用户授权码
+ uid ---用户id
+ */
++ (NSDictionary *)getPicListWithAccessToken:(NSString *)access_token
+                                      andId:(NSInteger)uid
+{
+    NSError * error;
+    static NSDictionary * dic;
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&uid=%d",InterfaceForSinaToGetPicList,access_token,uid]];
+    NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
+    NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
+    if (error)
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to exute..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+        [alert show];
+    }
+    else
+    {
+        dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+    }
+    return dic;
+}
+
+
+/*
+ 获取地点详情
+ 其中:
+ access_token ---用户授权码
+ iD ---位置id
+ */
++ (NSDictionary *)getDetailOfPlaceWithAccessToken:(NSString *)access_token
+                                            andId:(NSInteger)iD
+{
+    NSError * error;
+    static NSDictionary * dic;
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&id=%d",InterfaceForSinaToGetDetaileOfPlace,access_token,iD]];
+    NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
+    NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
+    if (error)
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to exute..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+        [alert show];
+    }
+    else
+    {
+        dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+    }
+    return dic;
+}
+
+
+/*
+ 获取在某地点签到的用户列表
+ 其中:
+ access_token ---用户授权码
+ iD ---位置id
+ */
++ (NSDictionary *)getUserWhoGoneToPlaceWithAccessToken:(NSString *)access_token
+                                                 andId:(NSInteger)iD
+{
+    NSError * error;
+    static NSDictionary * dic;
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&id=%d",InterfaceForSinaToGetUserWhoGoneToPlace,access_token,iD]];
+    NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
+    NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
+    if (error)
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to exute..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+        [alert show];
+    }
+    else
+    {
+        dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+    }
+    return dic;
+}
+
+
+/*
+ 获取地点照片列表
+ 其中:
+ access_token ---用户授权码
+ iD ---位置id
+ */
++ (NSDictionary *)getPicListOfPlaceWithAccessToken:(NSString *)access_token
+                                             andId:(NSInteger)iD
+{
+    NSError * error;
+    static NSDictionary * dic;
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&id=%d",InterfaceForSinaToGetPicListOfPlace,access_token,iD]];
+    NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
+    NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
+    if (error)
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to exute..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+        [alert show];
+    }
+    else
+    {
+        dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+    }
+    return dic;
+}
+
+
+/*
+ 按省市查询地点
+ 其中:
+ access_token ---用户授权码
+ key ---关键字
+ city_code ---城市代码
+ category_code ---分类代码
+ */
++ (NSDictionary *)getPlaceByProvinceAndCityWithAccessToken:(NSString *)access_token
+                                                    andKey:(NSString *)key
+                                                   andCity:(NSString *)city_code
+                                               andCategory:(NSString *)category_code
+{
+    NSError * error;
+    static NSDictionary * dic;
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&keyword=%@&city=%@,category=%@",InterfaceForSinaToGetPlaceByProvinceAndCity,access_token,key,city_code,category_code]];
+    NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
+    NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
+    if (error)
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to exute..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+        [alert show];
+    }
+    else
+    {
+        dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+    }
+    return dic;
+}
+
+
+/*
+ 获取地点分类
+ 其中:
+ access_token ---用户授权码
+ iD ---父分类id
+ */
++ (NSDictionary *)getCategoryOfPlaceWithAccessToken:(NSString *)access_token
+                                              andId:(int)iD
+{
+    NSError * error;
+    static NSDictionary * dic;
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&pid=%d",InterfaceForSinaToGetCategoryOfPlace,access_token,iD]];
+    NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
+    NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
+    if (error)
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to exute..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+        [alert show];
+    }
+    else
+    {
+        dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+    }
+    return dic;
+}
+
+
+/*
+ 获取附近地点
+ 其中:
+ access_token ---用户授权码
+ key ---关键词
+ category_code ---分类代码
+ lat ---纬度
+ l_ong ---经度
+ */
++ (NSDictionary *)getPlaceNearbyWithAccessToken:(NSString *)access_token
+                                         andKey:(NSString *)key
+                                    andCategory:(NSString *)category_code
+                                         andLat:(float)lat
+                                        andLong:(float)l_ong
+{
+    NSError * error;
+    static NSDictionary * dic;
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&q=%@&category=%@&lat=%f&long=%f",InterfaceForSinaToGetPlaceNearby,access_token,key,category_code,lat,l_ong]];
+    NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
+    NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
+    if (error)
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to exute..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+        [alert show];
+    }
+    else
+    {
+        dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+    }
+    return dic;
+}
+
+
+/*
+ 获取附近发位置微博的人
+ 其中:
+ access_token ---用户授权码
+ lat ---纬度
+ l_ong ---经度
+ */
++ (NSDictionary *)getUserSentLocalWeiboNearbyWithAccessToken:(NSString *)access_token
+                                                      andLat:(float)lat
+                                                     andLong:(float)l_ong
+{
+    NSError * error;
+    static NSDictionary * dic;
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&lat=%f&long=%f",InterfaceForSinaToGetUserSentLocalWeiboNearby,access_token,lat,l_ong]];
+    NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
+    NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
+    if (error)
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to exute..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+        [alert show];
+    }
+    else
+    {
+        dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+    }
+    return dic;
+}
+
+
+/*
+ 获取附近照片
+ 其中:
+ access_token ---用户授权码
+ lat ---纬度
+ l_ong ---经度
+ */
++ (NSDictionary *)getPicNearbyWithAccessToken:(NSString *)access_token
+                                       andLat:(float)lat
+                                      andLong:(float)l_ong
+{
+    NSError * error;
+    static NSDictionary * dic;
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&lat=%f&long=%f",InterfaceForSinaToGetPicNearby,access_token,lat,l_ong]];
+    NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
+    NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
+    if (error)
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to exute..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+        [alert show];
+    }
+    else
+    {
+        dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+    }
+    return dic;
+}
+
+
+/*
+ 根据ip地址返回地理信息坐标
+ 其中:
+ access_token ---用户授权码
+ ip ---ip地址
+ */
++ (NSDictionary *)getGeoByIpWithAccessToken:(NSString *)access_token
+                                         ip:(NSString *)ip
+{
+    NSError * error;
+    static NSDictionary * dic;
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&ip=%@",InterfaceForSinaToGetGeoByIp,access_token,ip]];
+    NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
+    NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
+    if (error)
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to exute..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+        [alert show];
+    }
+    else
+    {
+        dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+    }
+    return dic;
+}
+
+
+/*
+ 根据实际地址返回地址信息坐标
+ 其中:
+ access_token ---用户授权码
+ address ---地址
+ */
++ (NSDictionary *)getGeoByAddressWithAccessToken:(NSString *)access_token
+                                         address:(NSString *)address
+{
+    NSError * error;
+    static NSDictionary * dic;
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&address=%@",InterfaceForSinaToGetGeoByAddress,access_token,address]];
+    NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
+    NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
+    if (error)
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to exute..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+        [alert show];
+    }
+    else
+    {
+        dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+    }
+    return dic;
+}
+
+
+/*
+ 根据地理信息坐标返回实际地址
+ 其中:
+ access_token ---用户授权码
+ coordinate ---坐标
+ */
++ (NSDictionary *)getGeoByCoordinateWithAccessToken:(NSString *)access_token
+                                         coordinate:(NSString *)coordinate
+{
+    NSError * error;
+    static NSDictionary * dic;
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&coordinate=%@",InterfaceForSinaToGetAddressByGeo,access_token,coordinate]];
+    NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
+    NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
+    if (error)
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to exute..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+        [alert show];
+    }
+    else
+    {
+        dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+    }
+    return dic;
+}
+
+
+/*
+ 根据gps坐标获取偏移后的坐标
+ 其中:
+ access_token ---用户授权码
+ coordinate ---坐标
+ */
++ (NSDictionary *)getGeoAfterOffsetWithAccessToken:(NSString *)access_token
+                                        coordinate:(NSString *)coordinate
+{
+    NSError * error;
+    static NSDictionary * dic;
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&coordibate=%@",InterfaceForSinaToGetGeoAfterOffsetByGPS,access_token,coordinate]];
+    NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
+    NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
+    if (error)
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to exute..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+        [alert show];
+    }
+    else
+    {
+        dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+    }
+    return dic;
+}
+
+
+/*
+ 根据起点和终点查询自驾车路线信息
+ 其中:
+ access_token ---用户授权码
+ begin_pid ---其实位置id
+ end_pid ---终点位置id
+ type ---优先类型
+ */
++ (NSDictionary *)getDriveRoute:(NSString *)access_token
+                           from:(NSString *)begin_pid
+                             to:(NSString *)end_pid
+                       withType:(UnderlyingType *)type
+{
+    NSError * error;
+    static NSDictionary * dic;
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&begin_pid=%@&end_pic=%@&type=%d",InterfaceForSinaToGetDriveRoute,access_token,begin_pid,end_pid,(int)type]];
+    NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
+    NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
+    if (error)
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to exute..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+        [alert show];
+    }
+    else
+    {
+        dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+    }
+    return dic;
+}
+
+
+/*
+ 根据起点和终点查询公交路线信息
+ 其中:
+ access_token ---用户授权码
+ begin_pid ---其实位置id
+ end_pid ---终点位置id
+ type ---优先类型
+ */
++ (NSDictionary *)getBusRoute:(NSString *)access_token
+                         from:(NSString *)begin_pid
+                           to:(NSString *)end_pid
+                     withType:(UnderlyingType *)type
+{
+    NSError * error;
+    static NSDictionary * dic;
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&begin_pid=%@&end_pid=%@type=%d",InterfaceForSinaToGetBusRoute,access_token,begin_pid,end_pid,(int)type]];
+    NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
+    NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
+    if (error)
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to exute..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+        [alert show];
+    }
+    else
+    {
+        dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+    }
+    return dic;
+}
+
+
+/*
+ 根据关键字查询公交线路信息
+ 其中:
+ access_token ---用户授权码
+ key ---关键词
+ code ---城市代码
+ */
++ (NSDictionary *)getBusLineWithAccessToken:(NSString *)access_token
+                                     andKey:(NSString *)key
+                                    andCity:(NSString *)code
+{
+    NSError * error;
+    static NSDictionary * dic;
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&q=%@&city=%@",InterfaceForSinaToGetBusLine,access_token,key,code]];
+    NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
+    NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
+    if (error)
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to exute..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+        [alert show];
+    }
+    else
+    {
+        dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+    }
+    return dic;
+}
+
+
+/*
+ 根据关键字查询公交车站信息
+ 其中:
+ access_token ---用户授权码
+ key ---关键词
+ code ---城市代码
+ */
++ (NSDictionary *)getBusStationWithAccessToken:(NSString *)access_token
+                                        andKey:(NSString *)key
+                                       andCity:(NSString *)code
+{
+    NSError * error;
+    static NSDictionary * dic;
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&q=%@&city=%@",InterfaceForSinaToGetBusStation,access_token,key,code]];
+    NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
+    NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
+    if (error)
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to exute..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+        [alert show];
+    }
+    else
+    {
+        dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+    }
+    return dic;
+}
+
+
+/*
+ 根据关键词按地址位置获取poi的信息
+ 其中:
+ access_token ---用户授权码
+ key ---关键词
+ code ---城市代码
+ category ---分类代码
+ */
++ (NSDictionary *)getPOIByAddressWithAccessToken:(NSString *)access_token
+                                          andKey:(NSString *)key
+                                         andCity:(NSString *)code
+                                     andCategory:(NSString *)category
+{
+    NSError * error;
+    static NSDictionary * dic;
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&q=%@&city=%@&category=%@",InterfaceForSinaToGetPOIByAddress,access_token,key,code,category]];
+    NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
+    NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
+    if (error)
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to exute..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+        [alert show];
+    }
+    else
+    {
+        dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+    }
+    return dic;
+}
+
+
+/*
+ 根据关键词按矩形区域回去poi信息
+ 其中:
+ access_token ---用户授权码
+ key ---关键词
+ code ---城市代码
+ category ---分类代码
+ coordinate ---坐标
+ */
++ (NSDictionary *)getPOIByRectWithAccessToken:(NSString *)access_token
+                                       andKey:(NSString *)key
+                                      andCity:(NSString *)code
+                                  andCategory:(NSString *)category
+                                andCoordinate:(NSArray *)coordinate
+{
+    NSError * error;
+    static NSDictionary * dic;
+    NSMutableString * str;
+    for (int i = 0; i < coordinate.count; i++)
+    {
+        [str appendString:coordinate[i]];
+        if (i != coordinate.count - 1)
+        {
+            [str appendString:@"|"];
+        }
+    }
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&q=%@&city=%@&category=%@&coordinates=%@",InterfaceForSinaToGetPOIByRect,access_token,key,code,category,str]];
+    NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
+    NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
+    if (error)
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to exute..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+        [alert show];
+    }
+    else
+    {
+        dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+    }
+    return dic;
+}
+
+
 
 @end

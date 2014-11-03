@@ -34,6 +34,7 @@
 
 + (void)createLeftBarButtonItemForViewController:(UIViewController *)vc
                                          withTag:(int)tag
+                                        andTitle:(NSString *)title
                                         andImage:(UIImage *)image
                                          andType:(UIButtonType)type
 {
@@ -41,6 +42,14 @@
     UIBarButtonItem * barbutton = [[UIBarButtonItem alloc]initWithCustomView:button];
     button.frame = CGRectMake(0, 0, 25, 25);
     button.tag = tag;
+    if (title)
+    {
+        UILabel * title_Label = button.titleLabel;
+        title_Label.textColor = [UIColor redColor];
+
+        [button setTitle:title forState:UIControlStateSelected];
+        button.selected = YES;
+    }
     if (image)
     {
         [button setImage:image forState:UIControlStateSelected];
@@ -58,6 +67,7 @@
 
 + (void)createRightBarButtonItemForViewController:(UIViewController *)vc
                                           withTag:(int)tag
+                                         andTitle:(NSString *)title
                                          andImage:(UIImage *)image
                                           andType:(UIButtonType)type
 {
@@ -65,6 +75,16 @@
     UIBarButtonItem * barbutton = [[UIBarButtonItem alloc]initWithCustomView:button];
     button.frame = CGRectMake(0, 0, 25, 25);
     button.tag = tag;
+    if (title)
+    {
+        UILabel * title_Label = button.titleLabel;
+        title_Label.textColor = [UIColor redColor];
+        title_Label.textAlignment = NSTextAlignmentRight;
+        
+        [button setTitle:title forState:UIControlStateSelected];
+        button.frame = CGRectMake(0, 0, 20*title.length, 25);
+        button.selected = YES;
+    }
     if (image)
     {
         [button setImage:image forState:UIControlStateSelected];
@@ -89,6 +109,53 @@ forViewController:(UIViewController *)vc
     label.text = title;
     label.textColor = color;
     vc.navigationItem.titleView = label;
+}
+
+
++ (void)createSearchBarWithViewController:(UIViewController *)vc
+                                  withTag:(int)tag
+                       needRecorderButton:(BOOL)answer
+                                 andTitle:(NSString *)title
+                                 andImage:(UIImage *)image
+                                  andType:(UIButtonType)type
+                            withButtonTag:(int)button_Tag
+{
+    UIView * view = [[UIView alloc]initWithFrame:CGRectMake(0, 20, CGRectGetWidth(vc.view.frame), 44)];
+    vc.navigationItem.titleView = view;
+
+    UISearchBar * search = [[UISearchBar alloc]initWithFrame:CGRectMake(0, 10, CGRectGetWidth(view.frame)-15, 30)];
+    search.searchBarStyle = UISearchBarStyleMinimal;
+    search.tag = tag;
+    [view addSubview:search];
+    
+    if (answer)
+    {
+        search.frame = CGRectMake(0, 10, CGRectGetWidth(view.frame)-40, 30);
+        
+        UIButton * button = [UIButton buttonWithType:type];
+        button.frame = CGRectMake(CGRectGetWidth(view.frame)-40, 12, 25, 25);
+        button.tag = button_Tag;
+        button.selected = YES;
+        [view addSubview:button];
+        
+        if (title)
+        {
+            [button setTitle:title forState:UIControlStateSelected];
+        }
+        if (image)
+        {
+            [button setImage:image forState:UIControlStateSelected];
+        }
+    }
+}
+
+
++ (UINavigationController *)createNavigationControllerWithViewController:(UIViewController *)vc
+{
+    UINavigationController * navigation = [[UINavigationController alloc]initWithRootViewController:vc];
+    navigation.navigationBar.barStyle = UIBarStyleDefault;
+    navigation.navigationBar.barTintColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"navigationbar_background_landscape@2x.png"]];
+    return navigation;
 }
 
 

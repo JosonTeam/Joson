@@ -26,11 +26,13 @@
  其中:
  vc ---当前需添加按钮的视图控制器
  tag ---按钮在navigationController上得tag值
+ title ---标题，可为空
  image ---按钮以图片形式显示，可为nil
  type ---按钮样式
  */
 + (void)createLeftBarButtonItemForViewController:(UIViewController *)vc
                                          withTag:(int)tag
+                                        andTitle:(NSString *)title
                                         andImage:(UIImage *)image
                                          andType:(UIButtonType)type;
 
@@ -41,11 +43,13 @@
  其中:
  vc ---当前需添加按钮的视图控制器
  tag ---按钮在navigationController上得tag值
+ title ---标题，可为空
  image ---按钮以图片形式显示，可为nil
  type ---按钮样式
  */
 + (void)createRightBarButtonItemForViewController:(UIViewController *)vc
                                           withTag:(int)tag
+                                         andTitle:(NSString *)title
                                          andImage:(UIImage *)image
                                           andType:(UIButtonType)type;
 
@@ -60,5 +64,34 @@
 + (void)setTitle:(NSString *)title
        withColor:(UIColor*)color
 forViewController:(UIViewController *)vc;
+
+
+/*
+ 为标题栏添加搜索控件
+ 其中:
+ vc ---当前需添加标题的视图控制器
+ tag ---控件在navigationController上得tag值
+ answer ---需要或不需要录音按钮
+ 若answer为0，以下设置不生效
+ title ---按钮的标题
+ image ---按钮的图片
+ type ---按钮的样式
+ buttpn_Tag ---按钮的tag值
+ */
++ (void)createSearchBarWithViewController:(UIViewController *)vc
+                                  withTag:(int)tag
+                       needRecorderButton:(BOOL)answer
+                                 andTitle:(NSString *)title
+                                 andImage:(UIImage *)image
+                                  andType:(UIButtonType)type
+                            withButtonTag:(int)button_Tag;
+
+
+/*
+ 添加navigationController
+ 其中:
+ vc ---当前需添加标题栏的视图控制器
+ */
++ (UINavigationController *)createNavigationControllerWithViewController:(UIViewController *)vc;
 
 @end

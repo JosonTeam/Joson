@@ -1,6 +1,8 @@
 #ifndef Test_PassByValue_HeightAndWidthForVersion_h
 #define Test_PassByValue_HeightAndWidthForVersion_h
 
+#define DeviceHeight [UIScreen mainScreen].bounds.size.height;
+
 #define HeightFor3_5 480
 #define HeightFor4_0 568
 #define HeightFor4_7 667

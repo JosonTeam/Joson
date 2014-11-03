@@ -14,11 +14,11 @@
  */
 typedef NS_ENUM(NSInteger, SchoolType)
 {
-    SchoolTypeUniverCity = 1,
-    SchoolTypeHighSchool = 2,
-    SchoolTypeSecondaryTechnicalSchool = 3,
-    SchoolTypeJuniorMiddleSchool = 4,
-    SchoolTypePrimarySchool = 5
+    SchoolTypeUniverCity,
+    SchoolTypeHighSchool,
+    SchoolTypeSecondaryTechnicalSchool,
+    SchoolTypeJuniorMiddleSchool,
+    SchoolTypePrimarySchool
 };
 
 
@@ -28,8 +28,8 @@ typedef NS_ENUM(NSInteger, SchoolType)
  */
 typedef NS_ENUM(NSInteger, UserType)
 {
-    UserTypeFollowing = 0,
-    UserTypeFans = 1
+    UserTypeFollowing,
+    UserTypeFans
 };
 
 
@@ -58,41 +58,77 @@ typedef NS_ENUM(NSInteger, UserType)
  */
 typedef NS_ENUM(NSInteger, UserCategory)
 {
-    UserCategoryDefault = 0,
-    UserCategoryEnt = 1,
-    UserCategoryMusic = 2,
-    UserCategorySport = 3,
-    UserCategoryFashion = 4,
-    UserCategoryArt = 5,
-    UserCategoryCartoon = 6,
-    UserCategoryGames = 7,
-    UserCategoryTrip = 8,
-    UserCategoryFood = 9,
-    UserCategoryHealth = 10,
-    UserCategoryLiterature = 11,
-    UserCategorySlock = 12,
-    UserCategoryBusiness = 13,
-    UserCategoryTech = 14,
-    UserCategoryHouse = 15,
-    UserCategoryAuto = 16,
-    UserCategoryFate = 17,
-    UserCategoryGovern = 18,
-    UserCategoryMedium = 19,
-    UserCategoryMarketer = 20
+    UserCategoryDefault,
+    UserCategoryEnt,
+    UserCategoryMusic,
+    UserCategorySport,
+    UserCategoryFashion,
+    UserCategoryArt,
+    UserCategoryCartoon,
+    UserCategoryGames,
+    UserCategoryTrip,
+    UserCategoryFood,
+    UserCategoryHealth,
+    UserCategoryLiterature,
+    UserCategorySlock,
+    UserCategoryBusiness,
+    UserCategoryTech,
+    UserCategoryHouse,
+    UserCategoryAuto,
+    UserCategoryFate,
+    UserCategoryGovern,
+    UserCategoryMedium,
+    UserCategoryMarketer
+};
+
+
+/*
+ All: 全部
+ Self: 原创
+ Pic: 图片
+ Movie: 视频
+ Music: 音乐
+ */
+typedef NS_ENUM(NSInteger, WeiboType)
+{
+    WeiboTypeAll,
+    WeiboTypeSelf,
+    WeiboTypePic,
+    WeiboTypeMovie,
+    WeiboTypeMusic,
+};
+
+
+/*
+ All: 所有人
+ Self: 自己
+ Friend: 密友
+ Group: 指定分组
+ */
+typedef NS_ENUM(NSInteger, VisibleType)
+{
+    VisibleTypeAll,
+    VisibleTypeSelf,
+    VisibleTypeFriend,
+    VisibleTypeGroup
+};
+
+
+/*
+ Following: 关注
+ Fans: 粉丝
+ */
+typedef NS_ENUM(NSInteger, UnderlyingType)
+{
+    UnderlyingTypeSpeed,
+    UnderlyingTypeCost,
+    UnderlyingTypeDistance
 };
 
 
 @interface MicroBlogOperateForSina : NSObject
 
 
-/*
- 发送一条纯文字微博
- 其中:
- access_token ---用户授权码
- content ---发送内容
- */
-+ (void)postWordWeiboWithAccessToken:(NSString *)access_token
-                             content:(NSString *)content;
 
 
 /*
@@ -101,10 +137,74 @@ typedef NS_ENUM(NSInteger, UserCategory)
  access_token ---用户授权码
  content ---文字内容
  pic ---图片地址
+ type ---访问权限类型
  */
 + (void)postWordWeiboAndSinglePictureWithAccessToken:(NSString *)access_token
                                              content:(NSString *)content
-                                                 pic:(NSURL *)pic;
+                                                 pic:(NSURL *)pic
+                                             andType:(VisibleType *)type;
+
+
+/*
+ 签到同时上传一张图片
+ 其中:
+ access_token ---用户授权码
+ content ---签到内容
+ pic ---图片url
+ iD ---位置id
+ */
++ (void)chekinWithAccessToken:(NSString *)access_token
+                      content:(NSString *)content
+                       picURL:(NSURL *)pic
+                        andId:(NSInteger)iD;
+
+
+/*
+ 添加照片
+ access_token ---用户授权码
+ content ---签到内容
+ pic ---图片url
+ iD ---位置id
+ */
++ (void)addPicWithAccessToken:(NSString *)access_token
+                      content:(NSString *)content
+                       picURL:(NSURL *)pic
+                        andId:(NSInteger)iD;
+
+
+/*
+ 判断地理信息坐标是否是国内坐标
+ 其中:
+ access_token ---用户授权码
+ coordinate ---坐标
+ */
++ (BOOL)MakeSureGeoIsDomesticWithAccessToken:(NSString *)access_token
+                                  coordinate:(NSString *)coordinate;
+
+
+/*
+ 添加点评
+ access_token ---用户授权码
+ content ---签到内容
+ iD ---位置id
+ */
++ (BOOL)addTipWithAccessToken:(NSString *)access_token
+                      content:(NSString *)content
+                        andId:(NSInteger)iD;
+
+
+
+/*
+ 发送一条纯文字微博
+ 其中:
+ access_token ---用户授权码
+ content ---发送内容
+ type ---访问权限类型
+ */
++ (BOOL)postWordWeiboWithAccessToken:(NSString *)access_token
+                             content:(NSString *)content
+                             andType:(VisibleType *)type;
+
 
 /*
  转发一条微博
@@ -113,7 +213,7 @@ typedef NS_ENUM(NSInteger, UserCategory)
  content ---转发评论信息(可为nil)
  iD ---转发的微博id
  */
-+ (void)reportWeiboWithAccessToken:(NSString *)access_token
++ (BOOL)reportWeiboWithAccessToken:(NSString *)access_token
                        withContent:(NSString *)content
                              andId:(NSInteger)iD;
 
@@ -124,7 +224,7 @@ typedef NS_ENUM(NSInteger, UserCategory)
  access_token ---用户授权码
  ID ---要删除的微博的ID
  */
-+ (void)destroyWeiBoWithAcccessToken:(NSString *)access_token
++ (BOOL)destroyWeiBoWithAcccessToken:(NSString *)access_token
                                   iD:(NSInteger)ID;
 
 
@@ -134,7 +234,7 @@ typedef NS_ENUM(NSInteger, UserCategory)
  access_token ---用户授权码
  ID ---需要移除的用户ID
  */
-+ (void)destroyFollowingWithAcccessToken:(NSString *)access_token
++ (BOOL)destroyFollowingWithAcccessToken:(NSString *)access_token
                                       iD:(NSInteger)ID;
 
 
@@ -143,7 +243,97 @@ typedef NS_ENUM(NSInteger, UserCategory)
  其中:
  access_token ---用户授权码
  */
-+ (void)logoutMicroBlogWithAccessToken:(NSString *)access_token;
++ (BOOL)logoutMicroBlogWithAccessToken:(NSString *)access_token;
+
+
+/*
+ 关注用户
+ 其中:
+ access_token ---用户授权码
+ name ---用户名
+ */
++ (BOOL)followUserWithAccessToken:(NSString *)access_token
+                          andName:(NSString *)name;
+
+
+/*
+ 添加收藏
+ 其中:
+ access_token ---用户授权码
+ iD ---微博id
+ */
++ (BOOL)createFavoriteWithAccessToken:(NSString *)access_token
+                                andId:(NSInteger)iD;
+
+
+/*
+ 删除收藏
+ 其中:
+ access_token ---用户授权码
+ iD ---微博id
+ */
++ (BOOL)deleteFavoriteWithAccessToken:(NSString *)access_token
+                                andId:(NSInteger)iD;
+
+
+/*
+ 更新收藏
+ 其中:
+ access_token ---用户授权码
+ iD ---微博id
+ */
++ (BOOL)updateFavoriteWithAccessToken:(NSString *)access_token
+                                andId:(NSInteger)iD;
+
+
+/*
+ 更新用户收藏下的指定标签
+ 其中:
+ access_token ---用户授权码
+ iD ---标签id
+ */
++ (BOOL)updateTagAtFavoriteWithAccessToken:(NSString *)access_token
+                                     andId:(NSInteger)iD;
+
+
+/*
+ 删除用户收藏下的指定标签
+ 其中:
+ access_token ---用户授权码
+ iD ---标签ID
+ */
++ (BOOL)deleteTagAtFavoriteWithAccessToken:(NSString *)access_token
+                                     andId:(NSInteger)iD;
+
+
+/*
+ 添加用户标签
+ 其中:
+ access_token ---用户授权码
+ tag ---标签
+ */
++ (BOOL)createTagWithAccessToken:(NSString *)access_token
+                          andTag:(NSArray *)tag;
+
+
+/*
+ 删除用户标签
+ 其中:
+ access_token ---用户授权码
+ iD ---标签id
+ */
++ (BOOL)deleteTagWithAccessToken:(NSString *)access_token
+                           andId:(NSInteger)iD;
+
+
+/*
+ 标记不感兴趣的人
+ 其中:
+ access_token ---用户授权码
+ iD ---用户id
+ */
++ (BOOL)setUserUninterestedWithAccessToken:(NSString *)access_token
+                                     andId:(NSInteger)iD;
 
 
 /*
@@ -161,18 +351,22 @@ typedef NS_ENUM(NSInteger, UserCategory)
  其中:
  access_token ---用户授权码
  name ---用户名
+ type ---微博类型
  */
 + (NSDictionary *)getWeiboOfUserWithAccessToken:(NSString *)access_token
-                                           name:(NSString *)name;
+                                           name:(NSString *)name
+                                        andtype:(WeiboType *)type;
 
 /*
  获得用户发表的微博的id
  其中:
  access_token ---用户授权码
  name ---用户名
+ type ---微博类型
  */
 + (NSDictionary *)getIdOfWeiboOfUserWithAccessToken:(NSString *)access_token
-                                           name:(NSString *)name;
+                                               name:(NSString *)name
+                                            andtype:(WeiboType *)type;
 
 
 /*
@@ -207,24 +401,30 @@ typedef NS_ENUM(NSInteger, UserCategory)
  获取关注好友的最新微博
  其中:
  access_token ---用户授权码
+ type ---微博类型
  */
-+ (NSDictionary *)getRecentWeiboOfFriendsWithAccessToken:(NSString *)access_token;
++ (NSDictionary *)getRecentWeiboOfFriendsWithAccessToken:(NSString *)access_token
+                                                 andtype:(WeiboType *)type;
 
 
 /*
  获取当前用户的最新微博
  其中:
  access_token ---用户授权码
+ type ---微博类型
  */
-+ (NSDictionary *)getRecentWeiboOfSelfWithAccessToken:(NSString *)access_token;
++ (NSDictionary *)getRecentWeiboOfSelfWithAccessToken:(NSString *)access_token
+                                              andtype:(WeiboType *)type;
 
 
 /*
- 获取当前用户与所关注用户的最新微博
+ 获取当前用户与所关注用户的最新微博ID
  其中:
  access_token ---用户授权码
+ type ---微博类型
  */
-+ (NSDictionary *)getIdOfRecentWeiboWithAccessToken:(NSString *)access_token;
++ (NSDictionary *)getIdOfRecentWeiboWithAccessToken:(NSString *)access_token
+                                            andtype:(WeiboType *)type;
 
 
 /*
@@ -661,10 +861,306 @@ typedef NS_ENUM(NSInteger, UserCategory)
 
 
 /*
- 获取市区配置表
+ 获取时区配置表
  其中:
  access_token ---用户授权码
  */
 + (NSDictionary *)getTimeZoneWithAccessToken:(NSString *)access_token;
+
+
+/*
+ 获取好友位置动态
+ 其中:
+ access_token ---用户授权码
+ */
++ (NSDictionary *)getLocationOfFriendWithAccessToken:(NSString *)access_token;
+
+
+/*
+ 获取用户的位置动态
+ 其中:
+ access_token ---用户授权码
+ uid ---用户id
+ */
++ (NSDictionary *)getLocationOfUserWithAccessToken:(NSString *)access_token
+                                             andId:(NSInteger)uid;
+
+
+/*
+ 获取某个位置地点的动态
+ 其中:
+ access_token ---用户授权码
+ iD ---位置id
+ */
++ (NSDictionary *)getLocationOfPlaceWithAccessToken:(NSString *)access_token
+                                              andId:(NSInteger)iD;
+
+
+/*
+ 获取某个位置周边的动态
+ 其中:
+ access_token ---用户授权码
+ lat ---纬度
+ l_ong ---经度
+ */
++ (NSDictionary *)getLocationAroundPlaceWithAccessToken:(NSString *)access_token
+                                            andLat:(float)lat
+                                           andLong:(float)l_ong;
+
+
+/*
+ 根据id获取动态详情
+ 其中:
+ access_token ---用户授权码
+ iD ---动态id
+ */
++ (NSDictionary *)getDetaileOfLocationWithAccessToken:(NSString *)access_token
+                                                andId:(NSInteger)iD;
+
+
+/*
+ 获取lbs位置服务内的用户信息
+ 其中:
+ access_token ---用户授权码
+ uid ---用户id
+ */
++ (NSDictionary *)getDetaileOfUserOfLBSWithAccessToken:(NSString *)access_token
+                                                 andId:(NSInteger)uid;
+
+
+/*
+ 获取用户签发过的地点列表
+ 其中:
+ access_token ---用户授权码
+ uid ---用户id
+ */
++ (NSDictionary *)getPlaceListUserGoneWithAccessToken:(NSString *)access_token
+                                                andId:(NSInteger)uid;
+
+
+/*
+ 获取用户的照片列表
+ 其中:
+ access_token ---用户授权码
+ uid ---用户id
+ */
++ (NSDictionary *)getPicListWithAccessToken:(NSString *)access_token
+                                      andId:(NSInteger)uid;
+
+
+/*
+ 获取地点详情
+ 其中:
+ access_token ---用户授权码
+ iD ---位置id
+ */
++ (NSDictionary *)getDetailOfPlaceWithAccessToken:(NSString *)access_token
+                                            andId:(NSInteger)iD;
+
+
+/*
+ 获取在某地点签到的用户列表
+ 其中:
+ access_token ---用户授权码
+ iD ---位置id
+ */
++ (NSDictionary *)getUserWhoGoneToPlaceWithAccessToken:(NSString *)access_token
+                                                 andId:(NSInteger)iD;
+
+
+/*
+ 获取地点照片列表
+ 其中:
+ access_token ---用户授权码
+ iD ---位置id
+ */
++ (NSDictionary *)getPicListOfPlaceWithAccessToken:(NSString *)access_token
+                                             andId:(NSInteger)iD;
+
+
+/*
+ 按省市查询地点
+ 其中:
+ access_token ---用户授权码
+ key ---关键字
+ city_code ---城市代码
+ category_code ---分类代码
+ */
++ (NSDictionary *)getPlaceByProvinceAndCityWithAccessToken:(NSString *)access_token
+                                                    andKey:(NSString *)key
+                                                   andCity:(NSString *)city_code
+                                               andCategory:(NSString *)category_code;
+
+
+/*
+ 获取地点分类
+ 其中:
+ access_token ---用户授权码
+ iD ---父分类id
+ */
++ (NSDictionary *)getCategoryOfPlaceWithAccessToken:(NSString *)access_token
+                                         andId:(int)iD;
+
+
+/*
+ 获取附近地点
+ 其中:
+ access_token ---用户授权码
+ key ---关键词
+ category_code ---分类代码
+ lat ---纬度
+ l_ong ---经度
+ */
++ (NSDictionary *)getPlaceNearbyWithAccessToken:(NSString *)access_token
+                                         andKey:(NSString *)key
+                                    andCategory:(NSString *)category_code
+                                         andLat:(float)lat
+                                        andLong:(float)l_ong;
+
+
+/*
+ 获取附近发位置微博的人
+ 其中:
+ access_token ---用户授权码
+ lat ---纬度
+ l_ong ---经度
+ */
++ (NSDictionary *)getUserSentLocalWeiboNearbyWithAccessToken:(NSString *)access_token
+                                                      andLat:(float)lat
+                                                     andLong:(float)l_ong;
+
+
+/*
+ 获取附近照片
+ 其中:
+ access_token ---用户授权码
+ lat ---纬度
+ l_ong ---经度
+ */
++ (NSDictionary *)getPicNearbyWithAccessToken:(NSString *)access_token
+                                       andLat:(float)lat
+                                      andLong:(float)l_ong;
+
+
+/*
+ 根据ip地址返回地理信息坐标
+ 其中:
+ access_token ---用户授权码
+ ip ---ip地址
+ */
++ (NSDictionary *)getGeoByIpWithAccessToken:(NSString *)access_token
+                                         ip:(NSString *)ip;
+
+
+/*
+ 根据实际地址返回地址信息坐标
+ 其中:
+ access_token ---用户授权码
+ address ---地址
+ */
++ (NSDictionary *)getGeoByAddressWithAccessToken:(NSString *)access_token
+                                         address:(NSString *)address;
+
+
+/*
+ 根据地理信息坐标返回实际地址
+ 其中:
+ access_token ---用户授权码
+ coordinate ---坐标
+ */
++ (NSDictionary *)getGeoByCoordinateWithAccessToken:(NSString *)access_token
+                                         coordinate:(NSString *)coordinate;
+
+
+/*
+ 根据gps坐标获取偏移后的坐标
+ 其中:
+ access_token ---用户授权码
+ coordinate ---坐标
+ */
++ (NSDictionary *)getGeoAfterOffsetWithAccessToken:(NSString *)access_token
+                                        coordinate:(NSString *)coordinate;
+
+
+/*
+ 根据起点和终点查询自驾车路线信息
+ 其中:
+ access_token ---用户授权码
+ begin_pid ---其实位置id
+ end_pid ---终点位置id
+ type ---优先类型
+ */
++ (NSDictionary *)getDriveRoute:(NSString *)access_token
+                           from:(NSString *)begin_pid
+                             to:(NSString *)end_pid
+                       withType:(UnderlyingType *)type;
+
+
+/*
+ 根据起点和终点查询公交路线信息
+ 其中:
+ access_token ---用户授权码
+ begin_pid ---其实位置id
+ end_pid ---终点位置id
+ type ---优先类型
+ */
++ (NSDictionary *)getBusRoute:(NSString *)access_token
+                           from:(NSString *)begin_pid
+                             to:(NSString *)end_pid
+                       withType:(UnderlyingType *)type;
+
+
+/*
+ 根据关键字查询公交线路信息
+ 其中:
+ access_token ---用户授权码
+ key ---关键词
+ code ---城市代码
+ */
++ (NSDictionary *)getBusLineWithAccessToken:(NSString *)access_token
+                                        andKey:(NSString *)key
+                                       andCity:(NSString *)code;
+
+
+/*
+ 根据关键字查询公交车站信息
+ 其中:
+ access_token ---用户授权码
+ key ---关键词
+ code ---城市代码
+ */
++ (NSDictionary *)getBusStationWithAccessToken:(NSString *)access_token
+                                        andKey:(NSString *)key
+                                       andCity:(NSString *)code;
+
+
+/*
+ 根据关键词按地址位置获取poi的信息
+ 其中:
+ access_token ---用户授权码
+ key ---关键词
+ code ---城市代码
+ category ---分类代码
+ */
++ (NSDictionary *)getPOIByAddressWithAccessToken:(NSString *)access_token
+                                        andKey:(NSString *)key
+                                       andCity:(NSString *)code
+                                   andCategory:(NSString *)category;
+
+
+/*
+ 根据关键词按矩形区域回去poi信息
+ 其中:
+ access_token ---用户授权码
+ key ---关键词
+ code ---城市代码
+ category ---分类代码
+ coordinate ---坐标
+ */
++ (NSDictionary *)getPOIByRectWithAccessToken:(NSString *)access_token
+                                        andKey:(NSString *)key
+                                       andCity:(NSString *)code
+                                   andCategory:(NSString *)category
+                                 andCoordinate:(NSArray *)coordinate;
 
 @end

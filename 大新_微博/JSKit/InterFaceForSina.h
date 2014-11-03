@@ -91,9 +91,6 @@
  */
 #define InterfaceForSinaToGetMemtionMe @"https://api.weibo.com/2/comments/mentions.json"
 
-
-
-
 /*
  获取用户的微博数，关注数，粉丝数
  */
@@ -300,7 +297,7 @@
 #define InterfaceForSinaToGetCountry @"https://api.weibo.com/2/common/get_country.json"
 
 /*
- 获取市区列表
+ 获取时区列表
  */
 #define InterfaceForSinaToGetTimeZone @"https://api.weibo.com/2/common/get_timezone.json"
 
@@ -315,15 +312,209 @@
 #define InterfaceForSinaToLogOut @"https://api.weibo.com/2/account/end_session.json"
 
 /*
+ 关注某用户
+ */
+#define InterfaceForSinaToFollowUser @"https://api.weibo.com/2/friendships/create.json"
+
+/*
+ 添加收藏
+ */
+#define InterfaceForSinaToCreateFavorite @"https://api.weibo.com/2/favorites/create.json"
+
+/*
+ 删除收藏
+ */
+#define InterfaceForSinaToDeleteFavorite @"https://api.weibo.com/2/favorites/destroy.json"
+
+/*
+ 更新收藏
+ */
+#define InterfaceForSinaToUpdateFavorite @"https://api.weibo.com/2/favorites/tags/update.json"
+
+/*
+  更新用户收藏下的指定标签
+ */
+#define InterfaceForSinaToUpdateTagAtFavorite @"https://api.weibo.com/2/favorites/tags/update_batch.json"
+
+/*
+ 删除用户收藏下的指定标签
+ */
+#define InterfaceForSinaToDeleteTagAtFavorite @"https://api.weibo.com/2/favorites/tags/destroy_batch.json"
+
+/*
+ 添加用户标签
+ */
+#define InterfaceForSinaToCreateTag @"https://api.weibo.com/2/tags/create.json"
+
+/*
+ 删除用户标签
+ */
+#define InterfaceForSinaToDeleteTag @"https://api.weibo.com/2/tags/destroy.json"
+
+/*
+ 标记不感兴趣的人
+ */
+#define InterfaceForSinaToSetUserUninterested @"https://api.weibo.com/2/suggestions/users/not_interested.json"
+
+/*
+ 获取好友位置动态
+ */
+#define InterfaceForSinaToGetLocationOfFriend @"https://api.weibo.com/2/place/friends_timeline.json"
+
+/*
+ 获取用户的位置动态
+ */
+#define InterfaceForSinaToGetLocationOfUser @"https://api.weibo.com/2/place/user_timeline.json"
+
+/*
+ 获取某个位置地点的动态
+ */
+#define InterfaceForSinaToGetLocationOfPlace @"https://api.weibo.com/2/place/poi_timeline.json"
+
+/*
+ 获取某个位置周边的动态
+ */
+#define InterfaceForSinaToGetLocationAroundPlace @"https://api.weibo.com/2/place/nearby_timeline.json"
+
+/*
+ 根据id获取动态详情
+ */
+#define InterfaceForSinaToGetDetaileOfLocation @"https://api.weibo.com/2/place/statuses/show.json"
+
+/*
+ 获取lbs位置服务内的用户信息
+ */
+#define InterfaceForSinaToGetDetaileOfUserOfLBS @"https://api.weibo.com/2/place/users/show.json"
+
+/*
+ 获取用户签发过的地点列表
+ */
+#define InterfaceForSinaToGetPlaceListUserGone @"https://api.weibo.com/2/place/users/checkins.json"
+
+/*
+ 获取用户的照片列表
+ */
+#define InterfaceForSinaToGetPicList @"https://api.weibo.com/2/place/users/photos.json"
+
+/*
+ 获取地点详情
+ */
+#define InterfaceForSinaToGetDetaileOfPlace @"https://api.weibo.com/2/place/pois/show.json"
+
+/*
+ 获取在某地点签到的用户列表
+ */
+#define InterfaceForSinaToGetUserWhoGoneToPlace @"https://api.weibo.com/2/place/pois/users.json"
+
+/*
+ 获取地点照片列表
+ */
+#define InterfaceForSinaToGetPicListOfPlace @"https://api.weibo.com/2/place/pois/photos.json"
+
+/*
+ 按省市查询地点
+ */
+#define InterfaceForSinaToGetPlaceByProvinceAndCity @"https://api.weibo.com/2/place/pois/search.json"
+
+/*
+ 获取地点分类
+ */
+#define InterfaceForSinaToGetCategoryOfPlace @"https://api.weibo.com/2/place/pois/category.json"
+
+/*
+ 获取附近地点
+ */
+#define InterfaceForSinaToGetPlaceNearby @"https://api.weibo.com/2/place/nearby/pois.json"
+
+/*
+ 获取附近发位置微博的人
+ */
+#define InterfaceForSinaToGetUserSentLocalWeiboNearby @"https://api.weibo.com/2/place/nearby/users.json"
+
+/*
+ 获取附近照片
+ */
+#define InterfaceForSinaToGetPicNearby @"https://api.weibo.com/2/place/nearby/photos.json"
+
+/*
+ 签到同时上传一张图片
+ */
+#define InterfaceForSinaToChekin @"https://api.weibo.com/2/place/pois/add_checkin.json"
+
+/*
+ 添加照片
+ */
+#define InterfaceForSinaToAddPic @"https://api.weibo.com/2/place/pois/add_photo.json"
+
+/*
+ 添加点评
+ */
+#define InterfaceForSinaToAddTip @"https://api.weibo.com/2/place/pois/add_tip.json"
+
+/*
+ 根据ip地址返回地理信息坐标
+ */
+#define InterfaceForSinaToGetGeoByIp @"https://api.weibo.com/2/location/geo/ip_to_geo.json"
+
+/*
+ 根据实际地址返回地址信息坐标
+ */
+#define InterfaceForSinaToGetGeoByAddress @"https://api.weibo.com/2/location/geo/address_to_geo.json"
+
+/*
+ 根据地理信息坐标返回实际地址
+ */
+#define InterfaceForSinaToGetAddressByGeo @"https://api.weibo.com/2/location/geo/geo_to_address.json"
+
+/*
+ 根据gps坐标获取偏移后的坐标
+ */
+#define InterfaceForSinaToGetGeoAfterOffsetByGPS @"https://api.weibo.com/2/location/geo/gps_to_offset.json"
+
+/*
+ 判断地理信息坐标是否是国内坐标
+ */
+#define InterfaceForSinaToMakeSureGeoIsDomestic @"https://api.weibo.com/2/location/geo/is_domestic.json"
+
+
+/*
+ 根据起点和终点查询自驾车路线信息
+ */
+#define InterfaceForSinaToGetDriveRoute @"https://api.weibo.com/2/location/line/drive_route.json"
+
+/*
+ 根据起点和终点查询公交路线信息
+ */
+#define InterfaceForSinaToGetBusRoute @"https://api.weibo.com/2/location/line/bus_route.json"
+
+/*
+ 根据关键字查询公交线路信息
+ */
+#define InterfaceForSinaToGetBusLine @"https://api.weibo.com/2/location/line/bus_line.json"
+
+/*
+ 根据关键字查询公交车站信息
+ */
+#define InterfaceForSinaToGetBusStation @"https://api.weibo.com/2/location/line/bus_station.json"
+
+/*
+ 根据关键词按地址位置获取poi的信息
+ */
+#define InterfaceForSinaToGetPOIByAddress @"https://api.weibo.com/2/location/pois/search/by_location.json"
+
+/*
+ 根据关键词按矩形区域回去poi信息
+ */
+#define InterfaceForSinaToGetPOIByRect @"https://api.weibo.com/2/location/pois/search/by_area.json"
+
+/*
  获取code
  */
-#define InterfaceForSinaToGetCode @"https://api.weibo.com/oauth2/authorize?client_id=579489395&response_type=code&redirect_uri=https://api.weibo.com/oauth2/default.html"
+#define InterfaceForSinaToGetCode(cid) [NSString stringWithFormat:@"https://api.weibo.com/oauth2/authorize?client_id=%@&response_type=code&redirect_uri=https://api.weibo.com/oauth2/default.html",cid];
 
 /*
  获取access_token
  */
-#define InterfaceForSinaToGetAccesstoken @"https://api.weibo.com/oauth2/access_token?client_id=579489395&client_secret=fbf10b4bacf0b958d008ddb93569890b&redirect_uri=https://api.weibo.com/oauth2/default.html&grant_type=authorization_code&code="
-
-
+#define InterfaceForSinaToGetAccesstoken(csecret,rcode) [NSString stringWithFormat:@"https://api.weibo.com/oauth2/access_token?client_secret=%@&redirect_uri=https://api.weibo.com/oauth2/default.html&grant_type=authorization_code&code=%@",csecret,rcode];
 
 #endif
