@@ -5,7 +5,7 @@
     int _width;
 }
 
-@property(nonatomic, assign)int count;
+@property(nonatomic, assign)int arr_Count;
 @property(nonatomic, strong)NSString * path;
 @property(nonatomic, strong)UIPageControl * pageC;
 @property(nonatomic, strong)UIScrollView * scroll;

@@ -39,7 +39,7 @@
                        picURL:(NSURL *)pic
                         andId:(NSInteger)iD
 {
-    NSDictionary * d = @{@"access_token":access_token,@"status":content,@"id":[NSString stringWithFormat:@"%d",iD]};
+    NSDictionary * d = @{@"access_token":access_token,@"status":content,@"id":[NSString stringWithFormat:@"%ld",(long)iD]};
     AFHTTPRequestOperationManager * m = [AFHTTPRequestOperationManager new];
     AFHTTPRequestOperation * op = [m POST:InterfaceForSinaToChekin parameters:d constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         [formData appendPartWithFileURL:pic name:@"pic" error:nil];
@@ -61,7 +61,7 @@
                        picURL:(NSURL *)pic
                         andId:(NSInteger)iD
 {
-    NSDictionary * d = @{@"access_token":access_token,@"status":content,@"id":[NSString stringWithFormat:@"%d",iD]};
+    NSDictionary * d = @{@"access_token":access_token,@"status":content,@"id":[NSString stringWithFormat:@"%ld",(long)iD]};
     AFHTTPRequestOperationManager * m = [AFHTTPRequestOperationManager new];
     AFHTTPRequestOperation * op = [m POST:InterfaceForSinaToAddPic parameters:d constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         [formData appendPartWithFileURL:pic name:@"pic" error:nil];
@@ -111,7 +111,7 @@
     static BOOL isOk = 1;
     NSURL * url = [NSURL URLWithString:InterfaceForSinaToCreateFavorite];
     NSMutableURLRequest * request = [[NSMutableURLRequest alloc]initWithURL:url];
-    NSString * str = [NSString stringWithFormat:@"access_token=%@&id=%d",access_token,iD];
+    NSString * str = [NSString stringWithFormat:@"access_token=%@&id=%ld",access_token,(long)iD];
     NSData * para = [str dataUsingEncoding:NSUTF8StringEncoding];
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:para];
@@ -139,7 +139,7 @@
     static BOOL isOk = 1;
     NSURL * url = [NSURL URLWithString:InterfaceForSinaToDeleteFavorite];
     NSMutableURLRequest * request = [[NSMutableURLRequest alloc]initWithURL:url];
-    NSString * str = [NSString stringWithFormat:@"access_token=%@&id=%d",access_token,iD];
+    NSString * str = [NSString stringWithFormat:@"access_token=%@&id=%ld",access_token,(long)iD];
     NSData * para = [str dataUsingEncoding:NSUTF8StringEncoding];
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:para];
@@ -167,7 +167,7 @@
     static BOOL isOk = 1;
     NSURL * url = [NSURL URLWithString:InterfaceForSinaToUpdateFavorite];
     NSMutableURLRequest * request = [[NSMutableURLRequest alloc]initWithURL:url];
-    NSString * str = [NSString stringWithFormat:@"access_token=%@&id=%d",access_token,iD];
+    NSString * str = [NSString stringWithFormat:@"access_token=%@&id=%ld",access_token,(long)iD];
     NSData * para = [str dataUsingEncoding:NSUTF8StringEncoding];
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:para];
@@ -195,7 +195,7 @@
     static BOOL isOk = 1;
     NSURL * url = [NSURL URLWithString:InterfaceForSinaToUpdateTagAtFavorite];
     NSMutableURLRequest * request = [[NSMutableURLRequest alloc]initWithURL:url];
-    NSString * str = [NSString stringWithFormat:@"access_token=%@&tid=%d",access_token,iD];
+    NSString * str = [NSString stringWithFormat:@"access_token=%@&tid=%ld",access_token,(long)iD];
     NSData * para = [str dataUsingEncoding:NSUTF8StringEncoding];
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:para];
@@ -223,7 +223,7 @@
     static BOOL isOk = 1;
     NSURL * url = [NSURL URLWithString:InterfaceForSinaToDeleteTagAtFavorite];
     NSMutableURLRequest * request = [[NSMutableURLRequest alloc]initWithURL:url];
-    NSString * str = [NSString stringWithFormat:@"access_token=%@&tid=%d",access_token,iD];
+    NSString * str = [NSString stringWithFormat:@"access_token=%@&tid=%ld",access_token,(long)iD];
     NSData * para = [str dataUsingEncoding:NSUTF8StringEncoding];
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:para];
@@ -288,7 +288,7 @@
     static BOOL isOk = 1;
     NSURL * url = [NSURL URLWithString:InterfaceForSinaToDeleteTag];
     NSMutableURLRequest * request = [[NSMutableURLRequest alloc]initWithURL:url];
-    NSString * str = [NSString stringWithFormat:@"access_token=%@&tag_id=%d",access_token,iD];
+    NSString * str = [NSString stringWithFormat:@"access_token=%@&tag_id=%ld",access_token,(long)iD];
     NSData * para = [str dataUsingEncoding:NSUTF8StringEncoding];
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:para];
@@ -316,7 +316,7 @@
     static BOOL isOk = 1;
     NSURL * url = [NSURL URLWithString:InterfaceForSinaToCreateTag];
     NSMutableURLRequest * request = [[NSMutableURLRequest alloc]initWithURL:url];
-    NSString * str = [NSString stringWithFormat:@"access_token=%@&uid=%d",access_token,iD];
+    NSString * str = [NSString stringWithFormat:@"access_token=%@&uid=%ld",access_token,(long)iD];
     NSData * para = [str dataUsingEncoding:NSUTF8StringEncoding];
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:para];
@@ -345,7 +345,7 @@
     static BOOL isOk = 1;
     NSURL * url = [NSURL URLWithString:InterfaceForSinaToAddTip];
     NSMutableURLRequest * request = [[NSMutableURLRequest alloc]initWithURL:url];
-    NSString * str = [NSString stringWithFormat:@"access_token=%@&status=%@&id=%d",access_token,content,iD];
+    NSString * str = [NSString stringWithFormat:@"access_token=%@&status=%@&id=%ld",access_token,content,(long)iD];
     NSData * para = [str dataUsingEncoding:NSUTF8StringEncoding];
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:para];
@@ -432,7 +432,7 @@
     static BOOL isOK = 1;
     NSURL * url = [NSURL URLWithString:InterfaceForSinaToDestroyFollowing];
     NSMutableURLRequest * request = [[NSMutableURLRequest alloc]initWithURL:url];
-    NSString * str = [NSString stringWithFormat:@"access_token=%@&uid=%d",access_token,ID];
+    NSString * str = [NSString stringWithFormat:@"access_token=%@&uid=%ld",access_token,(long)ID];
     NSData * para = [str dataUsingEncoding:NSUTF8StringEncoding];
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:para];
@@ -460,7 +460,7 @@
     static BOOL isOK = 1;
     NSURL * url = [NSURL URLWithString:InterfaceForSinaToDestroyWeibo];
     NSMutableURLRequest * request = [[NSMutableURLRequest alloc]initWithURL:url];
-    NSString * str = [NSString stringWithFormat:@"access_token=%@&cid=%d",access_token,ID];
+    NSString * str = [NSString stringWithFormat:@"access_token=%@&cid=%ld",access_token,(long)ID];
     NSData * para = [str dataUsingEncoding:NSUTF8StringEncoding];
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:para];
@@ -515,7 +515,7 @@
     static BOOL isOK = 1;
     NSURL * url = [NSURL URLWithString:InterfaceForSinaToReportWeibo];
     NSMutableURLRequest * request = [[NSMutableURLRequest alloc]initWithURL:url];
-    NSString * str = [NSString stringWithFormat:@"access_token=%@&status=%@&id=%d",access_token,content,iD];
+    NSString * str = [NSString stringWithFormat:@"access_token=%@&status=%@&id=%ld",access_token,content,(long)iD];
     NSData * para = [str dataUsingEncoding:NSUTF8StringEncoding];
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:para];
@@ -532,10 +532,140 @@
 
 
 /*
- 取得用户的详细信息
+ 评论微博
+ 其中:
+ access_token ---用户授权码
+ content ---评论内容
+ iD ---微博id
+ */
++ (BOOL)CommentWeiboWithAccessToken:(NSString *)access_token
+                            content:(NSString *)content
+                              andId:(NSInteger)iD
+{
+    static BOOL isOk = 1;
+    NSURL * url = [NSURL URLWithString:InterfaceForSinaToCommentWeibo];
+    NSMutableURLRequest * request = [[NSMutableURLRequest alloc]initWithURL:url];
+    NSString * str = [NSString stringWithFormat:@"access_token=%@&comment=%@&id=%ld",access_token,content,iD];
+    NSData * para = [str dataUsingEncoding:NSUTF8StringEncoding];
+    [request setHTTPMethod:@"POST"];
+    [request setHTTPBody:para];
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue new]  completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+        if (connectionError)
+        {
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to post..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+            [alert show];
+            isOk = 0;
+        }
+    }];
+    return isOk;
+}
+
+
+/*
+ 删除评论
+ 其中:
+ access_token ---用户授权码
+ cid ---评论id
+ */
++ (BOOL)DeleteCommentWithAccessToken:(NSString *)access_token
+                              andCid:(NSInteger)cid
+{
+    static BOOL isOk = 1;
+    NSURL * url = [NSURL URLWithString:InterfaceForSinaToDeleteComment];
+    NSMutableURLRequest * request = [[NSMutableURLRequest alloc]initWithURL:url];
+    NSString * str = [NSString stringWithFormat:@"access_token=%@&cid=%ld",access_token,cid];
+    NSData * para = [str dataUsingEncoding:NSUTF8StringEncoding];
+    [request setHTTPMethod:@"POST"];
+    [request setHTTPBody:para];
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue new]  completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+        if (connectionError)
+        {
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to post..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+            [alert show];
+            isOk = 0;
+        }
+    }];
+    return isOk;
+}
+
+
+/*
+ 根据id删除评论
+ 其中:
+ access_token ---用户授权码
+ cids ---评论id
+ */
++ (BOOL)DestroyCommentsWithAccessToken:(NSString *)access_token
+                                andCid:(NSArray *)cids
+{
+    static BOOL isOk = 1;
+    NSMutableString * str1;
+    for (int i = 0; i < cids.count; i++)
+    {
+        [str1 appendString:cids[i]];
+        if (i != cids.count-1)
+        {
+            [str1 appendString:@","];
+        }
+    }
+    NSURL * url = [NSURL URLWithString:InterfaceForSinaToDestroyComments];
+    NSMutableURLRequest * request = [[NSMutableURLRequest alloc]initWithURL:url];
+    NSString * str = [NSString stringWithFormat:@"access_token=%@&cids=%@",access_token,str1];
+    NSData * para = [str dataUsingEncoding:NSUTF8StringEncoding];
+    [request setHTTPMethod:@"POST"];
+    [request setHTTPBody:para];
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue new]  completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+        if (connectionError)
+        {
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to post..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+            [alert show];
+            isOk = 0;
+        }
+    }];
+    return isOk;
+
+}
+
+
+/*
+ 回复评论
+ 其中:
+ access_token ---用户授权码
+ iD ---微博id
+ content ---评论内容
+ cid ---评论id
+ */
++ (BOOL)ReplyCommentWithAccessToken:(NSString *)access_token
+                              andId:(NSInteger)iD
+                         andContent:(NSString *)content
+                             andCid:(NSInteger)cid
+{
+    static BOOL isOk = 1;
+    NSURL * url = [NSURL URLWithString:InterfaceForSinaToReplyComment];
+    NSMutableURLRequest * request = [[NSMutableURLRequest alloc]initWithURL:url];
+    NSString * str = [NSString stringWithFormat:@"access_token=%@&comment=%@&id=%ld&cid=%ld",access_token,content,iD,cid];
+    NSData * para = [str dataUsingEncoding:NSUTF8StringEncoding];
+    [request setHTTPMethod:@"POST"];
+    [request setHTTPBody:para];
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue new]  completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+        if (connectionError)
+        {
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to post..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+            [alert show];
+            isOk = 0;
+        }
+    }];
+    return isOk;
+
+}
+
+
+/*
+ 取得用户的微博
  其中:
  access_token ---用户授权码
  name ---用户名
+ type ---微博类型
  */
 + (NSDictionary *)getWeiboOfUserWithAccessToken:(NSString *)access_token
                                            name:(NSString *)name
@@ -560,7 +690,7 @@
 
 
 /*
- 获得用户发表的微博
+ 获得用户发表的微博id
  其中:
  access_token ---用户授权码
  name ---用户名
@@ -589,18 +719,28 @@
 
 
 /*
- 获得用户发表的微博的id
+ 获得用户的详细信息
  其中:
  access_token ---用户授权码
  name ---用户名
- type ---微博类型
+ uid ---用户id
  */
 + (NSDictionary *)getDetailOfUserWithAccessToken:(NSString *)access_token
                                             name:(NSString *)name
+                                             orId:(NSInteger)uid
 {
     NSError * error;
     static NSDictionary * dic;
-    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&screen_name=%@",InterfaceForSinaToGetDetaileOfUser,access_token,name]];
+    NSURL * url;
+    if (name)
+    {
+        url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&screen_name=%@",InterfaceForSinaToGetDetaileOfUser,access_token,name]];
+    }
+    else if (uid)
+    {
+        url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&uid=%d",InterfaceForSinaToGetDetaileOfUser,access_token,uid]];
+    }
+    
     NSMutableURLRequest * request = [[NSMutableURLRequest alloc]initWithURL:url];
     NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
     if (error)
@@ -729,12 +869,12 @@
  access_token ---用户授权码
  type ---微博类型
  */
-+ (NSDictionary *)getRecentWeiboOfSelfWithAccessToken:(NSString *)access_token
++ (NSDictionary *)getRecentWeiboOfUserWithAccessToken:(NSString *)access_token
                                               andtype:(WeiboType *)type
 {
     NSError * error;
     static NSDictionary * dic;
-    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&feature=%d",InterfaceForSinaToGetRecentWeiboOfSelf,access_token,(int)type]];
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&feature=%d",InterfaceForSinaToGetRecentWeiboOfUser,access_token,(int)type]];
     NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
     NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
     if (error)
@@ -788,7 +928,7 @@
 {
     NSError * error;
     static NSDictionary * dic;
-    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&id=%d",InterfaceForSinaToGetReportListOfWeibo,access_token,iD]];
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&id=%ld",InterfaceForSinaToGetReportListOfWeibo,access_token,(long)iD]];
     NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
     NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
     if (error)
@@ -815,7 +955,7 @@
 {
     NSError * error;
     static NSDictionary * dic;
-    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&id=%d",InterfaceForSinaToGetAnswerListOfWeibo,access_token,iD]];
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&id=%ld",InterfaceForSinaToGetAnswerListOfWeibo,access_token,(long)iD]];
     NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
     NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
     if (error)
@@ -842,7 +982,7 @@
 {
     NSError * error;
     static NSDictionary * dic;
-    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&ids=%d",InterfaceForSinaToGetCountOfAnswerAndReportOfWeibo,access_token,iD]];
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&ids=%ld",InterfaceForSinaToGetCountOfAnswerAndReportOfWeibo,access_token,(long)iD]];
     NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
     NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
     if (error)
@@ -869,7 +1009,7 @@
 {
     NSError * error;
     static NSDictionary * dic;
-    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&id=%d",InterfaceForSinaToGetDetailOfWeibo,access_token,iD]];
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&id=%ld",InterfaceForSinaToGetDetailOfWeibo,access_token,(long)iD]];
     NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
     NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
     if (error)
@@ -933,7 +1073,7 @@
 {
     NSError * error;
     static NSDictionary * dic;
-    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&suid=%d",InterfaceForSinaToGetFollowTogether,access_token,suid]];
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&suid=%ld",InterfaceForSinaToGetFollowTogether,access_token,(long)suid]];
     NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
     NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
     if (error)
@@ -960,7 +1100,7 @@
 {
     NSError * error;
     static NSDictionary * dic;
-    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&uid=%d",InterfaceForSinaToGetFollowEach,access_token,uid]];
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&uid=%ld",InterfaceForSinaToGetFollowEach,access_token,(long)uid]];
     NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
     NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
     if (error)
@@ -988,7 +1128,7 @@
 {
     NSError * error;
     static NSDictionary * dic;
-    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&uid=%d",InterfaceForSinaToGetIdOfFollowEach,access_token,uid]];
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&uid=%ld",InterfaceForSinaToGetIdOfFollowEach,access_token,(long)uid]];
     NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
     NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
     if (error)
@@ -1072,7 +1212,7 @@
 {
     NSError * error;
     static NSDictionary * dic;
-    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&uid=%d",InterfaceForSinaToGetActiveFollower,access_token,uid]];
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&uid=%ld",InterfaceForSinaToGetActiveFollower,access_token,(long)uid]];
     NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
     NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
     if (error)
@@ -1100,7 +1240,7 @@
 {
     NSError * error;
     static NSDictionary * dic;
-    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&uid=%d",InterfaceForSinaToGetFollowingWhoFollowThePerson,access_token,uid]];
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&uid=%ld",InterfaceForSinaToGetFollowingWhoFollowThePerson,access_token,(long)uid]];
     NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
     NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
     if (error)
@@ -1317,7 +1457,7 @@
 {
     NSError * error;
     static NSDictionary * dic;
-    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&id=%d",InterfaceForSinaToGetDetaileOfFavorite,access_token,iD]];
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&id=%ld",InterfaceForSinaToGetDetaileOfFavorite,access_token,(long)iD]];
     NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
     NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
     if (error)
@@ -1344,7 +1484,7 @@
 {
     NSError * error;
     static NSDictionary * dic;
-    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&tid=%d",InterfaceForSinaToGetFavoriteOfTag,access_token,tid]];
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&tid=%ld",InterfaceForSinaToGetFavoriteOfTag,access_token,(long)tid]];
     NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
     NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
     if (error)
@@ -1398,7 +1538,7 @@
 {
     NSError * error;
     static NSDictionary * dic;
-    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&tid=%d",InterfaceForSinaToGetIdOfFavoriteOfTag,access_token,tid]];
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&tid=%ld",InterfaceForSinaToGetIdOfFavoriteOfTag,access_token,(long)tid]];
     NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
     NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
     if (error)
@@ -1504,7 +1644,7 @@
 {
     NSError * error;
     static NSDictionary * dic;
-    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&uid=%d",InterfaceForSinaToGetTagOfUser,access_token,uid]];
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&uid=%ld",InterfaceForSinaToGetTagOfUser,access_token,(long)uid]];
     NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
     NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
     if (error)
@@ -1923,7 +2063,7 @@
 {
     NSError * error;
     static NSDictionary * dic;
-    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&uid=%d",InterfaceForSinaToGetUnreadCountOfAll,access_token,uid]];
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&uid=%ld",InterfaceForSinaToGetUnreadCountOfAll,access_token,(long)uid]];
     NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
     NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
     if (error)
@@ -2090,7 +2230,7 @@
 {
     NSError * error;
     static NSDictionary * dic;
-    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&uid=%d",InterfaceForSinaToGetLocationOfUser,access_token,uid]];
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&uid=%ld",InterfaceForSinaToGetLocationOfUser,access_token,(long)uid]];
     NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
     NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
     if (error)
@@ -2117,7 +2257,7 @@
 {
     NSError * error;
     static NSDictionary * dic;
-    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&poiid=%d",InterfaceForSinaToGetLocationOfPlace,access_token,iD]];
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&poiid=%ld",InterfaceForSinaToGetLocationOfPlace,access_token,(long)iD]];
     NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
     NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
     if (error)
@@ -2173,7 +2313,7 @@
 {
     NSError * error;
     static NSDictionary * dic;
-    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&id=%d",InterfaceForSinaToGetDetaileOfLocation,access_token,iD]];
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&id=%ld",InterfaceForSinaToGetDetaileOfLocation,access_token,(long)iD]];
     NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
     NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
     if (error)
@@ -2200,7 +2340,7 @@
 {
     NSError * error;
     static NSDictionary * dic;
-    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&uid=%d",InterfaceForSinaToGetDetaileOfUserOfLBS,access_token,uid]];
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&uid=%ld",InterfaceForSinaToGetDetaileOfUserOfLBS,access_token,(long)uid]];
     NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
     NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
     if (error)
@@ -2227,7 +2367,7 @@
 {
     NSError * error;
     static NSDictionary * dic;
-    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&uid=%d",InterfaceForSinaToGetPlaceListUserGone,access_token,uid]];
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&uid=%ld",InterfaceForSinaToGetPlaceListUserGone,access_token,(long)uid]];
     NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
     NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
     if (error)
@@ -2254,7 +2394,7 @@
 {
     NSError * error;
     static NSDictionary * dic;
-    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&uid=%d",InterfaceForSinaToGetPicList,access_token,uid]];
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&uid=%ld",InterfaceForSinaToGetPicList,access_token,(long)uid]];
     NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
     NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
     if (error)
@@ -2281,7 +2421,7 @@
 {
     NSError * error;
     static NSDictionary * dic;
-    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&id=%d",InterfaceForSinaToGetDetaileOfPlace,access_token,iD]];
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&id=%ld",InterfaceForSinaToGetDetaileOfPlace,access_token,(long)iD]];
     NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
     NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
     if (error)
@@ -2308,7 +2448,7 @@
 {
     NSError * error;
     static NSDictionary * dic;
-    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&id=%d",InterfaceForSinaToGetUserWhoGoneToPlace,access_token,iD]];
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&id=%ld",InterfaceForSinaToGetUserWhoGoneToPlace,access_token,(long)iD]];
     NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
     NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
     if (error)
@@ -2335,7 +2475,7 @@
 {
     NSError * error;
     static NSDictionary * dic;
-    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&id=%d",InterfaceForSinaToGetPicListOfPlace,access_token,iD]];
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&id=%ld",InterfaceForSinaToGetPicListOfPlace,access_token,(long)iD]];
     NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
     NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
     if (error)
@@ -2800,6 +2940,144 @@
     return dic;
 }
 
+
+/*
+ 获取我发出的评论
+ 其中:
+ access_token ---用户授权码
+ */
++ (NSDictionary *)getCommentsByMeWithAccessToken:(NSString *)access_token
+{
+    NSError * error;
+    static NSDictionary * dic;
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@",InterfaceForSinaToGetCommentsByMe,access_token]];
+    NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
+    NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
+    if (error)
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to exute..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+        [alert show];
+    }
+    else
+    {
+        dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+    }
+    return dic;
+
+}
+
+
+/*
+ 获取评论我
+ 其中:
+ access_token ---用户授权码
+ */
++ (NSDictionary *)getCommentsToMeWithAccessToken:(NSString *)access_token
+{
+    NSError * error;
+    static NSDictionary * dic;
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@",InterfaceForSinaToGetCommentsToMe,access_token]];
+    NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
+    NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
+    if (error)
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to exute..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+        [alert show];
+    }
+    else
+    {
+        dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+    }
+    return dic;
+
+}
+
+
+/*
+ 获取最新评论
+ 其中:
+ access_token ---用户授权码
+ */
++ (NSDictionary *)getRecentNewCommentsWithAccessToken:(NSString *)access_token
+{
+    NSError * error;
+    static NSDictionary * dic;
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@",InterfaceForSinaToGetRecentNewComments,access_token]];
+    NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
+    NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
+    if (error)
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to exute..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+        [alert show];
+    }
+    else
+    {
+        dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+    }
+    return dic;
+
+}
+
+
+/*
+ 获取@我评论
+ 其中:
+ access_token ---用户授权码
+ */
++ (NSDictionary *)getMentionsCommentWithAccessToken:(NSString *)access_token
+{
+    NSError * error;
+    static NSDictionary * dic;
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@",InterfaceForSinaToGetMentionsComment,access_token]];
+    NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
+    NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
+    if (error)
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to exute..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+        [alert show];
+    }
+    else
+    {
+        dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+    }
+    return dic;
+}
+
+
+/*
+ 获取评论的详细信息
+ 其中:
+ access_token ---用户授权码
+ cids ---评论id
+ */
++ (NSDictionary *)getDetaileOfCommentWithAccessToken:(NSString *)access_token
+                                              andIds:(NSArray *)cids
+{
+    NSError * error;
+    static NSDictionary * dic;
+    NSMutableString * str;
+    for (int i = 0; i < cids.count; i++)
+    {
+        [str appendString:cids[i]];
+        if (i != cids.count-1)
+        {
+            [str appendString:@","];
+        }
+    }
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@cids=%@",InterfaceForSinaToGetDetaileOfComment,access_token,str]];
+    NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
+    NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
+    if (error)
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to exute..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+        [alert show];
+    }
+    else
+    {
+        dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+    }
+    return dic;
+}
 
 
 @end

@@ -1,3 +1,4 @@
+#import "LoginViewController.h"
 #import "TabbarViewController.h"
 #import "AppDelegate.h"
 #import "JSKit.h"
@@ -7,8 +8,9 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    TabbarViewController * tabBar = [TabbarViewController new];
-    self.window.rootViewController = tabBar;
+    LoginViewController * login = [LoginViewController new];
+//    TabbarViewController * login = [TabbarViewController new];
+    self.window.rootViewController = login;
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     return YES;

@@ -76,6 +76,7 @@
         imageview.image = [UIImage imageNamed:pic[0][i]];
         imageview.userInteractionEnabled = 1;
         imageview.tag = 1000+i;
+        imageview.layer.cornerRadius = 30;
         [first addSubview:imageview];
 
         UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(click:)];
@@ -84,6 +85,7 @@
         UILabel * label = [[UILabel alloc]initWithFrame:CGRectMake(35+95*(i%3), 90+100*(i/3), 60, 30)];
         label.textAlignment = NSTextAlignmentCenter;
         label.text = label_Name[0][i];
+        label.tag = 1100+i;
         [first addSubview:label];
     }
     [_s addSubview:first];
@@ -93,7 +95,8 @@
         UIImageView * imageview = [[UIImageView alloc]initWithFrame:CGRectMake(35+95*(i%3), 20+110*(i/3), 60, 60)];
         imageview.image = [UIImage imageNamed:pic[1][i]];
         imageview.userInteractionEnabled = 1;
-         imageview.tag = 1007+i;
+        imageview.tag = 1007+i;
+        imageview.layer.cornerRadius = 30;
         [second addSubview:imageview];
         
         UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(click:)];
@@ -102,6 +105,7 @@
         UILabel * label = [[UILabel alloc]initWithFrame:CGRectMake(35+95*(i%3), 90+100*(i/3), 60, 30)];
         label.textAlignment = NSTextAlignmentCenter;
         label.text = label_Name[1][i];
+        label.tag = 1107+i;
         [second addSubview:label];
     }
     [_s addSubview:second];
@@ -110,7 +114,7 @@
     [back setImage:[UIImage imageNamed:@"tabbar_compose_background_icon_close@2x.png"] forState:UIControlStateNormal];
     [back addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     back.backgroundColor = [UIColor whiteColor];
-    back.frame = CGRectMake(0, _high-60, _width, 40);
+    back.frame = CGRectMake(0, _high-40, _width, 40);
     [im addSubview:back];
     [self.view addSubview:im];
 }
@@ -118,6 +122,16 @@
 - (void)click:(UITapGestureRecognizer *)sender
 {
     UIViewController * viewController;
+    UILabel * label = (UILabel *)[self.view viewWithTag:sender.view.tag+100];
+    [UIView animateWithDuration:1 animations:^{
+        sender.view.transform = CGAffineTransformMakeScale(2, 2);
+        label.transform = CGAffineTransformMakeScale(2, 2);
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:1 animations:^{
+            sender.view.transform = CGAffineTransformMakeScale(1, 1);
+            label.transform = CGAffineTransformMakeScale(1, 1);
+        }];
+    }];
     switch (sender.view.tag-1000)
     {
         case 0:
@@ -159,9 +173,7 @@
 - (void)back
 {
     [_player play];
-    AppDelegate * dele = [UIApplication sharedApplication].delegate;
-    TabbarViewController * tabBar = (TabbarViewController *)dele.window.rootViewController;
-    tabBar.selectedIndex = _identifier;
+    _tabbar.selectedIndex = _identifier;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

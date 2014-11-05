@@ -1,11 +1,14 @@
 #import "TabbarViewController.h"
 #import "BaseViewController.h"
 #import "MenuViewController.h"
+#import "Factory.h"
 #import "JSKit.h"
 
 @interface TabbarViewController ()
 {
     int _seleted_Item;
+    int _width;
+    int _high;
 }
 @end
 
@@ -34,11 +37,23 @@
 
 - (void)init_View
 {
+    NSArray * widthAndHigh = [Factory getHeigtAndWidthOfDevice];
+    _width = [widthAndHigh[0] integerValue];
+    _high = [widthAndHigh[1] integerValue];
+    
     BaseViewController * v1 = [BaseViewController new];
     BaseViewController * v2 = [BaseViewController new];
     BaseViewController * v3 = [BaseViewController new];
     BaseViewController * v4 = [BaseViewController new];
     BaseViewController * v5 = [BaseViewController new];
+    
+    _access_token = @"2.00WZkEoBGfkwgCe225676bb60AP1JZ";
+    v1.access_token = _access_token;
+    v2.access_token = _access_token;
+    v3.access_token = _access_token;
+    v4.access_token = _access_token;
+    v5.access_token = _access_token;
+    NSLog(@"%@",_access_token);
     
     v1.identifier = 0;
     v2.identifier = 1;
@@ -89,6 +104,25 @@
             button.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"compose_guide_button_default@2x.png"]];
         }
     }
+    
+    _hide_View = [[UIView alloc]initWithFrame:CGRectMake(0, _high, _width, _high)];
+    _hide_View.backgroundColor = [UIColor blackColor];
+    _hide_View.alpha = 0.5;
+    [self.view addSubview:_hide_View];
+    
+    UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(viewDisappear)];
+    [_hide_View addGestureRecognizer:tap];
+    
+    _table_View = [[UITableView alloc]initWithFrame:CGRectMake(10, _high/2-100+_high, _width-20, 200)];
+    _table_View.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
+    _table_View.backgroundColor = [UIColor whiteColor];
+    _table_View.showsHorizontalScrollIndicator = NO;
+    _table_View.showsVerticalScrollIndicator = NO;
+    _table_View.scrollEnabled = NO;
+    _table_View.dataSource = self;
+    _table_View.delegate = self;
+    _table_View.bounces = YES;
+    [self.view addSubview:_table_View];
 }
 
 - (void)select_Item:(UIButton *)sender
@@ -98,12 +132,65 @@
     {
         MenuViewController * menu = [MenuViewController new];
         menu.identifier = _seleted_Item;
+        menu.tabbar = self;
         [self presentViewController:menu animated:YES completion:nil];
     }
     else
     {
-         _seleted_Item = sender.tag - 1;
+         _seleted_Item = (int)sender.tag - 1;
     }
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 4;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"_cell"];
+    if (!cell)
+    {
+        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"_cell"];
+    }
+    if (_cellName)
+    {
+        cell.textLabel.text = _cellName[indexPath.row];
+    }
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 50;
+}
+
+- (void)viewAppear
+{
+    _cellName = @[@"收藏",@"取消关注",@"屏蔽",@"举报"];
+    [_table_View reloadData];
+    [UIView animateWithDuration:0.5 animations:^{
+         _hide_View.frame = CGRectMake(0, 0, _width, _high);
+        _table_View.frame = CGRectMake(10, _high/2-100, _width-20, 200);
+    }];
+}
+
+- (void)viewDisappear
+{
+    [UIView animateWithDuration:0.5 animations:^{
+        _hide_View.frame = CGRectMake(0, _high, _width, _high);
+        _table_View.frame = CGRectMake(10, _high/2-100+_high, _width-20, 200);
+    }];
+}
+
+- (void)viewAppearance
+{
+    _cellName = @[@"收藏",@"取消关注",@"屏蔽",@"举报"];
+    [_table_View reloadData];
+    [UIView animateWithDuration:0.5 animations:^{
+        _hide_View.frame = CGRectMake(0, 0, _width, _high);
+        _table_View.frame = CGRectMake(10, _high/2-100, _width-20, 200);
+    }];
 }
 
 @end

@@ -337,13 +337,61 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
 
 
 /*
+ 评论微博
+ 其中:
+ access_token ---用户授权码
+ content ---评论内容
+ iD ---微博id
+ */
++ (BOOL)CommentWeiboWithAccessToken:(NSString *)access_token
+                             content:(NSString *)content
+                               andId:(NSInteger)iD;
+
+
+/*
+ 删除评论
+ 其中:
+ access_token ---用户授权码
+ cid ---评论id
+ */
++ (BOOL)DeleteCommentWithAccessToken:(NSString *)access_token
+                              andCid:(NSInteger)cid;
+
+
+/*
+ 根据id删除评论
+ 其中:
+ access_token ---用户授权码
+ cids ---评论id
+ */
++ (BOOL)DestroyCommentsWithAccessToken:(NSString *)access_token
+                                andCid:(NSArray *)cids;
+
+
+/*
+ 回复评论
+ 其中:
+ access_token ---用户授权码
+ iD ---微博id
+ content ---评论内容
+ cid ---评论id
+ */
++ (BOOL)ReplyCommentWithAccessToken:(NSString *)access_token
+                               andId:(NSInteger)iD
+                          andContent:(NSString *)content
+                              andCid:(NSInteger)cid;
+
+
+/*
  取得用户的详细信息
  其中:
  access_token ---用户授权码
  name ---用户名
+ uid ---用户ID
  */
 + (NSDictionary *)getDetailOfUserWithAccessToken:(NSString *)access_token
-                                            name:(NSString *)name;
+                                            name:(NSString *)name
+                                            orId:(NSInteger)uid;
 
 
 /*
@@ -377,6 +425,47 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
  */
 + (NSDictionary *)getFollowingWithAccessToken:(NSString *)access_token
                                          name:(NSString *)name;
+
+/*
+ 获取我发出的评论
+ 其中:
+ access_token ---用户授权码
+ */
++ (NSDictionary *)getCommentsByMeWithAccessToken:(NSString *)access_token;
+
+
+/*
+ 获取评论我
+ 其中:
+ access_token ---用户授权码
+ */
++ (NSDictionary *)getCommentsToMeWithAccessToken:(NSString *)access_token;
+
+
+/*
+ 获取最新评论
+ 其中:
+ access_token ---用户授权码
+ */
++ (NSDictionary *)getRecentNewCommentsWithAccessToken:(NSString *)access_token;
+
+
+/*
+ 获取@我评论
+ 其中:
+ access_token ---用户授权码
+ */
++ (NSDictionary *)getMentionsCommentWithAccessToken:(NSString *)access_token;
+
+
+/*
+ 获取评论的详细信息
+ 其中:
+ access_token ---用户授权码
+ cids ---评论id
+ */
++ (NSDictionary *)getDetaileOfCommentWithAccessToken:(NSString *)access_token
+                                              andIds:(NSArray *)cids;
 
 
 /*
@@ -413,7 +502,7 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
  access_token ---用户授权码
  type ---微博类型
  */
-+ (NSDictionary *)getRecentWeiboOfSelfWithAccessToken:(NSString *)access_token
++ (NSDictionary *)getRecentWeiboOfUserWithAccessToken:(NSString *)access_token
                                               andtype:(WeiboType *)type;
 
 

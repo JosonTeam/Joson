@@ -44,9 +44,7 @@
     button.tag = tag;
     if (title)
     {
-        UILabel * title_Label = button.titleLabel;
-        title_Label.textColor = [UIColor redColor];
-
+        [button setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
         [button setTitle:title forState:UIControlStateSelected];
         button.selected = YES;
     }
@@ -77,10 +75,7 @@
     button.tag = tag;
     if (title)
     {
-        UILabel * title_Label = button.titleLabel;
-        title_Label.textColor = [UIColor redColor];
-        title_Label.textAlignment = NSTextAlignmentRight;
-        
+        [button setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
         [button setTitle:title forState:UIControlStateSelected];
         button.frame = CGRectMake(0, 0, 20*title.length, 25);
         button.selected = YES;
@@ -104,7 +99,7 @@
        withColor:(UIColor *)color
 forViewController:(UIViewController *)vc
 {
-    UILabel * label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 20 * title.length, 30)];
+    UILabel * label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 18 * title.length, 30)];
     label.textAlignment = NSTextAlignmentCenter;
     label.text = title;
     label.textColor = color;
@@ -154,7 +149,7 @@ forViewController:(UIViewController *)vc
 {
     UINavigationController * navigation = [[UINavigationController alloc]initWithRootViewController:vc];
     navigation.navigationBar.barStyle = UIBarStyleDefault;
-    navigation.navigationBar.barTintColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"navigationbar_background_landscape@2x.png"]];
+    navigation.navigationBar.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"navigationbar_background_landscape@2x.png"]];
     return navigation;
 }
 

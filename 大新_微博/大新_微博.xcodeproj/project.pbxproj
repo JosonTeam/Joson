@@ -1693,6 +1693,21 @@
 		A56B94261A06251E006EBC66 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A56B94251A06251E006EBC66 /* BaseViewController.m */; };
 		A56B94311A062662006EBC66 /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A56B942E1A062662006EBC66 /* MenuViewController.m */; };
 		A56B94321A062663006EBC66 /* TabbarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A56B94301A062662006EBC66 /* TabbarViewController.m */; };
+		A5AF34A81A071CA400740855 /* File.plist in Resources */ = {isa = PBXBuildFile; fileRef = A5AF34A71A071CA400740855 /* File.plist */; };
+		A5AF34FC1A07204700740855 /* JHRefreshAmazingAniView.m in Sources */ = {isa = PBXBuildFile; fileRef = A5AF34E51A07204700740855 /* JHRefreshAmazingAniView.m */; };
+		A5AF34FD1A07204700740855 /* JHRefreshAniBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = A5AF34E71A07204700740855 /* JHRefreshAniBaseView.m */; };
+		A5AF34FE1A07204700740855 /* JHRefreshCommonAniView.m in Sources */ = {isa = PBXBuildFile; fileRef = A5AF34E91A07204700740855 /* JHRefreshCommonAniView.m */; };
+		A5AF34FF1A07204700740855 /* JHRefresh.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A5AF34EA1A07204700740855 /* JHRefresh.bundle */; };
+		A5AF35001A07204700740855 /* JHRefreshBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = A5AF34ED1A07204700740855 /* JHRefreshBaseView.m */; };
+		A5AF35011A07204700740855 /* JHRefreshConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = A5AF34EF1A07204700740855 /* JHRefreshConfig.m */; };
+		A5AF35021A07204700740855 /* JHRefreshFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = A5AF34F11A07204700740855 /* JHRefreshFooterView.m */; };
+		A5AF35031A07204700740855 /* JHRefreshHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = A5AF34F31A07204700740855 /* JHRefreshHeaderView.m */; };
+		A5AF35041A07204700740855 /* UIScrollView+JHExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = A5AF34F71A07204700740855 /* UIScrollView+JHExtension.m */; };
+		A5AF35051A07204700740855 /* UIScrollView+JHRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = A5AF34F91A07204700740855 /* UIScrollView+JHRefresh.m */; };
+		A5AF35061A07204700740855 /* UIView+JHExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = A5AF34FB1A07204700740855 /* UIView+JHExtension.m */; };
+		A5B9E94A1A08B1BE000C47C1 /* PopoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = A5B9E9491A08B1BE000C47C1 /* PopoverView.m */; };
+		A5B9E94C1A08BCCE000C47C1 /* navigationbar_pop1.png in Resources */ = {isa = PBXBuildFile; fileRef = A5B9E94B1A08BCCE000C47C1 /* navigationbar_pop1.png */; };
+		E434443B1A07E6E500A8B078 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E434443A1A07E6E500A8B078 /* LoginViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -3418,6 +3433,36 @@
 		A56B942E1A062662006EBC66 /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
 		A56B942F1A062662006EBC66 /* TabbarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabbarViewController.h; sourceTree = "<group>"; };
 		A56B94301A062662006EBC66 /* TabbarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabbarViewController.m; sourceTree = "<group>"; };
+		A5AF34A71A071CA400740855 /* File.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = File.plist; sourceTree = "<group>"; };
+		A5AF34E41A07204700740855 /* JHRefreshAmazingAniView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JHRefreshAmazingAniView.h; sourceTree = "<group>"; };
+		A5AF34E51A07204700740855 /* JHRefreshAmazingAniView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JHRefreshAmazingAniView.m; sourceTree = "<group>"; };
+		A5AF34E61A07204700740855 /* JHRefreshAniBaseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JHRefreshAniBaseView.h; sourceTree = "<group>"; };
+		A5AF34E71A07204700740855 /* JHRefreshAniBaseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JHRefreshAniBaseView.m; sourceTree = "<group>"; };
+		A5AF34E81A07204700740855 /* JHRefreshCommonAniView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JHRefreshCommonAniView.h; sourceTree = "<group>"; };
+		A5AF34E91A07204700740855 /* JHRefreshCommonAniView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JHRefreshCommonAniView.m; sourceTree = "<group>"; };
+		A5AF34EA1A07204700740855 /* JHRefresh.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = JHRefresh.bundle; sourceTree = "<group>"; };
+		A5AF34EB1A07204700740855 /* JHRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JHRefresh.h; sourceTree = "<group>"; };
+		A5AF34EC1A07204700740855 /* JHRefreshBaseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JHRefreshBaseView.h; sourceTree = "<group>"; };
+		A5AF34ED1A07204700740855 /* JHRefreshBaseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JHRefreshBaseView.m; sourceTree = "<group>"; };
+		A5AF34EE1A07204700740855 /* JHRefreshConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JHRefreshConfig.h; sourceTree = "<group>"; };
+		A5AF34EF1A07204700740855 /* JHRefreshConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JHRefreshConfig.m; sourceTree = "<group>"; };
+		A5AF34F01A07204700740855 /* JHRefreshFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JHRefreshFooterView.h; sourceTree = "<group>"; };
+		A5AF34F11A07204700740855 /* JHRefreshFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JHRefreshFooterView.m; sourceTree = "<group>"; };
+		A5AF34F21A07204700740855 /* JHRefreshHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JHRefreshHeaderView.h; sourceTree = "<group>"; };
+		A5AF34F31A07204700740855 /* JHRefreshHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JHRefreshHeaderView.m; sourceTree = "<group>"; };
+		A5AF34F41A07204700740855 /* JHRefreshMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JHRefreshMacro.h; sourceTree = "<group>"; };
+		A5AF34F51A07204700740855 /* JHRefreshViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JHRefreshViewDelegate.h; sourceTree = "<group>"; };
+		A5AF34F61A07204700740855 /* UIScrollView+JHExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+JHExtension.h"; sourceTree = "<group>"; };
+		A5AF34F71A07204700740855 /* UIScrollView+JHExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+JHExtension.m"; sourceTree = "<group>"; };
+		A5AF34F81A07204700740855 /* UIScrollView+JHRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+JHRefresh.h"; sourceTree = "<group>"; };
+		A5AF34F91A07204700740855 /* UIScrollView+JHRefresh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+JHRefresh.m"; sourceTree = "<group>"; };
+		A5AF34FA1A07204700740855 /* UIView+JHExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+JHExtension.h"; sourceTree = "<group>"; };
+		A5AF34FB1A07204700740855 /* UIView+JHExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+JHExtension.m"; sourceTree = "<group>"; };
+		A5B9E9481A08B1BE000C47C1 /* PopoverView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopoverView.h; sourceTree = "<group>"; };
+		A5B9E9491A08B1BE000C47C1 /* PopoverView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopoverView.m; sourceTree = "<group>"; };
+		A5B9E94B1A08BCCE000C47C1 /* navigationbar_pop1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navigationbar_pop1.png; sourceTree = "<group>"; };
+		E43444391A07E6E400A8B078 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		E434443A1A07E6E500A8B078 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3447,6 +3492,12 @@
 		A5005DAD1A038DBD00487FEC = {
 			isa = PBXGroup;
 			children = (
+				A5B9E9481A08B1BE000C47C1 /* PopoverView.h */,
+				A5B9E9491A08B1BE000C47C1 /* PopoverView.m */,
+				A5AF34E21A07204700740855 /* Refresh */,
+				A5AF34A71A071CA400740855 /* File.plist */,
+				E43444391A07E6E400A8B078 /* LoginViewController.h */,
+				E434443A1A07E6E500A8B078 /* LoginViewController.m */,
 				A56B942D1A062662006EBC66 /* MenuViewController.h */,
 				A56B942E1A062662006EBC66 /* MenuViewController.m */,
 				A56B942F1A062662006EBC66 /* TabbarViewController.h */,
@@ -3579,6 +3630,7 @@
 		A56B871D1A062430006EBC66 /* Sina_Pic */ = {
 			isa = PBXGroup;
 			children = (
+				A5B9E94B1A08BCCE000C47C1 /* navigationbar_pop1.png */,
 				A56B871E1A062430006EBC66 /* account_active_indicator@2x.png */,
 				A56B871F1A062430006EBC66 /* account_inactive_indicator@2x.png */,
 				A56B87201A062430006EBC66 /* accountmanage_add@2x.png */,
@@ -5250,6 +5302,45 @@
 			path = Tool;
 			sourceTree = "<group>";
 		};
+		A5AF34E21A07204700740855 /* Refresh */ = {
+			isa = PBXGroup;
+			children = (
+				A5AF34E31A07204700740855 /* AnimationView */,
+				A5AF34EA1A07204700740855 /* JHRefresh.bundle */,
+				A5AF34EB1A07204700740855 /* JHRefresh.h */,
+				A5AF34EC1A07204700740855 /* JHRefreshBaseView.h */,
+				A5AF34ED1A07204700740855 /* JHRefreshBaseView.m */,
+				A5AF34EE1A07204700740855 /* JHRefreshConfig.h */,
+				A5AF34EF1A07204700740855 /* JHRefreshConfig.m */,
+				A5AF34F01A07204700740855 /* JHRefreshFooterView.h */,
+				A5AF34F11A07204700740855 /* JHRefreshFooterView.m */,
+				A5AF34F21A07204700740855 /* JHRefreshHeaderView.h */,
+				A5AF34F31A07204700740855 /* JHRefreshHeaderView.m */,
+				A5AF34F41A07204700740855 /* JHRefreshMacro.h */,
+				A5AF34F51A07204700740855 /* JHRefreshViewDelegate.h */,
+				A5AF34F61A07204700740855 /* UIScrollView+JHExtension.h */,
+				A5AF34F71A07204700740855 /* UIScrollView+JHExtension.m */,
+				A5AF34F81A07204700740855 /* UIScrollView+JHRefresh.h */,
+				A5AF34F91A07204700740855 /* UIScrollView+JHRefresh.m */,
+				A5AF34FA1A07204700740855 /* UIView+JHExtension.h */,
+				A5AF34FB1A07204700740855 /* UIView+JHExtension.m */,
+			);
+			path = Refresh;
+			sourceTree = "<group>";
+		};
+		A5AF34E31A07204700740855 /* AnimationView */ = {
+			isa = PBXGroup;
+			children = (
+				A5AF34E41A07204700740855 /* JHRefreshAmazingAniView.h */,
+				A5AF34E51A07204700740855 /* JHRefreshAmazingAniView.m */,
+				A5AF34E61A07204700740855 /* JHRefreshAniBaseView.h */,
+				A5AF34E71A07204700740855 /* JHRefreshAniBaseView.m */,
+				A5AF34E81A07204700740855 /* JHRefreshCommonAniView.h */,
+				A5AF34E91A07204700740855 /* JHRefreshCommonAniView.m */,
+			);
+			path = AnimationView;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -6296,6 +6387,7 @@
 				A56B92EE1A062443006EBC66 /* timeline_cell_separator@2x.png in Resources */,
 				A56B8DD31A062443006EBC66 /* adward_star_3@2x.png in Resources */,
 				A56B91BF1A062443006EBC66 /* preview_save_icon_highlighted@2x.png in Resources */,
+				A5B9E94C1A08BCCE000C47C1 /* navigationbar_pop1.png in Resources */,
 				A56B8EE41A062443006EBC66 /* compose_mentionbutton_background@2x.png in Resources */,
 				A56B90261A062443006EBC66 /* login_point_selected@2x.png in Resources */,
 				A56B92AF1A062443006EBC66 /* tabbar_compose_review@2x.png in Resources */,
@@ -6689,9 +6781,11 @@
 				A56B8DEF1A062443006EBC66 /* background_b.png in Resources */,
 				A56B90131A062443006EBC66 /* login_introduce_bg3@2x.jpg in Resources */,
 				A56B8F2F1A062443006EBC66 /* d_dalian@2x.png in Resources */,
+				A5AF34A81A071CA400740855 /* File.plist in Resources */,
 				A56B93941A062443006EBC66 /* userinfo_membership_expired@2x.png in Resources */,
 				A56B8F851A062443006EBC66 /* friendcircle_other_button_white@2x.png in Resources */,
 				A56B928B1A062443006EBC66 /* statusdetail_poicard_arrow_highlighted@2x.png in Resources */,
+				A5AF34FF1A07204700740855 /* JHRefresh.bundle in Resources */,
 				A56B8E181A062443006EBC66 /* camera_edit_revolve@2x.png in Resources */,
 				A56B92521A062443006EBC66 /* skin_check_icon_highlighted@2x.png in Resources */,
 				A56B93161A062443006EBC66 /* timeline_image_gif@2x.png in Resources */,
@@ -7004,23 +7098,35 @@
 			files = (
 				A56B94261A06251E006EBC66 /* BaseViewController.m in Sources */,
 				A56B94311A062662006EBC66 /* MenuViewController.m in Sources */,
+				A5AF34FD1A07204700740855 /* JHRefreshAniBaseView.m in Sources */,
 				A56B8DA11A062443006EBC66 /* AFURLRequestSerialization.m in Sources */,
+				A5AF34FC1A07204700740855 /* JHRefreshAmazingAniView.m in Sources */,
 				A56B8DAC1A062443006EBC66 /* NavigationControllerCustomer.m in Sources */,
 				A56B8DA01A062443006EBC66 /* AFURLConnectionOperation.m in Sources */,
 				A56B8D9F1A062443006EBC66 /* AFSecurityPolicy.m in Sources */,
 				A56B8D9B1A062443006EBC66 /* AFHTTPRequestOperation.m in Sources */,
 				A56B8DA31A062443006EBC66 /* AFURLSessionManager.m in Sources */,
 				A56B8DA21A062443006EBC66 /* AFURLResponseSerialization.m in Sources */,
+				A5AF35031A07204700740855 /* JHRefreshHeaderView.m in Sources */,
 				A5005DCA1A038DBD00487FEC /* AppDelegate.m in Sources */,
 				A56B8D9D1A062443006EBC66 /* AFHTTPSessionManager.m in Sources */,
+				E434443B1A07E6E500A8B078 /* LoginViewController.m in Sources */,
 				A56B8D9C1A062443006EBC66 /* AFHTTPRequestOperationManager.m in Sources */,
 				A56B8DA61A062443006EBC66 /* GetDataOfLocalFile.m in Sources */,
 				A56B8DAB1A062443006EBC66 /* MicroBlogOperateForSina.m in Sources */,
+				A5AF35021A07204700740855 /* JHRefreshFooterView.m in Sources */,
+				A5AF34FE1A07204700740855 /* JHRefreshCommonAniView.m in Sources */,
 				A56B94211A062443006EBC66 /* Factory.m in Sources */,
+				A5AF35061A07204700740855 /* UIView+JHExtension.m in Sources */,
 				A56B8D9E1A062443006EBC66 /* AFNetworkReachabilityManager.m in Sources */,
+				A5B9E94A1A08B1BE000C47C1 /* PopoverView.m in Sources */,
+				A5AF35041A07204700740855 /* UIScrollView+JHExtension.m in Sources */,
+				A5AF35011A07204700740855 /* JHRefreshConfig.m in Sources */,
 				A56B94321A062663006EBC66 /* TabbarViewController.m in Sources */,
+				A5AF35001A07204700740855 /* JHRefreshBaseView.m in Sources */,
 				A5005DC61A038DBD00487FEC /* main.m in Sources */,
 				A56B94201A062443006EBC66 /* EmotionKeyBoard.m in Sources */,
+				A5AF35051A07204700740855 /* UIScrollView+JHRefresh.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7140,7 +7246,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "大新_微博/大新_微博-Prefix.pch";
 				INFOPLIST_FILE = "大新_微博/大新_微博-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -7154,7 +7260,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "大新_微博/大新_微博-Prefix.pch";
 				INFOPLIST_FILE = "大新_微博/大新_微博-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

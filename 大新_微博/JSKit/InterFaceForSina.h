@@ -54,7 +54,7 @@
 /*
  获取用户发布的最新微博
  */
-#define InterfaceForSinaToGetRecentWeiboOfSelf @"https://api.weibo.com/2/statuses/home_timeline.json"
+#define InterfaceForSinaToGetRecentWeiboOfUser @"https://api.weibo.com/2/statuses/home_timeline.json"
 
 /*
  获取用户发布的最新微博的id
@@ -70,6 +70,51 @@
  获取用户微博的评论列表
  */
 #define InterfaceForSinaToGetAnswerListOfWeibo @"https://api.weibo.com/2/comments/show.json"
+
+/*
+ 获取我发出的评论
+ */
+#define InterfaceForSinaToGetCommentsByMe @"https://api.weibo.com/2/comments/by_me.json"
+
+/*
+ 获取评论我
+ */
+#define InterfaceForSinaToGetCommentsToMe @"https://api.weibo.com/2/comments/to_me.json"
+
+/*
+ 获取最新评论
+ */
+#define InterfaceForSinaToGetRecentNewComments @"https://api.weibo.com/2/comments/timeline.json"
+
+/*
+ 获取@我评论
+ */
+#define InterfaceForSinaToGetMentionsComment @"https://api.weibo.com/2/comments/mentions.json"
+
+/*
+ 获取评论的详细信息
+ */
+#define InterfaceForSinaToGetDetaileOfComment @"https://api.weibo.com/2/comments/show_batch.json"
+
+/*
+ 评论微博
+ */
+#define InterfaceForSinaToCommentWeibo @"https://api.weibo.com/2/comments/create.json"
+
+/*
+ 删除评论
+ */
+#define InterfaceForSinaToDeleteComment @"https://api.weibo.com/2/comments/destroy.json"
+
+/*
+ 根据id删除评论
+ */
+#define InterfaceForSinaToDestroyComments @"https://api.weibo.com/2/comments/destroy_batch.json"
+
+/*
+ 回复评论
+ */
+#define InterfaceForSinaToReplyComment @"https://api.weibo.com/2/comments/reply.json"
 
 /*
  获取用户的微博转发数和微博评论数
@@ -510,11 +555,12 @@
 /*
  获取code
  */
-#define InterfaceForSinaToGetCode(cid) [NSString stringWithFormat:@"https://api.weibo.com/oauth2/authorize?client_id=%@&response_type=code&redirect_uri=https://api.weibo.com/oauth2/default.html",cid];
+#define InterfaceForSinaToGetCode(cid) [NSString stringWithFormat:@"https://api.weibo.com/oauth2/authorize?client_id=%@&redirect_uri=https://api.weibo.com/oauth2/default.html&response_type=code",cid]
 
 /*
  获取access_token
  */
-#define InterfaceForSinaToGetAccesstoken(csecret,rcode) [NSString stringWithFormat:@"https://api.weibo.com/oauth2/access_token?client_secret=%@&redirect_uri=https://api.weibo.com/oauth2/default.html&grant_type=authorization_code&code=%@",csecret,rcode];
+#define InterfaceForSinaToGetAccesstoken(cid,csecret,rcode) [NSString stringWithFormat:@"https://api.weibo.com/oauth2/access_token?client_id=%@&client_secret=%@&redirect_uri=https://api.weibo.com/oauth2/default.html&grant_type=authorization_code&code=%@",cid,csecret,rcode]
+
 
 #endif

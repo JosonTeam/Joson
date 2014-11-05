@@ -22,10 +22,10 @@
     [self addSubview:_scroll];
     
     _pageC = [[UIPageControl alloc]init];
-    _pageC.frame = CGRectMake(0, 140, (ceil(_count/2)-1)*5, 20);
+    _pageC.frame = CGRectMake(0, 140, (ceil(_arr_Count/2)-1)*5, 20);
     _pageC.pageIndicatorTintColor = [UIColor grayColor];
     _pageC.currentPageIndicatorTintColor = [UIColor yellowColor];
-    _pageC.numberOfPages = _count;
+    _pageC.numberOfPages = _arr_Count;
     [self addSubview:_pageC];
     
     
@@ -71,11 +71,11 @@
         }
     }
     
-    _count = appeare_Source.count;
+    _arr_Count = (int)appeare_Source.count;
     int num = 101;
-    UIView * bgView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, _count*_width, 140)];
+    UIView * bgView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, _arr_Count*_width, 140)];
     
-    for (int i = 0; i < _count; i++)
+    for (int i = 0; i < _arr_Count; i++)
     {
         for (int j = 0; j < [appeare_Source[i] count]; j++)
         {
