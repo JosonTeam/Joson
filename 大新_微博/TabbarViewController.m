@@ -6,6 +6,7 @@
 
 @interface TabbarViewController ()
 {
+    BaseViewController * _v1;
     int _seleted_Item;
     int _width;
     int _high;
@@ -38,36 +39,38 @@
 - (void)init_View
 {
     NSArray * widthAndHigh = [Factory getHeigtAndWidthOfDevice];
-    _width = [widthAndHigh[0] integerValue];
-    _high = [widthAndHigh[1] integerValue];
+    _width = [widthAndHigh[0] intValue];
+    _high = [widthAndHigh[1] intValue];
     
-    BaseViewController * v1 = [BaseViewController new];
+    _v1 = [BaseViewController new];
     BaseViewController * v2 = [BaseViewController new];
     BaseViewController * v3 = [BaseViewController new];
     BaseViewController * v4 = [BaseViewController new];
     BaseViewController * v5 = [BaseViewController new];
     
     _access_token = @"2.00WZkEoBGfkwgCe225676bb60AP1JZ";
-    v1.access_token = _access_token;
+    _v1.userLoginName = [MicroBlogOperateForSina getDetailOfUserWithAccessToken:_access_token name:nil orId:[[MicroBlogOperateForSina getIdWithAccessToken:_access_token][@"uid"] intValue]][@"name"];
+    
+    _v1.access_token = _access_token;
     v2.access_token = _access_token;
     v3.access_token = _access_token;
     v4.access_token = _access_token;
     v5.access_token = _access_token;
     NSLog(@"%@",_access_token);
     
-    v1.identifier = 0;
+    _v1.identifier = 0;
     v2.identifier = 1;
     v3.identifier = 2;
     v4.identifier = 3;
     v5.identifier = 4;
     
-    [v1 init_View];
+    [_v1 init_View];
     [v2 init_View];
     [v3 init_View];
     [v4 init_View];
     [v5 init_View];
     
-    UINavigationController * n1 = [NavigationControllerCustomer createNavigationControllerWithViewController:v1];
+    UINavigationController * n1 = [NavigationControllerCustomer createNavigationControllerWithViewController:_v1];
     UINavigationController * n2 = [NavigationControllerCustomer createNavigationControllerWithViewController:v2];
     UINavigationController * n3 = [NavigationControllerCustomer createNavigationControllerWithViewController:v3];
     UINavigationController * n4 = [NavigationControllerCustomer createNavigationControllerWithViewController:v4];
@@ -137,7 +140,7 @@
     }
     else
     {
-         _seleted_Item = (int)sender.tag - 1;
+        _seleted_Item = (int)sender.tag - 1;
     }
 }
 
@@ -183,9 +186,18 @@
     }];
 }
 
-- (void)viewAppearance
+- (void)viewAppearance:(UILongPressGestureRecognizer *)sender
 {
-    _cellName = @[@"收藏",@"取消关注",@"屏蔽",@"举报"];
+#warning ...
+    UITableViewCell * cell = (UITableViewCell *)sender.view;
+    NSIndexPath * indexPath = [_table_View indexPathForCell:cell];
+    NSLog(@"%@",indexPath);
+    _cellName = @[@"转发",@"评论",@"收藏"];
+//    if (!_v1.source[indexPath.section][@"retweeted_status"] )
+//    {
+        _cellName = @[@"转发",@"评论",@"收藏",@"转发原微博"];
+//    }
+    
     [_table_View reloadData];
     [UIView animateWithDuration:0.5 animations:^{
         _hide_View.frame = CGRectMake(0, 0, _width, _high);

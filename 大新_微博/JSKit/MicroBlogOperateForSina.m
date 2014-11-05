@@ -661,6 +661,36 @@
 
 
 /*
+ 获取系统推荐用户
+ 其中:
+ access_token ---用户授权码
+ category ---用户类型
+ */
++ (NSArray *)getSuggestedUserWithAccessToken:(NSString *)access_token
+                                 andCategory:(UserCategory *)category
+{
+    NSArray * userCategory = @[@"Default",@"Ent",@"Music",@"Sport",@"Fashion",@"Art",@"Cartoon",@"Games",@"UTrip",@"Food",@"Health",@"Literature",@"Slock",@"Business",@"Tech",@"House",@"Auto",@"Fate",@"Govern",@"Medium",@"Marketer"];
+    NSError * error;
+    static NSArray * arr;
+    NSString * str = userCategory[(int)category];
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&category=%@",InterfaceForSinaToGetSuggestedUser,access_token,str]];
+    NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
+    NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
+    if (error)
+    {
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to exute..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+        [alert show];
+    }
+    else
+    {
+        arr = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+    }
+    return arr;
+    
+}
+
+
+/*
  取得用户的微博
  其中:
  access_token ---用户授权码
@@ -1871,36 +1901,6 @@
     NSError * error;
     static NSDictionary * dic;
     NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&key=%@",InterfaceForSinaToGetWeiboOfTopic,access_token,key]];
-    NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
-    NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
-    if (error)
-    {
-        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Fail to exute..." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
-        [alert show];
-    }
-    else
-    {
-        dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
-    }
-    return dic;
-
-}
-
-
-/*
- 获取系统推荐用户
- 其中:
- access_token ---用户授权码
- category ---用户类型
- */
-+ (NSDictionary *)getSuggestedUserWithAccessToken:(NSString *)access_token
-                                      andCategory:(UserCategory *)category
-{
-    NSArray * userCategory = @[@"Default",@"Ent",@"Music",@"Sport",@"Fashion",@"Art",@"Cartoon",@"Games",@"UTrip",@"Food",@"Health",@"Literature",@"Slock",@"Business",@"Tech",@"House",@"Auto",@"Fate",@"Govern",@"Medium",@"Marketer"];
-    NSError * error;
-    static NSDictionary * dic;
-    NSString * str = userCategory[(int)category];
-    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&category=%@",InterfaceForSinaToGetSuggestedUser,access_token,str]];
     NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
     NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
     if (error)

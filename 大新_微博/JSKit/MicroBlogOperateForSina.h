@@ -383,6 +383,17 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
 
 
 /*
+ 获取系统推荐用户
+ 其中:
+ access_token ---用户授权码
+ category ---用户类型
+ */
++ (NSArray *)getSuggestedUserWithAccessToken:(NSString *)access_token
+                                 andCategory:(UserCategory *)category;
+
+
+
+/*
  取得用户的详细信息
  其中:
  access_token ---用户授权码
@@ -848,16 +859,6 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
  */
 + (NSDictionary *)getWeiboOfTopicWithAccessToken:(NSString *)access_token
                                           andKey:(NSString *)key;
-
-
-/*
- 获取系统推荐用户
- 其中:
- access_token ---用户授权码
- category ---用户类型
- */
-+ (NSDictionary *)getSuggestedUserWithAccessToken:(NSString *)access_token
-                                      andCategory:(UserCategory *)category;
 
 
 /*

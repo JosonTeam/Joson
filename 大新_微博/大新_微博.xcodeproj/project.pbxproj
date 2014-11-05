@@ -1693,6 +1693,9 @@
 		A56B94261A06251E006EBC66 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A56B94251A06251E006EBC66 /* BaseViewController.m */; };
 		A56B94311A062662006EBC66 /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A56B942E1A062662006EBC66 /* MenuViewController.m */; };
 		A56B94321A062663006EBC66 /* TabbarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A56B94301A062662006EBC66 /* TabbarViewController.m */; };
+		A575AC451A09D8A300F86164 /* EditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A575AC441A09D8A300F86164 /* EditViewController.m */; };
+		A575AC471A09F31400F86164 /* toolbar_rightarrow@2x2.png in Resources */ = {isa = PBXBuildFile; fileRef = A575AC461A09F31400F86164 /* toolbar_rightarrow@2x2.png */; };
+		A575AC4A1A0A409300F86164 /* FindFriendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A575AC491A0A409300F86164 /* FindFriendViewController.m */; };
 		A5AF34A81A071CA400740855 /* File.plist in Resources */ = {isa = PBXBuildFile; fileRef = A5AF34A71A071CA400740855 /* File.plist */; };
 		A5AF34FC1A07204700740855 /* JHRefreshAmazingAniView.m in Sources */ = {isa = PBXBuildFile; fileRef = A5AF34E51A07204700740855 /* JHRefreshAmazingAniView.m */; };
 		A5AF34FD1A07204700740855 /* JHRefreshAniBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = A5AF34E71A07204700740855 /* JHRefreshAniBaseView.m */; };
@@ -3433,6 +3436,11 @@
 		A56B942E1A062662006EBC66 /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
 		A56B942F1A062662006EBC66 /* TabbarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabbarViewController.h; sourceTree = "<group>"; };
 		A56B94301A062662006EBC66 /* TabbarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabbarViewController.m; sourceTree = "<group>"; };
+		A575AC431A09D8A300F86164 /* EditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditViewController.h; sourceTree = "<group>"; };
+		A575AC441A09D8A300F86164 /* EditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditViewController.m; sourceTree = "<group>"; };
+		A575AC461A09F31400F86164 /* toolbar_rightarrow@2x2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toolbar_rightarrow@2x2.png"; sourceTree = "<group>"; };
+		A575AC481A0A409300F86164 /* FindFriendViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FindFriendViewController.h; sourceTree = "<group>"; };
+		A575AC491A0A409300F86164 /* FindFriendViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FindFriendViewController.m; sourceTree = "<group>"; };
 		A5AF34A71A071CA400740855 /* File.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = File.plist; sourceTree = "<group>"; };
 		A5AF34E41A07204700740855 /* JHRefreshAmazingAniView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JHRefreshAmazingAniView.h; sourceTree = "<group>"; };
 		A5AF34E51A07204700740855 /* JHRefreshAmazingAniView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JHRefreshAmazingAniView.m; sourceTree = "<group>"; };
@@ -3492,10 +3500,14 @@
 		A5005DAD1A038DBD00487FEC = {
 			isa = PBXGroup;
 			children = (
-				A5B9E9481A08B1BE000C47C1 /* PopoverView.h */,
-				A5B9E9491A08B1BE000C47C1 /* PopoverView.m */,
 				A5AF34E21A07204700740855 /* Refresh */,
 				A5AF34A71A071CA400740855 /* File.plist */,
+				A575AC481A0A409300F86164 /* FindFriendViewController.h */,
+				A575AC491A0A409300F86164 /* FindFriendViewController.m */,
+				A575AC431A09D8A300F86164 /* EditViewController.h */,
+				A575AC441A09D8A300F86164 /* EditViewController.m */,
+				A5B9E9481A08B1BE000C47C1 /* PopoverView.h */,
+				A5B9E9491A08B1BE000C47C1 /* PopoverView.m */,
 				E43444391A07E6E400A8B078 /* LoginViewController.h */,
 				E434443A1A07E6E500A8B078 /* LoginViewController.m */,
 				A56B942D1A062662006EBC66 /* MenuViewController.h */,
@@ -3630,6 +3642,7 @@
 		A56B871D1A062430006EBC66 /* Sina_Pic */ = {
 			isa = PBXGroup;
 			children = (
+				A575AC461A09F31400F86164 /* toolbar_rightarrow@2x2.png */,
 				A5B9E94B1A08BCCE000C47C1 /* navigationbar_pop1.png */,
 				A56B871E1A062430006EBC66 /* account_active_indicator@2x.png */,
 				A56B871F1A062430006EBC66 /* account_inactive_indicator@2x.png */,
@@ -6783,6 +6796,7 @@
 				A56B8F2F1A062443006EBC66 /* d_dalian@2x.png in Resources */,
 				A5AF34A81A071CA400740855 /* File.plist in Resources */,
 				A56B93941A062443006EBC66 /* userinfo_membership_expired@2x.png in Resources */,
+				A575AC471A09F31400F86164 /* toolbar_rightarrow@2x2.png in Resources */,
 				A56B8F851A062443006EBC66 /* friendcircle_other_button_white@2x.png in Resources */,
 				A56B928B1A062443006EBC66 /* statusdetail_poicard_arrow_highlighted@2x.png in Resources */,
 				A5AF34FF1A07204700740855 /* JHRefresh.bundle in Resources */,
@@ -7115,11 +7129,13 @@
 				A56B8DA61A062443006EBC66 /* GetDataOfLocalFile.m in Sources */,
 				A56B8DAB1A062443006EBC66 /* MicroBlogOperateForSina.m in Sources */,
 				A5AF35021A07204700740855 /* JHRefreshFooterView.m in Sources */,
+				A575AC4A1A0A409300F86164 /* FindFriendViewController.m in Sources */,
 				A5AF34FE1A07204700740855 /* JHRefreshCommonAniView.m in Sources */,
 				A56B94211A062443006EBC66 /* Factory.m in Sources */,
 				A5AF35061A07204700740855 /* UIView+JHExtension.m in Sources */,
 				A56B8D9E1A062443006EBC66 /* AFNetworkReachabilityManager.m in Sources */,
 				A5B9E94A1A08B1BE000C47C1 /* PopoverView.m in Sources */,
+				A575AC451A09D8A300F86164 /* EditViewController.m in Sources */,
 				A5AF35041A07204700740855 /* UIScrollView+JHExtension.m in Sources */,
 				A5AF35011A07204700740855 /* JHRefreshConfig.m in Sources */,
 				A56B94321A062663006EBC66 /* TabbarViewController.m in Sources */,

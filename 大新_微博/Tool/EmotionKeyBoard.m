@@ -22,7 +22,7 @@
     [self addSubview:_scroll];
     
     _pageC = [[UIPageControl alloc]init];
-    _pageC.frame = CGRectMake(0, 140, (ceil(_arr_Count/2)-1)*5, 20);
+    _pageC.frame = CGRectMake(_width/2, 140, (ceil(_arr_Count/2)-1)*5, 20);
     _pageC.pageIndicatorTintColor = [UIColor grayColor];
     _pageC.currentPageIndicatorTintColor = [UIColor yellowColor];
     _pageC.numberOfPages = _arr_Count;

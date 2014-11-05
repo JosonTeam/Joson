@@ -11,12 +11,14 @@
  YOrN ---是否隐藏系统按钮,默认为No
  tag ---按钮在navigationController上得tag值
  image ---按钮以图片形式显示，可为nil
+ title ---按钮标题
  type ---按钮样式
  */
 + (void)createBackButtonForViewController:(UIViewController *)vc
         hideOldBackButtonOfNavigationItem:(BOOL)YOrN
                                   withTag:(int)tag
                                  andImage:(UIImage *)image
+                                 orTitile:(NSString *)title
                                    andType:(UIButtonType)type;
 
 
@@ -62,6 +64,20 @@
  vc ---当前需添加标题的视图控制器
  */
 + (void)setTitle:(NSString *)title
+       withColor:(UIColor*)color
+forViewController:(UIViewController *)vc;
+
+
+/*
+ 为标题栏添加标题,可选择标题显示颜色
+ 其中:
+ title ---要显示的标题文字
+ subTitle ---要显示的小标题文字
+ color ---标题颜色
+ vc ---当前需添加标题的视图控制器
+ */
++ (void)setTitle:(NSString *)title
+     andSubtitle:(NSString *)subTitle
        withColor:(UIColor*)color
 forViewController:(UIViewController *)vc;
 

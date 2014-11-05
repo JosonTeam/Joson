@@ -6,6 +6,7 @@
         hideOldBackButtonOfNavigationItem:(BOOL)YOrN
                                   withTag:(int)tag
                                  andImage:(UIImage *)image
+                                 orTitile:(NSString *)title
                                   andType:(UIButtonType)type
 {
     if (YOrN == YES)
@@ -17,9 +18,16 @@
     UIBarButtonItem * barbutton = [[UIBarButtonItem alloc]initWithCustomView:button];
     button.frame = CGRectMake(0, 0, 25, 25);
     button.tag = tag;
+    if (title)
+    {
+        [button setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+        [button setTitle:title forState:UIControlStateSelected];
+        button.frame = CGRectMake(0, 0, 20*title.length, 25);
+        button.selected = YES;
+    }
     if (image)
     {
-        [button setImage:image forState:UIControlStateSelected];
+        [button setImage:image forState:UIControlStateNormal];
         button.selected = YES;
     }
     if (vc.navigationItem.leftBarButtonItem)
@@ -50,7 +58,7 @@
     }
     if (image)
     {
-        [button setImage:image forState:UIControlStateSelected];
+        [button setImage:image forState:UIControlStateNormal];
         button.selected = YES;
     }
     if (vc.navigationItem.leftBarButtonItem)
@@ -82,7 +90,7 @@
     }
     if (image)
     {
-        [button setImage:image forState:UIControlStateSelected];
+        [button setImage:image forState:UIControlStateNormal];
         button.selected = YES;
     }
     if (vc.navigationItem.rightBarButtonItem)
@@ -104,6 +112,36 @@ forViewController:(UIViewController *)vc
     label.text = title;
     label.textColor = color;
     vc.navigationItem.titleView = label;
+}
+
+
++ (void)setTitle:(NSString *)title
+     andSubtitle:(NSString *)subTitle
+       withColor:(UIColor*)color
+forViewController:(UIViewController *)vc
+{
+    NSInteger i = 18*title.length;
+    if (subTitle.length*18 > i)
+    {
+        i = subTitle.length*18;
+    }
+    
+    UIView * view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, i, 45)];
+    
+    UILabel * label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, i, 30)];
+    label.textAlignment = NSTextAlignmentCenter;
+    label.text = title;
+    label.textColor = color;
+    [view addSubview:label];
+    
+    UILabel * label1 = [[UILabel alloc]initWithFrame:CGRectMake(0, 20, i, 25)];
+    label1.textAlignment = NSTextAlignmentCenter;
+    label1.text = subTitle;
+    label1.font = [UIFont systemFontOfSize:12];
+    label1.textColor = color;
+    [view addSubview:label1];
+    
+    vc.navigationItem.titleView = view;
 }
 
 

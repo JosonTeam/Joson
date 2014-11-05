@@ -1,6 +1,8 @@
 #import <AVFoundation/AVFoundation.h>
+#import "FindFriendViewController.h"
 #import "BaseViewController.h"
 #import "MenuViewController.h"
+#import "EditViewController.h"
 #import "PopoverView.h"
 #import "JHRefresh.h"
 #import "Factory.h"
@@ -15,7 +17,6 @@
     UITableView * _tableView;
     NSMutableArray * _weibo_Content_Pic;
     NSMutableArray * _weibo_Content_Pic1;
-    NSMutableArray * _name;
     NSArray * _button_Image;
 }
 @end
@@ -167,6 +168,8 @@
     
     UIButton * menuButton = (UIButton *)self.navigationItem.rightBarButtonItem.customView;
     [menuButton addTarget:self action:@selector(getView:) forControlEvents:UIControlEventTouchUpInside];
+    UIButton * findFriends = (UIButton *)self.navigationItem.leftBarButtonItem.customView;
+    [findFriends addTarget:self action:@selector(findFriends:) forControlEvents:UIControlEventTouchUpInside];
     
     _count = 20;
     _name = [NSMutableArray new];
@@ -176,8 +179,7 @@
     _player = [[AVAudioPlayer alloc]initWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle]pathForResource:@"msgcome" ofType:@"wav"]] error:nil];
     [_player prepareToPlay];
     
-    NSDictionary * dic = [MicroBlogOperateForSina getDetailOfUserWithAccessToken:_access_token name:nil orId:[[MicroBlogOperateForSina getIdWithAccessToken:_access_token][@"uid"] intValue]];
-    [NavigationControllerCustomer setTitle:dic[@"name"] withColor:[UIColor blackColor] forViewController:self];
+    [NavigationControllerCustomer setTitle:_userLoginName withColor:[UIColor blackColor] forViewController:self];
     
     NSDictionary * dic11 = [MicroBlogOperateForSina getRecentWeiboOfUserWithAccessToken:self.access_token andtype:WeiboTypeAll];
     
@@ -211,6 +213,9 @@
             NSDictionary * dic11 = [MicroBlogOperateForSina getRecentWeiboOfUserWithAccessToken:self.access_token andtype:WeiboTypeAll];
             
             _source = [dic11[@"statuses"] mutableCopy];
+            _weibo_Content_Pic = [NSMutableArray new];
+            _weibo_Content_Pic1 = [NSMutableArray new];
+            _name = [NSMutableArray new];
             [self getAppearSource];
             
             [tableview reloadData];
@@ -260,6 +265,14 @@
     [popover show];
 }
 
+- (void)findFriends:(UIButton *)sender
+{
+    FindFriendViewController * find = [FindFriendViewController new];
+    find.access_token = _access_token;
+    find.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:find animated:YES];
+}
+
 - (void)initCellForPageFirst:(UITableViewCell *)cell andIndexPath:(NSIndexPath *)indexPath
 {
     int button_y;
@@ -307,7 +320,7 @@
     content_View.userInteractionEnabled = 1;
     [cell.contentView addSubview:content_View];
     
-    UILongPressGestureRecognizer * press = [[UILongPressGestureRecognizer alloc]initWithTarget:self.tabBarController action:@selector(viewAppearance)];
+    UILongPressGestureRecognizer * press = [[UILongPressGestureRecognizer alloc]initWithTarget:self.tabBarController action:@selector(viewAppearance:)];
     [cell addGestureRecognizer:press];
     
     UITextView * text = [[UITextView alloc]initWithFrame:CGRectMake(5, 5, _width-10, [Factory contentHeight:_source[indexPath.section][@"text"]])];
@@ -336,13 +349,14 @@
         text1.selectable = NO;
         text1.editable = NO;
         [content_View1 addSubview:text1];
-        
-        UILabel * user_Name_Label = [[UILabel alloc]initWithFrame:CGRectMake(10, 10, [_name[indexPath.section] length]*18, 20)];
-        user_Name_Label.text = [NSString stringWithFormat:@"@%@",_name[indexPath.section]];
-        user_Name_Label.backgroundColor = content_View1.backgroundColor;
-        user_Name_Label.font = [UIFont fontWithName:nil size:15];
-        user_Name_Label.textColor = [UIColor blueColor];
-        [content_View1 addSubview:user_Name_Label];
+       
+#warning ....
+//        UILabel * user_Name_Label = [[UILabel alloc]initWithFrame:CGRectMake(10, 10, [_name[indexPath.section] length]*18, 20)];
+//        user_Name_Label.text = [NSString stringWithFormat:@"@%@",_name[indexPath.section]];
+//        user_Name_Label.backgroundColor = content_View1.backgroundColor;
+//        user_Name_Label.font = [UIFont fontWithName:nil size:15];
+//        user_Name_Label.textColor = [UIColor blueColor];
+//        [content_View1 addSubview:user_Name_Label];
         
         NSMutableArray * pic_Array1 = _weibo_Content_Pic1[indexPath.section];
         for (int i = 0; i < content_Pic1.count; i++)
@@ -405,17 +419,35 @@
         
         switch (button.tag-(indexPath.section+5)*10000)
         {
-            case 0:
-                
-                break;
             case 1:
-                
+            case 0:
+                [button addTarget:self action:@selector(pushViewController:) forControlEvents:UIControlEventTouchUpInside];
                 break;
             case 2:
                 [button addTarget:self action:@selector(changeColor:) forControlEvents:UIControlEventTouchUpInside];
                 break;
         }
     }
+}
+
+- (void)pushViewController:(UIButton *)sender
+{
+    EditViewController * edit = [EditViewController new];
+    edit.hidesBottomBarWhenPushed = YES;
+    edit.name = _userLoginName;
+    edit.access_token = _access_token;
+    switch (sender.tag%10000)
+    {
+        case 0:
+            edit.type = @"report";
+            edit.source = _source[sender.tag/10000-5];
+            break;
+        case 1:
+            edit.type = @"comment";
+            edit.source = _source[(sender.tag-1)/10000-5];
+            break;
+    }
+    [self.navigationController pushViewController:edit animated:YES];
 }
 
 - (void)changeColor:(UIButton *)sender
