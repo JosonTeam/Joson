@@ -7,5 +7,6 @@
 @property(nonatomic, strong)UIView * hide_View;
 @property(nonatomic, strong)NSString * access_token;
 
+- (void)init_View;
 
 @end

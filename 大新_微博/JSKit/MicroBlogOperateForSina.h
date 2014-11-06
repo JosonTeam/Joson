@@ -512,9 +512,11 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
  其中:
  access_token ---用户授权码
  type ---微博类型
+ max_id ---从ID为max_id的时间段开始
  */
 + (NSDictionary *)getRecentWeiboOfUserWithAccessToken:(NSString *)access_token
-                                              andtype:(WeiboType *)type;
+                                              andtype:(WeiboType *)type
+                                            andMax_id:(NSString *)max_id;
 
 
 /*

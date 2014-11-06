@@ -18,6 +18,8 @@
     NSMutableArray * _weibo_Content_Pic;
     NSMutableArray * _weibo_Content_Pic1;
     NSArray * _button_Image;
+    NSString * max_id;
+    NSString * _path;
 }
 @end
 
@@ -35,50 +37,59 @@
 
 - (void)init_View
 {
-    
+#pragma mark 获取窗口的宽度和高度
     NSArray * widthAndHigh = [Factory getHeigtAndWidthOfDevice];
     _width = [widthAndHigh[0] intValue];
     _high = [widthAndHigh[1] intValue];
     
+    //根据身份标识辨别视图控制器，进行对应操作
     switch (_identifier)
     {
         case 0:
         {
+            //添加标题栏左右两侧按钮
             [NavigationControllerCustomer createLeftBarButtonItemForViewController:self withTag:1 andTitle:nil andImage:[UIImage imageNamed:@"navigationbar_friendsearch@2x.png"] andType:UIButtonTypeCustom];
             [NavigationControllerCustomer createRightBarButtonItemForViewController:self withTag:2 andTitle:nil andImage:[UIImage imageNamed:@"navigationbar_pop@2x.png"] andType:UIButtonTypeCustom];
             
+            //初始化首页
             [self initFirstPage];
         }
             break;
         case 1:
         {
+            //添加标题栏的右侧按钮
             [NavigationControllerCustomer createRightBarButtonItemForViewController:self withTag:2 andTitle:@"发起聊天" andImage:nil andType:UIButtonTypeCustom];
         }
             break;
         case 2:
         {
+            //为"+"界面添加背景
             UIImageView * bg_Image = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, _width, _high)];
             bg_Image.image = [UIImage imageNamed:@"Default-568h@2x2.png"];
             [self.view addSubview:bg_Image];
             
+            //准备声音
             _player = [[AVAudioPlayer alloc]initWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle]pathForResource:@"composer_open" ofType:@"wav"]] error:nil];
             [_player prepareToPlay];
         }
             break;
         case 3:
         {
+            //在标题栏上添加搜索栏和录音按钮
             [NavigationControllerCustomer createSearchBarWithViewController:self withTag:1 needRecorderButton:1 andTitle:Nil andImage:[UIImage imageNamed:@"message_voice_background@2x.png"] andType:UIButtonTypeCustom withButtonTag:2];
             
         }
             break;
         case 4:
         {
+            //添加标题栏右侧按钮
             [NavigationControllerCustomer createRightBarButtonItemForViewController:self withTag:2 andTitle:@"设置" andImage:nil andType:UIButtonTypeCustom];
         }
             break;
     }
 }
 
+#pragma mark 当“＋”按钮被点击时，播放声音
 - (void)viewWillAppear:(BOOL)animated
 {
     if (_identifier == 2)
@@ -87,6 +98,7 @@
     }
 }
 
+#pragma mark 刷新cell的图片
 - (void)refreshPhoto:(NSNumber *)sender
 {
     int i = [sender intValue];
@@ -104,38 +116,85 @@
     [super didReceiveMemoryWarning];
 }
 
+#pragma mark 设置区域数
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return  _count;
+    int num;
+    switch (_identifier)
+    {
+        case 0:
+            num = _count;
+            break;
+    }
+    return  num;
 }
 
+#pragma mark 设置各区域行数
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
+    int num;
+    switch (_identifier)
+    {
+        case 0:
+            num = 1;
+            break;
+    }
+    return num;
 }
 
+#pragma mark 设置headerView高度
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 5;
+    float num;
+    switch (_identifier)
+    {
+        case 0:
+            num = 5.0;
+            break;
+    }
+    return num;
 }
 
+#pragma mark 设置footerView高度
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
+    float num;
+    switch (_identifier)
+    {
+        case 0:
+            num = 0.1;
+            break;
+    }
     return 0.1;
 }
 
+#pragma mark 设置每行cell的高度
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSArray * content_Pic = _source[indexPath.section][@"pic_urls"];
-    if (_source[indexPath.section][@"retweeted_status"])
+    float num;
+    switch (_identifier)
     {
-         NSArray * content_Pic1 = _source[indexPath.section][@"retweeted_status"][@"pic_urls"];
-
-        return [Factory contentHeight:_source[indexPath.section][@"text"]]+55+[Factory contentHeight:_source[indexPath.section][@"retweeted_status"][@"text"]]+ceil(content_Pic1.count/3.0) * 70+25;
+        case 0:
+        {
+            NSArray * content_Pic = _source[indexPath.section][@"pic_urls"];
+            if (_source[indexPath.section][@"retweeted_status"])
+            {
+                NSArray * content_Pic1 = _source[indexPath.section][@"retweeted_status"][@"pic_urls"];
+                
+                return [Factory contentHeight:_source[indexPath.section][@"text"]]+55+[Factory contentHeight:_source[indexPath.section][@"retweeted_status"][@"text"]]+ceil(content_Pic1.count/3.0) * 70+25;
+            }
+            else
+            {
+               return ceil(content_Pic.count/3.0) * 70 + [Factory contentHeight:_source[indexPath.section][@"text"]]+70;
+            }
+        }
+            break;
     }
-    return ceil(content_Pic.count/3.0) * 70 + [Factory contentHeight:_source[indexPath.section][@"text"]]+70;
+    
+    return num;
 }
 
+#pragma mark 返回 cell
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
@@ -153,43 +212,68 @@
         }
     }
     
+    //初始化自定义 cell
     [self initCellForPageFirst:cell andIndexPath:indexPath];
     
     return cell;
 }
 
+#pragma mark 选择cell
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
+#pragma mark 初始化首页
 - (void)initFirstPage
 {
-    
+    //添加navigation左右两侧按钮的点击方法
     UIButton * menuButton = (UIButton *)self.navigationItem.rightBarButtonItem.customView;
     [menuButton addTarget:self action:@selector(getView:) forControlEvents:UIControlEventTouchUpInside];
     UIButton * findFriends = (UIButton *)self.navigationItem.leftBarButtonItem.customView;
     [findFriends addTarget:self action:@selector(findFriends:) forControlEvents:UIControlEventTouchUpInside];
     
+    //初始化数据
     _count = 20;
     _name = [NSMutableArray new];
     _weibo_Content_Pic = [NSMutableArray new];
     _weibo_Content_Pic1 = [NSMutableArray new];
     
+    //准备播放器
     _player = [[AVAudioPlayer alloc]initWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle]pathForResource:@"msgcome" ofType:@"wav"]] error:nil];
     [_player prepareToPlay];
     
+    //为标题栏添加标题
     [NavigationControllerCustomer setTitle:_userLoginName withColor:[UIColor blackColor] forViewController:self];
     
-    NSDictionary * dic11 = [MicroBlogOperateForSina getRecentWeiboOfUserWithAccessToken:self.access_token andtype:WeiboTypeAll];
+    //读取本地缓存数据
+    NSString * str = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)objectAtIndex:0];
+    _path = [NSString stringWithFormat:@"%@/Source.plist",str];
+    if (![[NSFileManager defaultManager]fileExistsAtPath:_path isDirectory:nil])
+    {
+        [[NSFileManager defaultManager]copyItemAtPath:_path toPath:[[NSBundle mainBundle]pathForResource:@"Source" ofType:@"plist"] error:nil];
+    }
+    NSDictionary * dic11 = [GetDataOfLocalFile getContentOfPlistFileAtParh:NSCachesDirectory WithFileName:@"Source"];
     
+    //读取失败，进行数据请求
+    if (dic11.count == 0)
+    {
+        dic11 = [MicroBlogOperateForSina getRecentWeiboOfUserWithAccessToken:self.access_token andtype:WeiboTypeAll andMax_id:@"0"];
+        [dic11 writeToFile:_path atomically:YES];
+    }
+    
+    //准备数据源
+    max_id = dic11[@"max_id"];
+    NSLog(@"%@",dic11);
 //    NSDictionary * dic11 = [GetDataOfLocalFile getContentOfPlistFileAtBundleWithFileName:@"File"];
     _source = [dic11[@"statuses"] mutableCopy];
     
     _userPic_Source = [NSMutableArray new];
     
+    //获得显示数据
     [self getAppearSource];
     
+    //添加tableView
     _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, _width, _high-10) style:UITableViewStyleGrouped];
     _tableView.showsHorizontalScrollIndicator = 0;
     _tableView.showsVerticalScrollIndicator = 0;
@@ -198,7 +282,7 @@
     _tableView.bounces = YES;
     [self.view addSubview:_tableView];
     
-    
+    //准备下拉刷新
     __weak UITableView * tableview = _tableView;
     [tableview addRefreshHeaderViewWithAniViewClass:[JHRefreshCommonAniView class] beginRefresh:^{
         
@@ -208,9 +292,12 @@
         dispatch_time_t delayInNanoSeconds = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
         //延期执行
         dispatch_after(delayInNanoSeconds, dispatch_get_main_queue(), ^{
+
             self.count = 20;
             
-            NSDictionary * dic11 = [MicroBlogOperateForSina getRecentWeiboOfUserWithAccessToken:self.access_token andtype:WeiboTypeAll];
+            NSDictionary * dic11 = [MicroBlogOperateForSina getRecentWeiboOfUserWithAccessToken:self.access_token andtype:WeiboTypeAll andMax_id:@"0"];
+            [dic11 writeToFile:_path atomically:YES];
+            max_id = dic11[@"max_id"];
             
             _source = [dic11[@"statuses"] mutableCopy];
             _weibo_Content_Pic = [NSMutableArray new];
@@ -227,6 +314,7 @@
         });
     }];
     
+    //准备上拉加载
     [tableview addRefreshFooterViewWithAniViewClass:[JHRefreshCommonAniView class] beginRefresh:^{
         
         //延时隐藏refreshView;
@@ -244,6 +332,14 @@
                 self.count += _source.count%20;
             }
             
+            NSDictionary * dic11 = [MicroBlogOperateForSina getRecentWeiboOfUserWithAccessToken:self.access_token andtype:WeiboTypeAll andMax_id:max_id];
+            max_id = dic11[@"max_id"];
+           
+            for (int i = 0; i < [dic11[@"statuses"] count]; i++)
+            {
+                [_source addObject:dic11[@"statuses"][i]];
+            }
+            [self getAppearSource];
             
             [tableview reloadData];
             
@@ -254,6 +350,7 @@
     }];
 }
 
+#pragma mark 弹出选项列表
 - (void)getView:(UIButton *)sender
 {
     PopoverView * popover = [PopoverView new];
@@ -265,6 +362,7 @@
     [popover show];
 }
 
+#pragma mark navigation左侧按钮点击方法
 - (void)findFriends:(UIButton *)sender
 {
     FindFriendViewController * find = [FindFriendViewController new];
@@ -273,33 +371,40 @@
     [self.navigationController pushViewController:find animated:YES];
 }
 
+#pragma mark 自定义cell
 - (void)initCellForPageFirst:(UITableViewCell *)cell andIndexPath:(NSIndexPath *)indexPath
 {
     int button_y;
     cell.backgroundColor = [UIColor colorWithWhite:0.9 alpha:0];
     
+    //用户名，时间和发布平台的底层view
     UIView * view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, _width, 35)];
     view.backgroundColor = [UIColor whiteColor];
     [cell.contentView addSubview:view];
     
+    //倒三角按钮
     UIButton * listButton = [UIButton buttonWithType:UIButtonTypeCustom];
     listButton.frame = CGRectMake(_width-35, 5, 30, 30);
     [listButton setImage:[UIImage imageNamed:@"preview_icon_hidden_highlighted@2x.png"] forState:UIControlStateNormal];
     [listButton addTarget:self.tabBarController action:@selector(viewAppear) forControlEvents:UIControlEventTouchUpInside];
     [view addSubview:listButton];
     
+    //用户头像
     UIImageView * user_Image = [[UIImageView alloc]initWithImage:_userPic_Source[indexPath.section]];
     user_Image.frame = CGRectMake(5, 5, 30, 30);
     [view addSubview:user_Image];
     
+    //用户名
     UILabel * label = [[UILabel alloc]initWithFrame:CGRectMake(40, 2, _width-40, 20)];
     label.text = _source[indexPath.section][@"user"][@"name"];
     [view addSubview:label];
+    
     
     NSString * time = [Factory getDateWithSourceDate:_source[indexPath.section][@"created_at"] andSysDate:[NSString stringWithFormat:@"%@",[NSDate dateWithTimeIntervalSinceNow:8*3600]]];
     
     NSString * state = [[[[_source[indexPath.section][@"source"] componentsSeparatedByString:@">"]objectAtIndex:1] componentsSeparatedByString:@"<"] objectAtIndex:0];
     
+    //发布时间
     UILabel * time_Label = [[UILabel alloc]initWithFrame:CGRectMake(40, 22, time.length*10, 10)];
     time_Label.font = [UIFont fontWithName:Nil size:10];
     time_Label.text = time;
@@ -309,20 +414,25 @@
     }
     [view addSubview:time_Label];
     
+    //发布平台
     UILabel * state_Label = [[UILabel alloc]initWithFrame:CGRectMake(45+time.length*10, 22, (state.length+2)*18, 10)];
     state_Label.text = [NSString stringWithFormat:@"来自%@",state];
     state_Label.font = [UIFont systemFontOfSize:10];
     [view addSubview:state_Label];
     
     NSArray * content_Pic = _source[indexPath.section][@"pic_urls"];
+    
+    //微博底层view
     UIView * content_View = [[UIView alloc]initWithFrame:CGRectMake(0, 35, _width, [Factory contentHeight:_source[indexPath.section][@"text"]]+ceil(content_Pic.count/3.0) * 70+5)];
     content_View.backgroundColor = [UIColor whiteColor];
     content_View.userInteractionEnabled = 1;
     [cell.contentView addSubview:content_View];
     
+    //为cell添加长按手势
     UILongPressGestureRecognizer * press = [[UILongPressGestureRecognizer alloc]initWithTarget:self.tabBarController action:@selector(viewAppearance:)];
     [cell addGestureRecognizer:press];
     
+    //微博内容
     UITextView * text = [[UITextView alloc]initWithFrame:CGRectMake(5, 5, _width-10, [Factory contentHeight:_source[indexPath.section][@"text"]])];
     text.text = _source[indexPath.section][@"text"];
     text.font = [UIFont fontWithName:nil size:15];
@@ -336,11 +446,14 @@
     if ([arr containsObject:@"retweeted_status"])
     {
         NSArray * content_Pic1 = _source[indexPath.section][@"retweeted_status"][@"pic_urls"];
+        
+        //转发的微博的底层view
         UIView * content_View1 = [[UIView alloc]initWithFrame:CGRectMake(0, text.frame.origin.y+5+CGRectGetHeight(text.frame), _width, [Factory contentHeight:_source[indexPath.section][@"retweeted_status"][@"text"]]+ceil(content_Pic1.count/3.0) * 70+10)];
         content_View1.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1];
         
         content_View.frame = CGRectMake(0, 35, _width, [Factory contentHeight:_source[indexPath.section][@"text"]]+[Factory contentHeight:_source[indexPath.section][@"retweeted_status"][@"text"]]+ceil(content_Pic1.count/3.0) * 60);
         
+        //转发的微博内容
         UITextView * text1 = [[UITextView alloc]initWithFrame:CGRectMake(5, 5, _width-10, [Factory contentHeight:_source[indexPath.section][@"retweeted_status"][@"text"]])];
         text1.text = [NSString stringWithFormat:@"@%@ :%@",_name[indexPath.section],_source[indexPath.section][@"retweeted_status"][@"text"]];
         text1.font = [UIFont fontWithName:nil size:15];
@@ -358,6 +471,7 @@
 //        user_Name_Label.textColor = [UIColor blueColor];
 //        [content_View1 addSubview:user_Name_Label];
         
+        //转发的微博的配图
         NSMutableArray * pic_Array1 = _weibo_Content_Pic1[indexPath.section];
         for (int i = 0; i < content_Pic1.count; i++)
         {
@@ -381,6 +495,8 @@
     }
     else
     {
+        
+        //原创微博配图
         NSMutableArray * pic_Array = _weibo_Content_Pic[indexPath.section];
         for (int i = 0; i < content_Pic.count; i++)
         {
@@ -402,6 +518,7 @@
         button_y = ceil(content_Pic.count/3.0) * 70 + [Factory contentHeight:_source[indexPath.section][@"text"]]+42;
     }
     
+    //功能按钮
     NSArray * button_Name = @[@"转发",@"评论",@"赞"];
     _button_Image = @[@"statusdetail_icon_retweet@2x.png",@"statusdetail_icon_comment@2x.png",@"statusdetail_comment_icon_like@2x.png",@"statusdetail_comment_icon_like_highlighted@2x.png"];
     for (int i = 0; i < 3; i++)
@@ -430,6 +547,7 @@
     }
 }
 
+#pragma mark 评论或转发
 - (void)pushViewController:(UIButton *)sender
 {
     EditViewController * edit = [EditViewController new];
@@ -450,6 +568,7 @@
     [self.navigationController pushViewController:edit animated:YES];
 }
 
+#pragma mark 赞
 - (void)changeColor:(UIButton *)sender
 {
     if ([sender.imageView.image isEqual:[UIImage imageNamed:_button_Image[2]]])
@@ -462,6 +581,7 @@
     }
 }
 
+#pragma mark 获取显示资源
 - (void)getAppearSource
 {
     for (int i = 0; i < _source.count; i ++)

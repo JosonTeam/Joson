@@ -39,34 +39,42 @@
 {
     [super viewDidLoad];
     
+#pragma mark 获取窗口的宽度和高度
     NSArray * highAndWidth = [Factory getHeigtAndWidthOfDevice];
     _width = [highAndWidth[0] intValue];
     _high = [highAndWidth[1] intValue];
     
     _autoBack = 0;
     
+    //准备声音
     _player = [[AVAudioPlayer alloc]initWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle]pathForResource:@"composer_close" ofType:@"wav"]] error:nil];
     [_player prepareToPlay];
     
+    //准备按钮数据
     NSArray * label_Name = @[@[@"文字",@"相册",@"拍摄",@"签到",@"点评",@"更多"],@[@"好友圈",@"秒拍",@"音乐",@"长微博",@"收款"]];
     NSArray * pic = @[@[@"tabbar_compose_idea.png",@"tabbar_compose_photo@2x.png",@"tabbar_compose_camera@2x.png",@"tabbar_compose_lbs@2x.png",@"tabbar_compose_review@2x.png",@"tabbar_compose_more@2x.png"],@[@"tabbar_compose_friend@2x.png",@"tabbar_compose_shooting@2x.png",@"tabbar_compose_music@2x.png",@"tabbar_compose_weibo@2x.png",@"tabbar_compose_envelope@2x.png"]];
     
+    //设置背景图片
     UIImageView * im = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, _width, _high)];
     im.image = [UIImage imageNamed:@"Default-568h@2x2.png"];
     im.userInteractionEnabled = 1;
     
+    //为背景添加单击手势
     UITapGestureRecognizer * bg_Tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(back)];
     [im addGestureRecognizer:bg_Tap];
     
+    //为按钮添加清扫手势，清扫方向为向右
     UISwipeGestureRecognizer * swipe = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(go)];
     swipe.direction = UISwipeGestureRecognizerDirectionRight;
     [im addGestureRecognizer:swipe];
     
+    //添加scrollView
     _s = [[UIScrollView alloc]initWithFrame:CGRectMake(0, _high-320, _width, _high-240)];
     _s.contentSize = CGSizeMake(_width*2, _high-240);
     _s.scrollEnabled = NO;
     [im addSubview:_s];
     
+    //添加按钮
     UIView * first = [[UIView alloc]initWithFrame:CGRectMake(0, 0, _width, _high-240)];
     UIView * second = [[UIView alloc]initWithFrame:CGRectMake(_width, 0, _width, _high-240)];
     
@@ -110,6 +118,7 @@
     }
     [_s addSubview:second];
     
+    //添加返回按钮
     UIButton * back = [UIButton buttonWithType:UIButtonTypeCustom];
     [back setImage:[UIImage imageNamed:@"tabbar_compose_background_icon_close@2x.png"] forState:UIControlStateNormal];
     [back addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
@@ -119,6 +128,7 @@
     [self.view addSubview:im];
 }
 
+#pragma mark 点击按钮
 - (void)click:(UITapGestureRecognizer *)sender
 {
     UIViewController * viewController;
@@ -165,11 +175,13 @@
     }
 }
 
+#pragma mark 滚动
 - (void)go
 {
     [_s scrollRectToVisible:CGRectMake(0, _high-320, _width, _high) animated:YES];
 }
 
+#pragma mark 返回
 - (void)back
 {
     [_player play];

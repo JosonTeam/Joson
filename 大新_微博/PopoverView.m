@@ -33,6 +33,7 @@
     return self;
 }
 
+#pragma mark 设置视图出现的位置和标题以及图片
 -(id)initWithPoint:(CGPoint)point titles:(NSArray *)titles images:(NSArray *)images
 {
     self = [super init];
@@ -49,6 +50,7 @@
     return self;
 }
 
+#pragma mark 获取视图
 -(CGRect)getViewFrame
 {
     CGRect frame = CGRectZero;
@@ -81,7 +83,7 @@
     return frame;
 }
 
-
+#pragma mark 显示视图
 -(void)show
 {
     self.handerView = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -109,6 +111,7 @@
     }];
 }
 
+#pragma mark 让视图消失
 -(void)dismiss
 {
     [self dismiss:YES];

@@ -83,7 +83,7 @@
     static BOOL isOk = 1;
     NSURL * url = [NSURL URLWithString:InterfaceForSinaToFollowUser];
     NSMutableURLRequest * request = [[NSMutableURLRequest alloc]initWithURL:url];
-    NSString * str = [NSString stringWithFormat:@"access_token=%@&name=%@",access_token,name];
+    NSString * str = [NSString stringWithFormat:@"access_token=%@&screen_name=%@",access_token,name];
     NSData * para = [str dataUsingEncoding:NSUTF8StringEncoding];
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:para];
@@ -898,13 +898,15 @@
  其中:
  access_token ---用户授权码
  type ---微博类型
+ max_id ---从ID为max_id的时间段开始
  */
 + (NSDictionary *)getRecentWeiboOfUserWithAccessToken:(NSString *)access_token
                                               andtype:(WeiboType *)type
+                                            andMax_id:(NSString *)max_id
 {
     NSError * error;
     static NSDictionary * dic;
-    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&feature=%d",InterfaceForSinaToGetRecentWeiboOfUser,access_token,(int)type]];
+    NSURL * url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?access_token=%@&feature=%d&max_id=%@",InterfaceForSinaToGetRecentWeiboOfUser,access_token,(int)type,max_id]];
     NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:10];
     NSData * data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
     if (error)

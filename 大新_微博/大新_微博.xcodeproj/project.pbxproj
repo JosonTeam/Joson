@@ -1696,7 +1696,7 @@
 		A575AC451A09D8A300F86164 /* EditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A575AC441A09D8A300F86164 /* EditViewController.m */; };
 		A575AC471A09F31400F86164 /* toolbar_rightarrow@2x2.png in Resources */ = {isa = PBXBuildFile; fileRef = A575AC461A09F31400F86164 /* toolbar_rightarrow@2x2.png */; };
 		A575AC4A1A0A409300F86164 /* FindFriendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A575AC491A0A409300F86164 /* FindFriendViewController.m */; };
-		A5AF34A81A071CA400740855 /* File.plist in Resources */ = {isa = PBXBuildFile; fileRef = A5AF34A71A071CA400740855 /* File.plist */; };
+		A5AF34A81A071CA400740855 /* Source.plist in Resources */ = {isa = PBXBuildFile; fileRef = A5AF34A71A071CA400740855 /* Source.plist */; };
 		A5AF34FC1A07204700740855 /* JHRefreshAmazingAniView.m in Sources */ = {isa = PBXBuildFile; fileRef = A5AF34E51A07204700740855 /* JHRefreshAmazingAniView.m */; };
 		A5AF34FD1A07204700740855 /* JHRefreshAniBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = A5AF34E71A07204700740855 /* JHRefreshAniBaseView.m */; };
 		A5AF34FE1A07204700740855 /* JHRefreshCommonAniView.m in Sources */ = {isa = PBXBuildFile; fileRef = A5AF34E91A07204700740855 /* JHRefreshCommonAniView.m */; };
@@ -3441,7 +3441,7 @@
 		A575AC461A09F31400F86164 /* toolbar_rightarrow@2x2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toolbar_rightarrow@2x2.png"; sourceTree = "<group>"; };
 		A575AC481A0A409300F86164 /* FindFriendViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FindFriendViewController.h; sourceTree = "<group>"; };
 		A575AC491A0A409300F86164 /* FindFriendViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FindFriendViewController.m; sourceTree = "<group>"; };
-		A5AF34A71A071CA400740855 /* File.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = File.plist; sourceTree = "<group>"; };
+		A5AF34A71A071CA400740855 /* Source.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Source.plist; sourceTree = "<group>"; };
 		A5AF34E41A07204700740855 /* JHRefreshAmazingAniView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JHRefreshAmazingAniView.h; sourceTree = "<group>"; };
 		A5AF34E51A07204700740855 /* JHRefreshAmazingAniView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JHRefreshAmazingAniView.m; sourceTree = "<group>"; };
 		A5AF34E61A07204700740855 /* JHRefreshAniBaseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JHRefreshAniBaseView.h; sourceTree = "<group>"; };
@@ -3501,7 +3501,7 @@
 			isa = PBXGroup;
 			children = (
 				A5AF34E21A07204700740855 /* Refresh */,
-				A5AF34A71A071CA400740855 /* File.plist */,
+				A5AF34A71A071CA400740855 /* Source.plist */,
 				A575AC481A0A409300F86164 /* FindFriendViewController.h */,
 				A575AC491A0A409300F86164 /* FindFriendViewController.m */,
 				A575AC431A09D8A300F86164 /* EditViewController.h */,
@@ -6794,7 +6794,7 @@
 				A56B8DEF1A062443006EBC66 /* background_b.png in Resources */,
 				A56B90131A062443006EBC66 /* login_introduce_bg3@2x.jpg in Resources */,
 				A56B8F2F1A062443006EBC66 /* d_dalian@2x.png in Resources */,
-				A5AF34A81A071CA400740855 /* File.plist in Resources */,
+				A5AF34A81A071CA400740855 /* Source.plist in Resources */,
 				A56B93941A062443006EBC66 /* userinfo_membership_expired@2x.png in Resources */,
 				A575AC471A09F31400F86164 /* toolbar_rightarrow@2x2.png in Resources */,
 				A56B8F851A062443006EBC66 /* friendcircle_other_button_white@2x.png in Resources */,
@@ -7262,7 +7262,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "大新_微博/大新_微博-Prefix.pch";
 				INFOPLIST_FILE = "大新_微博/大新_微博-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -7276,7 +7276,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "大新_微博/大新_微博-Prefix.pch";
 				INFOPLIST_FILE = "大新_微博/大新_微博-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
