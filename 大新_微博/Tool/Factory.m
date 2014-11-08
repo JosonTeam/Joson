@@ -67,48 +67,44 @@
     
     if ([sys_Date[0] intValue] - [source_Date[0] intValue] != 0)
     {
-        str = [NSString stringWithFormat:@"%d年前",[sys_Date[0] intValue] - [source_Date[0] intValue]];
+        str = [NSString stringWithFormat:@"%d-%d-%d",[source_Date[0] intValue] , [source_Date[1] intValue] , [source_Date[2] intValue]];
     }
-    else if([sys_Date[1] intValue] - [source_Date[1] intValue] > 0)
+    
+    else if([sys_Date[1] intValue] - [source_Date[1] intValue] != 0 || [sys_Date[2] intValue] - [source_Date[2] intValue] != 0)
     {
-        str = [NSString stringWithFormat:@"%d个月前",[sys_Date[1] intValue] - [source_Date[1] intValue]];
+        str = [NSString stringWithFormat:@"%d-%d",[source_Date[1] intValue] , [source_Date[2] intValue]];
     }
-    else if([sys_Date[1] intValue] - [source_Date[1] intValue] < 0)
-    {
-        str = [NSString stringWithFormat:@"%d个月前",[source_Date[1] intValue] - [sys_Date[1] intValue]];
-    }
-    else if ([sys_Date[2] intValue] - [source_Date[2] intValue] > 0)
-    {
-        str = [NSString stringWithFormat:@"%d天前",[sys_Date[2] intValue] - [source_Date[2] intValue]];
-    }
-    else if ([sys_Date[2] intValue] - [source_Date[2] intValue] < 0)
-    {
-        str = [NSString stringWithFormat:@"%d天前",[source_Date[2] intValue] - [sys_Date[2] intValue]];
-    }
+    
     else if ([sys_Date[3] intValue] - [source_Date[3] intValue] > 0)
     {
         str = [NSString stringWithFormat:@"%d小时前",[sys_Date[3] intValue] - [source_Date[3] intValue]];
     }
+    
     else if ([sys_Date[3] intValue] - [source_Date[3] intValue] < 0)
     {
         str = [NSString stringWithFormat:@"%d小时前",[source_Date[3] intValue] - [sys_Date[3] intValue]];
     }
+    
     else if ([sys_Date[4] intValue] - [source_Date[4] intValue] > 0)
     {
         str = [NSString stringWithFormat:@"%d分钟前",[sys_Date[4] intValue] - [source_Date[4] intValue]];
     }
+    
     else if ([sys_Date[4] intValue] - [source_Date[4] intValue] < 0)
     {
         str = [NSString stringWithFormat:@"%d分钟前",[source_Date[4] intValue] - [sys_Date[4] intValue]];
     }
-    else if (0 < [source_Date[5] intValue] % 60 < 5)
+    
+    else if (0 < [source_Date[5] intValue] % 60 <= 30)
     {
         str = @"刚刚";
     }
+    
     else if([sys_Date[5] intValue] - [source_Date[5] intValue] > 0)
     {
         [NSString stringWithFormat:@"%d秒前",[sys_Date[5] intValue] - [source_Date[5] intValue]];
     }
+    
     else if ([sys_Date[5] intValue] - [source_Date[5] intValue] < 0)
     {
         [NSString stringWithFormat:@"%d秒前",[source_Date[5] intValue] - [sys_Date[5] intValue]];

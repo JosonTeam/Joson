@@ -3,8 +3,10 @@
 #import "BaseViewController.h"
 #import "MenuViewController.h"
 #import "EditViewController.h"
+#import "PhotoTableView.h"
 #import "PopoverView.h"
 #import "JHRefresh.h"
+#import "MyView.h"
 
 @interface BaseViewController ()
 {
@@ -15,11 +17,15 @@
     UITableView * _tableView; //tableView
     AVAudioPlayer * _player; //音频播放器
     NSArray * _button_Image; //转发，评论和赞按钮的图片
+    PhotoTableView * pt; //创建我页面相册
     NSString * max_id; //更新微博的起始代号
     NSString * _path; //文件路径
+    MyView * mv; //创建我页面的view全局变量
     int _width; //屏幕宽度
     int _high; //屏幕高度
     
+   
+   
 }
 
 @end
@@ -125,6 +131,8 @@
                                                                    andType : UIButtonTypeCustom
                                                               withButtonTag:2];
             
+            [self createGround];
+            
         }
             break;
             
@@ -132,11 +140,23 @@
         {
             
             //添加标题栏右侧按钮
-            [NavigationControllerCustomer createRightBarButtonItemForViewController:self
-                                                                            withTag:2
-                                                                           andTitle:@"设置"
-                                                                           andImage:nil
-                                                                           andType : UIButtonTypeCustom];
+//            [NavigationControllerCustomer createRightBarButtonItemForViewController:self
+//                                                                            withTag:2
+//                                                                           andTitle:@"设置"
+//                                                                           andImage:nil
+//                                                                           andType : UIButtonTypeCustom];
+            
+            mv = [[MyView alloc]initWithFrame:self.view.frame];
+            
+            NSDictionary * data = [MicroBlogOperateForSina getWeiboOfUserWithAccessToken:_access_token
+                                                                                    name:_userLoginName
+                                                                                 andtype:WeiboTypeAll];
+            
+            mv.dataText = data;
+            mv.username = _userLoginName;
+            mv.acc_token = _access_token;
+            
+            [mv createMe:self];
             
         }
             break;
@@ -296,13 +316,13 @@
                                                                                       andMax_id:max_id];
             max_id = dic11[@"max_id"];
            
-            NSArray * status = dic11[@"status"];
+            NSArray * status = dic11[@"statuses"];
             
             for (int i = 0; i < status.count; i++)
             {
-                [_source addObject:dic11[@"statuses"][i]];
+                [_source addObject:status[i]];
             }
-            
+     
             [self getAppearSource];
             
             [tableview reloadData];
@@ -314,6 +334,14 @@
                                            
     }];
     
+}
+
+#pragma mark 创建广场那一页
+-(void)createGround
+{
+    UITableView * groundTable = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, _width, _high)];
+    
+    [self.view addSubview:groundTable];
 }
 
 #pragma mark 获取显示资源
@@ -364,6 +392,7 @@
                 NSData * data = [[NSData alloc] initWithContentsOfURL : [NSURL URLWithString:_source[i][@"user"][@"avatar_large"]]];
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
+                    
                     _userPic_Source[i] = [UIImage imageWithData:data];
                     
                     [self performSelectorOnMainThread:@selector(refreshPhoto:)
@@ -941,5 +970,76 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
     
 }
 
+#pragma 我页面下:主页,微博,相册,更多之间的跳转
+-(void)clickSection:(UIButton *)sender
+{
+    
+    if (sender.tag == 1)
+    {
+        
+    }
+    
+    if (sender.tag == 2)
+    {
+        
+        [pt removeFromSuperview];
+        
+        NSDictionary * data = [MicroBlogOperateForSina getWeiboOfUserWithAccessToken:_access_token
+                                                                                name:_userLoginName
+                                                                             andtype:WeiboTypeAll];
+        
+        mv = [[MyView alloc] initWithFrame:self.view.frame];
+        mv.dataText = data;
+        mv.username = _userLoginName;
+        mv.acc_token = _access_token;
+
+        
+        [mv createMe:self];
+        
+    }
+    
+    if (sender.tag == 3)
+    {
+        [mv removeFromSuperview];
+        
+        pt = [[PhotoTableView alloc] initWithFrame:self.view.frame];
+        pt.username = _userLoginName;
+        pt.acc_token = _access_token;
+        
+        
+        
+        NSDictionary * data = [MicroBlogOperateForSina getPicListWithAccessToken:_access_token
+                                                                           andId:[[MicroBlogOperateForSina getIdWithAccessToken:_access_token][@"uid"] integerValue]];
+        NSLog(@"%@",data);
+        
+        pt.dataText = data;
+        
+        [pt createMe:self];
+        
+    }
+    
+    if (sender.tag == 4)
+    {
+        
+        //sender.frame.origin.x + sender.frame.size.width/2, sender.frame.origin.y + sender.frame.size.height
+        CGPoint point = CGPointMake(sender.frame.origin.x + sender.frame.size.width/2, sender.frame.origin.y + sender.frame.size.height);
+        NSArray * titles = @[@"新的好友",@"我的收藏",@"赞",@"微博支付",@"个性化",@"我的名片"];
+        NSArray * images =@[@"",@"",@"",@"",@"",@""];
+        
+        PopoverView * pop = [[PopoverView alloc] initWithPoint:point
+                                                        titles:titles
+                                                        images:images];
+        
+        pop.selectRowAtIndex = ^(NSInteger index)
+        {
+            
+            NSLog(@"你选中了%@",titles[index]);
+        };
+        [pop show];
+        
+    }
+    
+    
+}
 
 @end

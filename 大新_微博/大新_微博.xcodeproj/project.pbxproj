@@ -1742,6 +1742,8 @@
 		A5AF35051A07204700740855 /* UIScrollView+JHRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = A5AF34F91A07204700740855 /* UIScrollView+JHRefresh.m */; };
 		A5AF35061A07204700740855 /* UIView+JHExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = A5AF34FB1A07204700740855 /* UIView+JHExtension.m */; };
 		A5B355E51A0DB5C2005583F6 /* AlartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5B355E41A0DB5C2005583F6 /* AlartViewController.m */; };
+		A5B355EF1A0DDF18005583F6 /* MyView.m in Sources */ = {isa = PBXBuildFile; fileRef = A5B355EC1A0DDF18005583F6 /* MyView.m */; };
+		A5B355F01A0DDF18005583F6 /* PhotoTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = A5B355EE1A0DDF18005583F6 /* PhotoTableView.m */; };
 		A5B9E94A1A08B1BE000C47C1 /* PopoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = A5B9E9491A08B1BE000C47C1 /* PopoverView.m */; };
 		A5B9E94C1A08BCCE000C47C1 /* navigationbar_pop1.png in Resources */ = {isa = PBXBuildFile; fileRef = A5B9E94B1A08BCCE000C47C1 /* navigationbar_pop1.png */; };
 		A5C4115D1A0CCE9700B286A9 /* LimitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5C4115C1A0CCE9700B286A9 /* LimitViewController.m */; };
@@ -3542,6 +3544,10 @@
 		A5AF34FB1A07204700740855 /* UIView+JHExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+JHExtension.m"; sourceTree = "<group>"; };
 		A5B355E31A0DB5C2005583F6 /* AlartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlartViewController.h; sourceTree = "<group>"; };
 		A5B355E41A0DB5C2005583F6 /* AlartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlartViewController.m; sourceTree = "<group>"; };
+		A5B355EB1A0DDF18005583F6 /* MyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyView.h; sourceTree = "<group>"; };
+		A5B355EC1A0DDF18005583F6 /* MyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyView.m; sourceTree = "<group>"; };
+		A5B355ED1A0DDF18005583F6 /* PhotoTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoTableView.h; sourceTree = "<group>"; };
+		A5B355EE1A0DDF18005583F6 /* PhotoTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoTableView.m; sourceTree = "<group>"; };
 		A5B9E9481A08B1BE000C47C1 /* PopoverView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopoverView.h; sourceTree = "<group>"; };
 		A5B9E9491A08B1BE000C47C1 /* PopoverView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopoverView.m; sourceTree = "<group>"; };
 		A5B9E94B1A08BCCE000C47C1 /* navigationbar_pop1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navigationbar_pop1.png; sourceTree = "<group>"; };
@@ -3604,6 +3610,7 @@
 		A5005DAD1A038DBD00487FEC = {
 			isa = PBXGroup;
 			children = (
+				A5B355EA1A0DDF04005583F6 /* LiShiJu */,
 				A5B355E31A0DB5C2005583F6 /* AlartViewController.h */,
 				A5B355E41A0DB5C2005583F6 /* AlartViewController.m */,
 				E42180891A0D40DC000BC540 /* ViewController + View */,
@@ -5566,6 +5573,17 @@
 			path = AnimationView;
 			sourceTree = "<group>";
 		};
+		A5B355EA1A0DDF04005583F6 /* LiShiJu */ = {
+			isa = PBXGroup;
+			children = (
+				A5B355EB1A0DDF18005583F6 /* MyView.h */,
+				A5B355EC1A0DDF18005583F6 /* MyView.m */,
+				A5B355ED1A0DDF18005583F6 /* PhotoTableView.h */,
+				A5B355EE1A0DDF18005583F6 /* PhotoTableView.m */,
+			);
+			name = LiShiJu;
+			sourceTree = "<group>";
+		};
 		E42180891A0D40DC000BC540 /* ViewController + View */ = {
 			isa = PBXGroup;
 			children = (
@@ -7370,9 +7388,11 @@
 				E434443B1A07E6E500A8B078 /* LoginViewController.m in Sources */,
 				A56B8D9C1A062443006EBC66 /* AFHTTPRequestOperationManager.m in Sources */,
 				A56B8DA61A062443006EBC66 /* GetDataOfLocalFile.m in Sources */,
+				A5B355EF1A0DDF18005583F6 /* MyView.m in Sources */,
 				A56B8DAB1A062443006EBC66 /* MicroBlogOperateForSina.m in Sources */,
 				A5AF35021A07204700740855 /* JHRefreshFooterView.m in Sources */,
 				A575AC4A1A0A409300F86164 /* FindFriendViewController.m in Sources */,
+				A5B355F01A0DDF18005583F6 /* PhotoTableView.m in Sources */,
 				A5AF34FE1A07204700740855 /* JHRefreshCommonAniView.m in Sources */,
 				A56B94211A062443006EBC66 /* Factory.m in Sources */,
 				A5AF35061A07204700740855 /* UIView+JHExtension.m in Sources */,

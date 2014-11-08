@@ -63,6 +63,7 @@
                                                                        orId : [[MicroBlogOperateForSina getIdWithAccessToken:_access_token][@"uid"] intValue]][@"name"];
     
     _v1.userLoginName = _userLoginName;
+    v5.userLoginName = _userLoginName;
     
     //传递access_token
     _v1.access_token = _access_token;
@@ -94,6 +95,7 @@
     
     //隐藏“＋”页面的标题栏
     n3.navigationBarHidden = YES;
+    n5.navigationBarHidden = YES;
     
     //设置tabbar的viewControllers
     self.viewControllers = @[n1 , n2 , n3 , n4 , n5];
@@ -233,6 +235,12 @@
     if (_cellName)
     {
         cell.textLabel.text = _cellName[indexPath.row];
+        
+        if ([_cellName[indexPath.row] isEqualToString:@"删除"])
+        {
+            cell.textLabel.textColor = [UIColor orangeColor];
+        }
+        
     }
     
     return cell;
@@ -355,6 +363,10 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 //    {
         _cellName = @[@"转发" , @"评论" , @"收藏" , @"转发原微博"];
 //    }
+    if ([_v1.source[indexPath.section][@"user"][@"name"] isEqualToString:_userLoginName])
+    {
+        _cellName = @[@"收藏" , @"推广" , @"删除"];
+    }
     
     [_table_View reloadData];
     

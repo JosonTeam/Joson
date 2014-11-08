@@ -1663,7 +1663,7 @@
  uids ---用户id
  */
 + (NSArray *)getCountOfAllWithAccessToken:(NSString *)access_token
-                                        andUid:(NSArray *)uids
+                                   andUid:(NSArray *)uids
 {
     NSError * error;
     static NSArray * arr;
@@ -3973,7 +3973,7 @@
     NSMutableURLRequest * request = [[NSMutableURLRequest alloc] initWithURL:url
                                                                  cachePolicy:NSURLRequestReloadIgnoringCacheData
                                                              timeoutInterval:10];
-    
+
     [request setHTTPMethod:@"GET"];
     
     [NSURLConnection sendAsynchronousRequest:request
