@@ -131,8 +131,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
 
 
 
+#pragma mark 发送一条携带一张图片的微博
 /*
- 发送一条携带一张图片的微博
  其中:
  access_token ---用户授权码
  content ---文字内容
@@ -145,8 +145,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                              andType:(VisibleType *)type;
 
 
+#pragma mark 签到同时上传一张图片
 /*
- 签到同时上传一张图片
  其中:
  access_token ---用户授权码
  content ---签到内容
@@ -159,8 +159,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                         andId:(NSInteger)iD;
 
 
+#pragma mark 添加照片
 /*
- 添加照片
  access_token ---用户授权码
  content ---签到内容
  pic ---图片url
@@ -172,8 +172,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                         andId:(NSInteger)iD;
 
 
+#pragma mark 判断地理信息坐标是否是国内坐标
 /*
- 判断地理信息坐标是否是国内坐标
  其中:
  access_token ---用户授权码
  coordinate ---坐标
@@ -182,8 +182,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                   coordinate:(NSString *)coordinate;
 
 
+#pragma mark 添加点评
 /*
- 添加点评
  access_token ---用户授权码
  content ---签到内容
  iD ---位置id
@@ -194,8 +194,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
 
 
 
+#pragma mark 发送一条纯文字微博
 /*
- 发送一条纯文字微博
  其中:
  access_token ---用户授权码
  content ---发送内容
@@ -206,8 +206,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                              andType:(VisibleType *)type;
 
 
+#pragma mark 转发一条微博
 /*
- 转发一条微博
  其中:
  access_token ---用户授权码
  content ---转发评论信息(可为nil)
@@ -218,8 +218,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                              andId:(NSInteger)iD;
 
 
+#pragma mark 删除微博
 /*
- 删除微博
  其中:
  access_token ---用户授权码
  ID ---要删除的微博的ID
@@ -228,8 +228,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                   iD:(NSInteger)ID;
 
 
+#pragma mark 移除关注用户
 /*
- 移除关注用户
  其中:
  access_token ---用户授权码
  ID ---需要移除的用户ID
@@ -238,16 +238,16 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                       iD:(NSInteger)ID;
 
 
+#pragma mark 退出登录状态
 /*
- 退出登录状态
  其中:
  access_token ---用户授权码
  */
 + (BOOL)logoutMicroBlogWithAccessToken:(NSString *)access_token;
 
 
+#pragma mark 关注用户
 /*
- 关注用户
  其中:
  access_token ---用户授权码
  name ---用户名
@@ -256,8 +256,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                           andName:(NSString *)name;
 
 
+#pragma mark 添加收藏
 /*
- 添加收藏
  其中:
  access_token ---用户授权码
  iD ---微博id
@@ -266,8 +266,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                 andId:(NSInteger)iD;
 
 
+#pragma mark 删除收藏
 /*
- 删除收藏
  其中:
  access_token ---用户授权码
  iD ---微博id
@@ -276,8 +276,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                 andId:(NSInteger)iD;
 
 
+#pragma mark 更新收藏
 /*
- 更新收藏
  其中:
  access_token ---用户授权码
  iD ---微博id
@@ -286,8 +286,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                 andId:(NSInteger)iD;
 
 
+#pragma mark 更新用户收藏下的指定标签
 /*
- 更新用户收藏下的指定标签
  其中:
  access_token ---用户授权码
  iD ---标签id
@@ -296,8 +296,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                      andId:(NSInteger)iD;
 
 
+#pragma mark 删除用户收藏下的指定标签
 /*
- 删除用户收藏下的指定标签
  其中:
  access_token ---用户授权码
  iD ---标签ID
@@ -306,8 +306,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                      andId:(NSInteger)iD;
 
 
+#pragma mark 添加用户标签
 /*
- 添加用户标签
  其中:
  access_token ---用户授权码
  tag ---标签
@@ -316,8 +316,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                           andTag:(NSArray *)tag;
 
 
+#pragma mark 删除用户标签
 /*
- 删除用户标签
  其中:
  access_token ---用户授权码
  iD ---标签id
@@ -326,8 +326,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                            andId:(NSInteger)iD;
 
 
+#pragma mark 标记不感兴趣的人
 /*
- 标记不感兴趣的人
  其中:
  access_token ---用户授权码
  iD ---用户id
@@ -336,8 +336,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                      andId:(NSInteger)iD;
 
 
+#pragma mark 评论微博
 /*
- 评论微博
  其中:
  access_token ---用户授权码
  content ---评论内容
@@ -348,8 +348,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                andId:(NSInteger)iD;
 
 
+#pragma mark 删除评论
 /*
- 删除评论
  其中:
  access_token ---用户授权码
  cid ---评论id
@@ -358,8 +358,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                               andCid:(NSInteger)cid;
 
 
+#pragma mark 根据id删除评论
 /*
- 根据id删除评论
  其中:
  access_token ---用户授权码
  cids ---评论id
@@ -368,8 +368,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                 andCid:(NSArray *)cids;
 
 
+#pragma mark 回复评论
 /*
- 回复评论
  其中:
  access_token ---用户授权码
  iD ---微博id
@@ -382,8 +382,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                               andCid:(NSInteger)cid;
 
 
+#pragma mark 获取系统推荐用户
 /*
- 获取系统推荐用户
  其中:
  access_token ---用户授权码
  category ---用户类型
@@ -393,8 +393,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
 
 
 
+#pragma mark 取得用户的详细信息
 /*
- 取得用户的详细信息
  其中:
  access_token ---用户授权码
  name ---用户名
@@ -405,8 +405,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                             orId:(NSInteger)uid;
 
 
+#pragma mark 获得用户发表的微博
 /*
- 获得用户发表的微博
  其中:
  access_token ---用户授权码
  name ---用户名
@@ -416,8 +416,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                            name:(NSString *)name
                                         andtype:(WeiboType *)type;
 
+#pragma mark 获得用户发表的微博的id
 /*
- 获得用户发表的微博的id
  其中:
  access_token ---用户授权码
  name ---用户名
@@ -428,8 +428,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                             andtype:(WeiboType *)type;
 
 
+#pragma mark 获得用户关注列表
 /*
- 获得用户关注列表
  其中:
  access_token ---用户授权码
  name ---用户名
@@ -437,40 +437,40 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
 + (NSDictionary *)getFollowingWithAccessToken:(NSString *)access_token
                                          name:(NSString *)name;
 
+#pragma mark 获取我发出的评论
 /*
- 获取我发出的评论
  其中:
  access_token ---用户授权码
  */
 + (NSDictionary *)getCommentsByMeWithAccessToken:(NSString *)access_token;
 
 
+#pragma mark 获取评论我
 /*
- 获取评论我
  其中:
  access_token ---用户授权码
  */
 + (NSDictionary *)getCommentsToMeWithAccessToken:(NSString *)access_token;
 
 
+#pragma mark 获取最新评论
 /*
- 获取最新评论
  其中:
  access_token ---用户授权码
  */
 + (NSDictionary *)getRecentNewCommentsWithAccessToken:(NSString *)access_token;
 
 
+#pragma mark 获取@我评论
 /*
- 获取@我评论
  其中:
  access_token ---用户授权码
  */
 + (NSDictionary *)getMentionsCommentWithAccessToken:(NSString *)access_token;
 
 
+#pragma mark 获取评论的详细信息
 /*
- 获取评论的详细信息
  其中:
  access_token ---用户授权码
  cids ---评论id
@@ -479,8 +479,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                               andIds:(NSArray *)cids;
 
 
+#pragma mark 获得用户粉丝列表
 /*
- 获得用户粉丝列表
  其中:
  access_token ---用户授权码
  name ---用户名
@@ -489,16 +489,16 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                        name:(NSString *)name;
 
 
+#pragma mark 获取最新的热门微博
 /*
- 获取最新的热门微博
  其中:
  access_token ---用户授权码
  */
 + (NSDictionary *)getRecentHotWeiboWithAccessToken:(NSString *)access_token;
 
 
+#pragma mark 获取关注好友的最新微博
 /*
- 获取关注好友的最新微博
  其中:
  access_token ---用户授权码
  type ---微博类型
@@ -507,8 +507,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                                  andtype:(WeiboType *)type;
 
 
+#pragma mark 获取当前用户的最新微博
 /*
- 获取当前用户的最新微博
  其中:
  access_token ---用户授权码
  type ---微博类型
@@ -519,8 +519,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                             andMax_id:(NSString *)max_id;
 
 
+#pragma mark 获取当前用户与所关注用户的最新微博ID
 /*
- 获取当前用户与所关注用户的最新微博ID
  其中:
  access_token ---用户授权码
  type ---微博类型
@@ -529,8 +529,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                             andtype:(WeiboType *)type;
 
 
+#pragma mark 获取指定微博的转发列表
 /*
- 获取指定微博的转发列表
  其中:
  access_token ---用户授权码
  iD ---微博id
@@ -539,8 +539,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                                 andId:(NSInteger)iD;
 
 
+#pragma mark 获取指定微博的评论列表
 /*
- 获取指定微博的评论列表
  其中:
  access_token ---用户授权码
  iD ---微博id
@@ -549,8 +549,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                                 andId:(NSInteger)iD;
 
 
+#pragma mark 获取指定微博的评论和转发数
 /*
- 获取指定微博的评论和转发数
  其中:
  access_token ---用户授权码
  iD ---微博id
@@ -559,8 +559,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                                             andId:(NSInteger)iD;
 
 
+#pragma mark 获取指定微博的详细信息
 /*
- 获取指定微博的详细信息
  其中:
  access_token ---用户授权码
  iD ---微博id
@@ -569,18 +569,18 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                              andId:(NSInteger)iD;
 
 
+#pragma mark 获取用户的微博数，关注数，粉丝数
 /*
- 获取用户的微博数，关注数，粉丝数
  其中:
  access_token ---用户授权码
  uids ---用户id
  */
-+ (NSDictionary *)getCountOfAllWithAccessToken:(NSString *)access_token
++ (NSArray *)getCountOfAllWithAccessToken:(NSString *)access_token
                                          andUid:(NSArray *)uids;
 
 
+#pragma mark 获取共同关注
 /*
- 获取共同关注
  其中:
  access_token ---用户授权码
  suid ---对方用户id
@@ -589,8 +589,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                              andUid:(NSInteger)suid;
 
 
+#pragma mark 获取用户互粉列表
 /*
- 获取用户互粉列表
  其中:
  access_token ---用户授权码
  uid ---用户id
@@ -599,8 +599,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                         andUid:(NSInteger)uid;
 
 
+#pragma mark 获取用户互粉列表id
 /*
- 获取用户互粉列表id
  其中:
  access_token ---用户授权码
  uid ---用户id
@@ -609,8 +609,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                             andUid:(NSInteger)uid;
 
 
+#pragma mark 获取用户关注列表ID
 /*
- 获取用户关注列表ID
  其中:
  access_token ---用户授权码
  name ---用户昵称
@@ -619,8 +619,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                           andName:(NSString *)name;
 
 
+#pragma mark 获取用户粉丝列表ID
 /*
- 获取用户粉丝列表ID
  其中:
  access_token ---用户授权码
  name ---用户昵称
@@ -629,8 +629,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                           andName:(NSString *)name;
 
 
+#pragma mark 获取用户的活跃粉丝
 /*
- 获取用户的活跃粉丝
  其中:
  access_token ---用户授权码
  uid ---用户id
@@ -639,8 +639,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                             andUid:(NSInteger)uid;
 
 
+#pragma mark 获取用户关注的人中关注了指定的人的人
 /*
- 获取用户关注的人中关注了指定的人的人
  其中:
  access_token ---用户授权码
  uid ---指定用户id
@@ -648,8 +648,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
 + (NSDictionary *)getFollowingWhoFollowThePersonWithAccessToken:(NSString *)access_token
                                                          andUid:(NSInteger)uid;
 
+#pragma mark 获取两个用户之间的关系
 /*
- 获取两个用户之间的关系
  其中:
  access_token ---用户授权码
  target_name ---对方用户名
@@ -659,16 +659,16 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                             between:(NSString *)source_name
                                                 and:(NSString *)target_name;
 
+#pragma mark 获取用户的隐私设置
 /*
- 获取用户的隐私设置
  其中:
  access_token ---用户授权码
  */
 + (NSDictionary *)getPrivateMessageOfUserWithAccessToken:(NSString *)access_token;
 
 
+#pragma mark 获取学校列表
 /*
- 获取学校列表
  其中:
  access_token ---用户授权码
  type ---学校类型
@@ -679,39 +679,39 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                     andKeyword:(NSString *)key_Word;
 
 
+#pragma mark 获取用户的访问频率限制
 /*
- 获取用户的访问频率限制
  其中:
  access_token ---用户授权码
  */
 + (NSDictionary *)getLimitOfUserWithAccessToken:(NSString *)access_token;
 
 
+#pragma mark 获取用户的ID
 /*
- 获取用户的ID
  其中:
  access_token ---用户授权码
  */
 + (NSDictionary *)getIdWithAccessToken:(NSString *)access_token;
 
 
+#pragma mark 获取用户的收藏列表
 /*
- 获取用户的收藏列表
  其中:
  access_token ---用户授权码
  */
 + (NSDictionary *)getFavoriteOfUserWithAccessToken:(NSString *)access_token;
 
+#pragma mark 获取用户的收藏列表ID
 /*
- 获取用户的收藏列表ID
  其中:
  access_token ---用户授权码
  */
 + (NSDictionary *)getIdOfFavoriteOfUserWithAccessToken:(NSString *)access_token;
 
 
+#pragma mark 获取用户收藏的详细信息
 /*
- 获取用户收藏的详细信息
  其中:
  access_token ---用户授权码
  iD ---要查询的收藏id
@@ -719,8 +719,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
 + (NSDictionary *)getDetaileOfFavoriteWithAccessToken:(NSString *)access_token
                                                  andId:(NSInteger)iD;
 
+#pragma mark 获取用户某标签下的收藏列表
 /*
- 获取用户某标签下的收藏列表
  其中:
  access_token ---用户授权码
  tid ---标签id
@@ -729,16 +729,16 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                                 andId:(NSInteger)tid;
 
 
+#pragma mark 获取用户的标签列表
 /*
- 获取用户的标签列表
  其中:
  access_token ---用户授权码
  */
 + (NSDictionary *)getListOfFavoriteTagWithAccessToken:(NSString *)access_token;
 
 
+#pragma mark 获取用户某标签下的收藏Id
 /*
- 获取用户某标签下的收藏Id
  其中:
  access_token ---用户授权码
  tid ---标签id
@@ -747,32 +747,32 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                                 andId:(NSInteger)tid;
 
 
+#pragma mark 获取一小时内的热门话题
 /*
- 获取一小时内的热门话题
  其中:
  access_token ---用户授权码
  */
 + (NSDictionary *)getHotTopicOfHourWithAccessToken:(NSString *)access_token;
 
 
+#pragma mark 获取一天内的热门话题
 /*
- 获取一天内的热门话题
  其中:
  access_token ---用户授权码
  */
 + (NSDictionary *)getHotTopicOfDayWithAccessToken:(NSString *)access_token;
 
 
+#pragma mark 获取一周内的热门话题
 /*
- 获取一周内的热门话题
  其中:
  access_token ---用户授权码
  */
 + (NSDictionary *)getHotTopicOfWeekWithAccessToken:(NSString *)access_token;
 
 
+#pragma mark 获取用户的标签列表
 /*
- 获取用户的标签列表
  其中:
  access_token ---用户授权码
  uid ---用户id
@@ -781,16 +781,16 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                         andId:(NSInteger)uid;
 
 
+#pragma mark 获取系统推荐标签
 /*
- 获取系统推荐标签
  其中:
  access_token ---用户授权码
  */
 + (NSDictionary *)getSuggestionOfTagWithAccessToken:(NSString *)access_token;
 
 
+#pragma mark 判断昵称是否被用
 /*
- 判断昵称是否被用
  其中:
  access_token ---用户授权码
  name ---昵称
@@ -799,8 +799,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                             andName:(NSString *)name;
 
 
+#pragma mark 获取搜用户搜索建议
 /*
- 获取搜用户搜索建议
  其中:
  access_token ---用户授权码
  key ---关键字
@@ -809,8 +809,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                               andKey:(NSString *)key;
 
 
+#pragma mark 获取搜学校搜索建议
 /*
- 获取搜学校搜索建议
  其中:
  access_token ---用户授权码
  key ---关键字
@@ -821,8 +821,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                                withType:(SchoolType *)type;
 
 
+#pragma mark 获取搜公司搜索建议
 /*
- 获取搜公司搜索建议
  其中:
  access_token ---用户授权码
  key ---关键字
@@ -831,8 +831,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                                  andKey:(NSString *)key;
 
 
+#pragma mark 获取搜应用搜索建议
 /*
- 获取搜应用搜索建议
  其中:
  access_token ---用户授权码
  key ---关键字
@@ -841,8 +841,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                              andKey:(NSString *)key;
 
 
+#pragma mark 获取@用户搜索建议
 /*
- 获取@用户搜索建议
  其中:
  access_token ---用户授权码
  key ---关键字
@@ -853,8 +853,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                                  andTpe:(UserType *)type;
 
 
+#pragma mark 获取某话题下的微博
 /*
- 获取某话题下的微博
  其中:
  access_token ---用户授权码
  key ---关键字
@@ -863,16 +863,16 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                           andKey:(NSString *)key;
 
 
+#pragma mark 获取可能感兴趣用户
 /*
- 获取可能感兴趣用户
  其中:
  access_token ---用户授权码
  */
 + (NSDictionary *)getSuggestedUserByMayInterestedWithAccessToken:(NSString *)access_token;
 
 
+#pragma mark 获取微博内容相关用户
 /*
- 获取微博内容相关用户
  其中:
  access_token ---用户授权码
  content ---微博内容
@@ -881,8 +881,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                                        andContent:(NSString *)content;
 
 
+#pragma mark 获取按兴趣排序后的微博
 /*
- 获取按兴趣排序后的微博
  其中:
  access_token ---用户授权码
  time ---据当前时间n秒之内
@@ -891,8 +891,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                                 andTime:(int)time;
 
 
+#pragma mark 获取按兴趣排序后的微博的ID
 /*
- 获取按兴趣排序后的微博的ID
  其中:
  access_token ---用户授权码
  time ---据当前时间n秒之内
@@ -901,16 +901,16 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                                     andTime:(int)time;
 
 
+#pragma mark 获取热门收藏
 /*
- 获取热门收藏
  其中:
  access_token ---用户授权码
  */
 + (NSDictionary *)getHotFavoriteWithAccessToken:(NSString *)access_token;
 
 
+#pragma mark 获取用户各种消息未读数
 /*
- 获取用户各种消息未读数
  其中:
  access_token ---用户授权码
  uid ---用户id
@@ -919,8 +919,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                               andUid:(NSInteger)uid;
 
 
+#pragma mark 获取城市列表
 /*
- 获取城市列表
  其中:
  access_token ---用户授权码
  province ---省份
@@ -930,8 +930,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                              andProvince:(NSString *)province
                               andCapital:(NSString *)capital;
 
+#pragma mark 获取省份列表
 /*
- 获取省份列表
  其中:
  access_token ---用户授权码
  country ---国家
@@ -942,8 +942,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                  andCapital:(NSString *)capital;
 
 
+#pragma mark 获取国家列表
 /*
- 获取国家列表
  其中:
  access_token ---用户授权码
  capital ---名字首字母，可为nil
@@ -952,24 +952,24 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                  andCapital:(NSString *)capital;
 
 
+#pragma mark 获取时区配置表
 /*
- 获取时区配置表
  其中:
  access_token ---用户授权码
  */
 + (NSDictionary *)getTimeZoneWithAccessToken:(NSString *)access_token;
 
 
+#pragma mark 获取好友位置动态
 /*
- 获取好友位置动态
  其中:
  access_token ---用户授权码
  */
 + (NSDictionary *)getLocationOfFriendWithAccessToken:(NSString *)access_token;
 
 
+#pragma mark 获取用户的位置动态
 /*
- 获取用户的位置动态
  其中:
  access_token ---用户授权码
  uid ---用户id
@@ -978,8 +978,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                              andId:(NSInteger)uid;
 
 
+#pragma mark 获取某个位置地点的动态
 /*
- 获取某个位置地点的动态
  其中:
  access_token ---用户授权码
  iD ---位置id
@@ -988,8 +988,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                               andId:(NSInteger)iD;
 
 
+#pragma mark 获取某个位置周边的动态
 /*
- 获取某个位置周边的动态
  其中:
  access_token ---用户授权码
  lat ---纬度
@@ -1000,8 +1000,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                            andLong:(float)l_ong;
 
 
+#pragma mark 根据id获取动态详情
 /*
- 根据id获取动态详情
  其中:
  access_token ---用户授权码
  iD ---动态id
@@ -1010,8 +1010,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                                 andId:(NSInteger)iD;
 
 
+#pragma mark 获取lbs位置服务内的用户信息
 /*
- 获取lbs位置服务内的用户信息
  其中:
  access_token ---用户授权码
  uid ---用户id
@@ -1020,8 +1020,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                                  andId:(NSInteger)uid;
 
 
+#pragma mark 获取用户签发过的地点列表
 /*
- 获取用户签发过的地点列表
  其中:
  access_token ---用户授权码
  uid ---用户id
@@ -1030,8 +1030,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                                 andId:(NSInteger)uid;
 
 
+#pragma mark 获取用户的照片列表
 /*
- 获取用户的照片列表
  其中:
  access_token ---用户授权码
  uid ---用户id
@@ -1040,8 +1040,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                       andId:(NSInteger)uid;
 
 
+#pragma mark 获取地点详情
 /*
- 获取地点详情
  其中:
  access_token ---用户授权码
  iD ---位置id
@@ -1050,8 +1050,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                             andId:(NSInteger)iD;
 
 
+#pragma mark 获取在某地点签到的用户列表
 /*
- 获取在某地点签到的用户列表
  其中:
  access_token ---用户授权码
  iD ---位置id
@@ -1060,8 +1060,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                                  andId:(NSInteger)iD;
 
 
+#pragma mark 获取地点照片列表
 /*
- 获取地点照片列表
  其中:
  access_token ---用户授权码
  iD ---位置id
@@ -1070,8 +1070,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                              andId:(NSInteger)iD;
 
 
+#pragma mark 按省市查询地点
 /*
- 按省市查询地点
  其中:
  access_token ---用户授权码
  key ---关键字
@@ -1084,8 +1084,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                                andCategory:(NSString *)category_code;
 
 
+#pragma mark 获取地点分类
 /*
- 获取地点分类
  其中:
  access_token ---用户授权码
  iD ---父分类id
@@ -1094,8 +1094,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                          andId:(int)iD;
 
 
+#pragma mark 获取附近地点
 /*
- 获取附近地点
  其中:
  access_token ---用户授权码
  key ---关键词
@@ -1110,8 +1110,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                         andLong:(float)l_ong;
 
 
+#pragma mark 获取附近发位置微博的人
 /*
- 获取附近发位置微博的人
  其中:
  access_token ---用户授权码
  lat ---纬度
@@ -1122,8 +1122,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                                      andLong:(float)l_ong;
 
 
+#pragma mark 获取附近照片
 /*
- 获取附近照片
  其中:
  access_token ---用户授权码
  lat ---纬度
@@ -1134,8 +1134,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                       andLong:(float)l_ong;
 
 
+#pragma mark 根据ip地址返回地理信息坐标
 /*
- 根据ip地址返回地理信息坐标
  其中:
  access_token ---用户授权码
  ip ---ip地址
@@ -1144,8 +1144,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                          ip:(NSString *)ip;
 
 
+#pragma mark 根据实际地址返回地址信息坐标
 /*
- 根据实际地址返回地址信息坐标
  其中:
  access_token ---用户授权码
  address ---地址
@@ -1154,8 +1154,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                          address:(NSString *)address;
 
 
+#pragma mark 根据地理信息坐标返回实际地址
 /*
- 根据地理信息坐标返回实际地址
  其中:
  access_token ---用户授权码
  coordinate ---坐标
@@ -1164,8 +1164,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                          coordinate:(NSString *)coordinate;
 
 
+#pragma mark 根据gps坐标获取偏移后的坐标
 /*
- 根据gps坐标获取偏移后的坐标
  其中:
  access_token ---用户授权码
  coordinate ---坐标
@@ -1174,8 +1174,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                         coordinate:(NSString *)coordinate;
 
 
+#pragma mark 根据起点和终点查询自驾车路线信息
 /*
- 根据起点和终点查询自驾车路线信息
  其中:
  access_token ---用户授权码
  begin_pid ---其实位置id
@@ -1188,8 +1188,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                        withType:(UnderlyingType *)type;
 
 
+#pragma mark 根据起点和终点查询公交路线信息
 /*
- 根据起点和终点查询公交路线信息
  其中:
  access_token ---用户授权码
  begin_pid ---其实位置id
@@ -1202,8 +1202,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                        withType:(UnderlyingType *)type;
 
 
+#pragma mark 根据关键字查询公交线路信息
 /*
- 根据关键字查询公交线路信息
  其中:
  access_token ---用户授权码
  key ---关键词
@@ -1214,8 +1214,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                        andCity:(NSString *)code;
 
 
+#pragma mark 根据关键字查询公交车站信息
 /*
- 根据关键字查询公交车站信息
  其中:
  access_token ---用户授权码
  key ---关键词
@@ -1226,8 +1226,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                        andCity:(NSString *)code;
 
 
+#pragma mark 根据关键词按地址位置获取poi的信息
 /*
- 根据关键词按地址位置获取poi的信息
  其中:
  access_token ---用户授权码
  key ---关键词
@@ -1240,8 +1240,8 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
                                    andCategory:(NSString *)category;
 
 
+#pragma mark 根据关键词按矩形区域回去poi信息
 /*
- 根据关键词按矩形区域回去poi信息
  其中:
  access_token ---用户授权码
  key ---关键词

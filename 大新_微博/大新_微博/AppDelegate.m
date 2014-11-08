@@ -1,11 +1,11 @@
 #import "LoginViewController.h"
 #import "TabbarViewController.h"
 #import "AppDelegate.h"
-#import "JSKit.h"
 
 @implementation AppDelegate
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+- (BOOL)application:(UIApplication *)application
+didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     LoginViewController * login = [LoginViewController new];

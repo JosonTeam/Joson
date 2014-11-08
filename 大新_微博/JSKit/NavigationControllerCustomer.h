@@ -3,9 +3,8 @@
 
 @interface NavigationControllerCustomer : NSObject
 
+#pragma mark 为标题栏添加返回按钮,并按要求隐藏系统默认返回按钮, 用户可根据需要选择按钮样式和图片
 /*
- 为标题栏添加返回按钮,并按要求隐藏系统默认返回按钮,
- 用户可根据需要选择按钮样式和图片
  其中:
  vc ---当前需添加按钮的视图控制器
  YOrN ---是否隐藏系统按钮,默认为No
@@ -22,9 +21,8 @@
                                    andType:(UIButtonType)type;
 
 
+#pragma mark 为标题栏左侧添加按钮,该方法不覆盖已存在的按钮, 用户可根据需要选择按钮样式和图片
 /*
- 为标题栏左侧添加按钮,该方法不覆盖已存在的按钮,
- 用户可根据需要选择按钮样式和图片
  其中:
  vc ---当前需添加按钮的视图控制器
  tag ---按钮在navigationController上得tag值
@@ -39,9 +37,8 @@
                                          andType:(UIButtonType)type;
 
 
+#pragma mark 为标题栏右侧添加按钮,该方法不覆盖已存在的按钮, 用户可根据需要选择按钮样式和图片
 /*
- 为标题栏右侧添加按钮,该方法不覆盖已存在的按钮,
- 用户可根据需要选择按钮样式和图片
  其中:
  vc ---当前需添加按钮的视图控制器
  tag ---按钮在navigationController上得tag值
@@ -56,8 +53,8 @@
                                           andType:(UIButtonType)type;
 
 
+#pragma mark 为标题栏添加标题,可选择标题显示颜色
 /*
- 为标题栏添加标题,可选择标题显示颜色
  其中:
  title ---要显示的标题文字
  color ---标题颜色
@@ -68,8 +65,8 @@
 forViewController:(UIViewController *)vc;
 
 
+#pragma mark 为标题栏添加标题,可选择标题显示颜色
 /*
- 为标题栏添加标题,可选择标题显示颜色
  其中:
  title ---要显示的标题文字
  subTitle ---要显示的小标题文字
@@ -82,8 +79,8 @@ forViewController:(UIViewController *)vc;
 forViewController:(UIViewController *)vc;
 
 
+#pragma mark 为标题栏添加搜索控件
 /*
- 为标题栏添加搜索控件
  其中:
  vc ---当前需添加标题的视图控制器
  tag ---控件在navigationController上得tag值
@@ -103,8 +100,8 @@ forViewController:(UIViewController *)vc;
                             withButtonTag:(int)button_Tag;
 
 
+#pragma mark 添加navigationController
 /*
- 添加navigationController
  其中:
  vc ---当前需添加标题栏的视图控制器
  */

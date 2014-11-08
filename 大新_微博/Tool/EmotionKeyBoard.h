@@ -1,5 +1,7 @@
 #import <UIKit/UIKit.h>
 
+@class EditViewController;
+
 @interface EmotionKeyBoard : UIView < UIScrollViewDelegate >
 {
     int _width;
@@ -11,9 +13,9 @@
 @property(nonatomic, strong)UIScrollView * scroll;
 
 - (id)initWithBundleName:(NSString *)name
-          viewController:(UIViewController *)vc;
+          viewController:(EditViewController *)vc;
 
 - (UIView *)getSource:(NSString *)name
-       ViewController:(UIViewController *)vc;
+       ViewController:(EditViewController *)vc;
 
 @end

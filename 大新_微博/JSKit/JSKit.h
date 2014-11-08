@@ -11,4 +11,6 @@
 
 #import "MyDeveloperCount.h"
 
+#import "AlartViewController.h"
+
 #endif

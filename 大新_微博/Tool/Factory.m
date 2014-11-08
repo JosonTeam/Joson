@@ -1,5 +1,4 @@
 #import "Factory.h"
-#import "JSKit.h"
 
 @implementation Factory
 
@@ -7,22 +6,30 @@
 {
     int hight = DeviceHeight;
     int width = 0;
+    
     switch (hight)
     {
+            
         case HeightFor3_5:
             width = WidthForElse;
             break;
+            
         case HeightFor4_0:
-            width = WidthForElse;
+            width = WidthForElse ;
             break;
+            
         case HeightFor4_7:
             width = WidthFor4_7;
             break;
+            
         case HeightFor5_5:
             width = WidthFor5_5;
             break;
+            
     }
-    NSArray * arr =@[[NSNumber numberWithInt:width],[NSNumber numberWithInt:hight]];
+    
+    NSArray * arr = @[[NSNumber numberWithInt : width] , [NSNumber numberWithInt : hight]];
+    
     return arr;
 }
 
@@ -30,9 +37,16 @@
 + (CGFloat)contentHeight:(NSString *)content
 {
     CGSize size = CGSizeMake(260, MAXFLOAT);
-    NSDictionary * dic = @{NSFontAttributeName: [UIFont systemFontOfSize:15.0f]};
-    NSAttributedString  * str = [[NSAttributedString alloc] initWithString:content attributes:dic];
-    CGRect rect = [str boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin context:nil];
+    
+    NSDictionary * dic = @{NSFontAttributeName : [UIFont systemFontOfSize : 15.0f]};
+    
+    NSAttributedString  * str = [[NSAttributedString alloc] initWithString : content
+                                                                attributes : dic];
+    
+    CGRect rect = [str boundingRectWithSize : size
+                                    options : NSStringDrawingUsesLineFragmentOrigin
+                                    context : nil];
+    
     return CGRectGetHeight(rect) + 20;
 }
 
@@ -40,7 +54,7 @@
                          andSysDate:(NSString *)sysDate
 {
     NSString * str;
-    NSArray * arr = @[@"Jan",@"Feb",@"Mar",@"Apr",@"May",@"Jun",@"Jul",@"Aug",@"Sep",@"Oct",@"Nov",@"Dec"];
+    NSArray * arr = @[@"Jan" , @"Feb" , @"Mar" , @"Apr" , @"May" , @"Jun" , @"Jul" , @"Aug" , @"Sep" , @"Oct" , @"Nov" , @"Dec"];
     
     NSArray * source = [sourceDate componentsSeparatedByString:@" "];
     NSArray * sys = [sysDate componentsSeparatedByString:@" "];
@@ -48,8 +62,8 @@
     NSArray * sy_time = [sys[1] componentsSeparatedByString:@":"];
     NSArray * sy_date = [sys[0] componentsSeparatedByString:@"-"];
     
-    NSMutableArray * source_Date = [[NSMutableArray alloc]initWithObjects:source[5],[NSString stringWithFormat:@"%d",[arr indexOfObject:source[1]]+1],source[2],s_time[0],s_time[1],s_time[2], nil];
-    NSMutableArray * sys_Date = [[NSMutableArray alloc]initWithObjects:sy_date[0],sy_date[1],sy_date[2],sy_time[0],sy_time[1],sy_time[2], nil];
+    NSMutableArray * source_Date = [[NSMutableArray alloc] initWithObjects:source[5] , [NSString stringWithFormat:@"%d",[arr indexOfObject:source[1]]+1] , source[2] , s_time[0] , s_time[1] , s_time[2] , nil];
+    NSMutableArray * sys_Date = [[NSMutableArray alloc] initWithObjects:sy_date[0] , sy_date[1] , sy_date[2] , sy_time[0] , sy_time[1] , sy_time[2] , nil];
     
     if ([sys_Date[0] intValue] - [source_Date[0] intValue] != 0)
     {
