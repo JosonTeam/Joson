@@ -1,12 +1,17 @@
 #import <AVFoundation/AVFoundation.h>
-#import "FindFriendViewController.h"
+#import "FindFriendAndWeiboDetaileViewController.h"
+#import "TabbarViewController.h"
 #import "BaseViewController.h"
 #import "MenuViewController.h"
 #import "EditViewController.h"
+#import <ShareSDK/ShareSDK.h>
+//#import <RennSDK/RennSDK.h>
+#import "AAShareBubbles.h"
 #import "PhotoTableView.h"
 #import "PopoverView.h"
 #import "JHRefresh.h"
 #import "MyView.h"
+//#import "YXApi.h"
 
 @interface BaseViewController ()
 {
@@ -23,9 +28,6 @@
     MyView * mv; //创建我页面的view全局变量
     int _width; //屏幕宽度
     int _high; //屏幕高度
-    
-   
-   
 }
 
 @end
@@ -62,7 +64,7 @@
     NSArray * widthAndHigh = [Factory getHeigtAndWidthOfDevice];
     _width = [widthAndHigh[0] intValue];
     _high = [widthAndHigh[1] intValue];
-    
+   
     //根据身份标识辨别视图控制器，进行对应操作
     switch (_identifier)
     {
@@ -82,7 +84,6 @@
                                                                            andTitle:nil
                                                                           andImage : [UIImage imageNamed:@"navigationbar_pop@2x.png"]
                                                                            andType : UIButtonTypeCustom];
-            
             //初始化首页
             [self initFirstPage];
 
@@ -145,18 +146,65 @@
 //                                                                           andTitle:@"设置"
 //                                                                           andImage:nil
 //                                                                           andType : UIButtonTypeCustom];
+          
+            max_id = @"0";
             
             mv = [[MyView alloc]initWithFrame:self.view.frame];
             
             NSDictionary * data = [MicroBlogOperateForSina getWeiboOfUserWithAccessToken:_access_token
                                                                                     name:_userLoginName
-                                                                                 andtype:WeiboTypeAll];
+                                                                                 andtype:WeiboTypeAll
+                                                                                   andId:@"0"];
             
-            mv.dataText = data;
+            max_id = data[@"max_id"];
+            mv.dataText = data.mutableCopy;
             mv.username = _userLoginName;
             mv.acc_token = _access_token;
             
             [mv createMe:self];
+            
+            __weak UITableView * tableview = mv.tableview;
+            
+            //准备上拉加载
+            [tableview addRefreshFooterViewWithAniViewClass : [JHRefreshCommonAniView class]
+                                               beginRefresh : ^{
+                                                   
+               //延时隐藏refreshView;
+               double delayInSeconds = 2.0;
+               //创建延期的时间 2S
+               dispatch_time_t delayInNanoSeconds = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+               
+               //延期执行
+               dispatch_after(delayInNanoSeconds, dispatch_get_main_queue(), ^{
+                   
+                   //获取最新微博
+                   NSDictionary * data = [MicroBlogOperateForSina getWeiboOfUserWithAccessToken:_access_token
+                                                                                           name:_userLoginName
+                                                                                        andtype:WeiboTypeAll
+                                                                                          andId:max_id];
+                   
+                   max_id = data[@"max_id"];
+                   
+                   NSArray * status = data[@"statuses"];
+                   
+                   NSMutableArray * statuses = [mv.dataText[@"statuses"] mutableCopy];
+                   
+                   for (int i = 0; i < status.count; i++)
+                   {
+                       [statuses addObject:status[i]];
+                   }
+                   
+                   [mv.dataText setObject:statuses forKey:@"statuses"];
+                   
+                   [tableview reloadData];
+                   
+                   //事情做完了别忘了结束刷新动画~~~
+                   [tableview footerEndRefreshing];
+                   
+               });
+               
+           }];
+
             
         }
             break;
@@ -189,9 +237,7 @@
     _weibo_Content_Pic1 = [NSMutableArray new];
     
     //准备播放器
-    _player = [[AVAudioPlayer alloc] initWithContentsOfURL : [NSURL fileURLWithPath : [[NSBundle mainBundle] pathForResource:@"msgcome"
-                                                                                                                      ofType:@"wav"]]
-                                                      error:nil];
+    _player = [[AVAudioPlayer alloc] initWithData:[NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"msgcome" ofType:@"wav"]] error:nil];
     
     [_player prepareToPlay];
     
@@ -202,18 +248,19 @@
     
     //读取本地缓存数据
     NSString * str = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    _path = [NSString stringWithFormat:@"%@/Source.plist",str];
+    _path = [NSString stringWithFormat:@"%@/Source.json",str];
     
     if (![[NSFileManager defaultManager]fileExistsAtPath:_path isDirectory:nil])
     {
         [[NSFileManager defaultManager] copyItemAtPath: [[NSBundle mainBundle] pathForResource:@"Source"
-                                                                                        ofType:@"plist"]
+                                                                                        ofType:@"json"]
                                                 toPath:_path
                                                  error:nil];
     }
     
-    NSDictionary * dic11 = [GetDataOfLocalFile getContentOfPlistFileAtParh:NSCachesDirectory
-                                                              WithFileName:@"Source"];
+    NSDictionary * dic11 = [GetDataOfLocalFile getContentOfJsonFileAtParh:NSCachesDirectory
+                                                             WithFileName:@"Source"];
+    
     max_id = @"0";
     
     //读取失败，进行数据请求
@@ -223,10 +270,17 @@
         dic11 = [MicroBlogOperateForSina getRecentWeiboOfUserWithAccessToken:self.access_token
                                                                      andtype:WeiboTypeAll
                                                                    andMax_id:@"0"];
+        
         max_id = dic11[@"max_id"];
         
-        [dic11 writeToFile:_path
+        NSData * data = [NSJSONSerialization dataWithJSONObject:dic11
+                                                        options:NSJSONWritingPrettyPrinted
+                                                          error:nil];
+        if (dic11.count != 3)
+        {
+            [data writeToFile:_path
                 atomically:YES];
+        }
         
     }
     
@@ -254,85 +308,90 @@
     
     [tableview addRefreshHeaderViewWithAniViewClass : [JHRefreshCommonAniView class]
                                        beginRefresh : ^{
-        
-        //延时隐藏refreshView;
-        double delayInSeconds = 2.0;
-        //创建延期的时间 2S
-        dispatch_time_t delayInNanoSeconds = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-        //延期执行
                                            
-        dispatch_after(delayInNanoSeconds, dispatch_get_main_queue(), ^{
+       //延时隐藏refreshView;
+       double delayInSeconds = 2.0;
+       //创建延期的时间 2S
+       dispatch_time_t delayInNanoSeconds = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+       //延期执行
+       
+       dispatch_after(delayInNanoSeconds, dispatch_get_main_queue(), ^{
+           
+           NSDictionary * dic11 = [MicroBlogOperateForSina getRecentWeiboOfUserWithAccessToken:self.access_token
+                                                                                       andtype:WeiboTypeAll
+                                                                                     andMax_id:@"0"];
+           
+           NSData * data = [NSJSONSerialization dataWithJSONObject:dic11
+                                                           options:NSJSONWritingPrettyPrinted
+                                                             error:nil];
+           
+           if (dic11.count != 3)
+           {
+               [data writeToFile:_path
+                      atomically:YES];
+           }
 
-            self.count = 20;
-            
-            NSDictionary * dic11 = [MicroBlogOperateForSina getRecentWeiboOfUserWithAccessToken:self.access_token
-                                                                                        andtype:WeiboTypeAll
-                                                                                      andMax_id:@"0"];
-            
-            [dic11 writeToFile:_path
-                    atomically:YES];
-            
-            max_id = dic11[@"max_id"];
-            
-            _source = [dic11[@"statuses"] mutableCopy];
-            _weibo_Content_Pic1 = [NSMutableArray new];
-            _weibo_Content_Pic = [NSMutableArray new];
-            _name = [NSMutableArray new];
-            [self getAppearSource];
-            
-            [tableview reloadData];
-            
-            //事情做完了别忘了结束刷新动画~~~
-            [tableview headerEndRefreshingWithResult:JHRefreshResultSuccess];
-            [_player play];
-
-        });
-                                           
-    }];
+           
+           max_id = dic11[@"max_id"];
+           
+           _source = [dic11[@"statuses"] mutableCopy];
+           _weibo_Content_Pic1 = [NSMutableArray new];
+           _weibo_Content_Pic = [NSMutableArray new];
+           _name = [NSMutableArray new];
+           
+           self.count = 20;
+           
+           [self getAppearSource];
+           
+           [tableview reloadData];
+           
+           //事情做完了别忘了结束刷新动画~~~
+           [tableview headerEndRefreshingWithResult:JHRefreshResultSuccess];
+           
+           [_player play];
+           
+       });
+       
+   }];
     
     //准备上拉加载
     [tableview addRefreshFooterViewWithAniViewClass : [JHRefreshCommonAniView class]
                                        beginRefresh : ^{
-        
-        //延时隐藏refreshView;
-        double delayInSeconds = 2.0;
-        //创建延期的时间 2S
-        dispatch_time_t delayInNanoSeconds = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
                                            
-        //延期执行
-        dispatch_after(delayInNanoSeconds, dispatch_get_main_queue(), ^{
-//            if (self.count == _source.count-_source.count%20)
-//            {
-                self.count += 20;
-//            }
-//            else if (_source.count%20 == 0)
-//            {
-//                self.count += _source.count%20;
-//            }
-            
-            //获取最新微博
-            NSDictionary * dic11 = [MicroBlogOperateForSina getRecentWeiboOfUserWithAccessToken:self.access_token
-                                                                                        andtype:WeiboTypeAll
-                                                                                      andMax_id:max_id];
-            max_id = dic11[@"max_id"];
+       //延时隐藏refreshView;
+       double delayInSeconds = 2.0;
+       //创建延期的时间 2S
+       dispatch_time_t delayInNanoSeconds = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+       
+       //延期执行
+       dispatch_after(delayInNanoSeconds, dispatch_get_main_queue(), ^{
+                      
+           //获取最新微博
+           NSDictionary * dic11 = [MicroBlogOperateForSina getRecentWeiboOfUserWithAccessToken:self.access_token
+                                                                                       andtype:WeiboTypeAll
+                                                                                     andMax_id:max_id];
+           max_id = dic11[@"max_id"];
+         
+           NSArray * status = dic11[@"statuses"];
+           _name = [NSMutableArray new];
            
-            NSArray * status = dic11[@"statuses"];
-            
-            for (int i = 0; i < status.count; i++)
-            {
-                [_source addObject:status[i]];
-            }
-     
-            [self getAppearSource];
-            
-            [tableview reloadData];
-            
-            //事情做完了别忘了结束刷新动画~~~
-            [tableview footerEndRefreshing];
-            
-        });
-                                           
-    }];
+           for (int i = 0; i < status.count; i++)
+           {
+               [_source addObject:status[i]];
+           }
+           
+            self.count += 20;
+           
+           [self getAppearSource];
+           
+           [tableview reloadData];
+           
+           //事情做完了别忘了结束刷新动画~~~
+           [tableview footerEndRefreshing];
+           
+       });
+       
+   }];
     
 }
 
@@ -553,13 +612,13 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath
                 
                 NSArray * content_Pic1 = _source[indexPath.section][@"retweeted_status"][@"pic_urls"];
                 
-                return [Factory contentHeight:_source[indexPath.section][@"text"]] + [Factory contentHeight:_source[indexPath.section][@"retweeted_status"][@"text"]] + ceil(content_Pic1.count/3.0) * 70 + 80;
+                return [Factory contentHeight:_source[indexPath.section][@"text"] width:_width-10] + [Factory contentHeight:_source[indexPath.section][@"retweeted_status"][@"text"] width:_width-10] + ceil(content_Pic1.count/3.0) * 70 + 80;
                 
             }
             
             else
             {
-               return ceil(content_Pic.count/3.0) * 70 + [Factory contentHeight:_source[indexPath.section][@"text"]] + 70;
+               return ceil(content_Pic.count/3.0) * 70 + [Factory contentHeight:_source[indexPath.section][@"text"] width:_width-10] + 70;
             }
             
         }
@@ -608,26 +667,38 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     int button_y;
     
-    cell.backgroundColor = [UIColor colorWithWhite:0.9
-                                             alpha:0];
+//    cell.backgroundColor = [UIColor colorWithWhite:0.9
+//                                             alpha:0];
+    
+    //获得发布微博的时间和当前时间的差值
+    NSString * time = [Factory getDateWithSourceDate:_source[indexPath.section][@"created_at"]
+                                         andSysDate : [NSString stringWithFormat:@"%@", [NSDate dateWithTimeIntervalSinceNow:8*3600]] andType:nil];
+    
+    NSString * state = [@"来自" stringByAppendingString:[ [ [ [_source[indexPath.section][@"source"] componentsSeparatedByString:@">"] objectAtIndex:1] componentsSeparatedByString:@"<"]  objectAtIndex:0]];
+    
+    int viewWidth = 40+[Factory contentWidth:_source[indexPath.section][@"user"][@"name"] height:20 fontSize:20] > 45 + [Factory contentWidth:time height:10 fontSize:10]+[Factory contentWidth:state height:10 fontSize:10] ? 40+[Factory contentWidth:_source[indexPath.section][@"user"][@"name"] height:20 fontSize:20] : [Factory contentWidth:time height:10 fontSize:10]+[Factory contentWidth:state height:10 fontSize:10];
     
     //用户名，时间和发布平台的底层view
-    UIView * view = [[UIView alloc] initWithFrame : CGRectMake(0, 0, _width, 35)];
+    UIView * view = [[UIView alloc] initWithFrame : CGRectMake(0, 0, viewWidth, 35)];
     view.backgroundColor = [UIColor whiteColor];
     [cell.contentView addSubview:view];
+    
+    UITapGestureRecognizer * weiboTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(clickUserView:)];
+    [view addGestureRecognizer:weiboTap];
     
     //倒三角按钮
     UIButton * listButton = [UIButton buttonWithType : UIButtonTypeCustom];
     listButton.frame = CGRectMake(_width-35, 5, 30, 30);
+    listButton.tag = 10 + indexPath.section;
     
     [listButton setImage : [UIImage imageNamed:@"preview_icon_hidden_highlighted@2x.png"]
                 forState : UIControlStateNormal];
     
-    [listButton addTarget:self.tabBarController
-                   action:@selector(viewAppear)
+    [listButton addTarget:self
+                   action:@selector(viewAppear:)
         forControlEvents : UIControlEventTouchUpInside];
     
-    [view addSubview:listButton];
+    [cell.contentView addSubview:listButton];
     
     //用户头像
     UIImageView * user_Image = [[UIImageView alloc] initWithImage:_userPic_Source[indexPath.section]];
@@ -635,18 +706,45 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath
     [view addSubview:user_Image];
     
     //用户名
-    UILabel * label = [[UILabel alloc] initWithFrame : CGRectMake(40, 2, _width-40, 20)];
+    UILabel * label = [[UILabel alloc] initWithFrame : CGRectMake(40, 2, [Factory contentWidth:_source[indexPath.section][@"user"][@"name"] height:20 fontSize:20], 20)];
+    label.font = [UIFont systemFontOfSize:20.0f];
     label.text = _source[indexPath.section][@"user"][@"name"];
     [view addSubview:label];
     
-    //获得发布微博的时间和当前时间的差值
-    NSString * time = [Factory getDateWithSourceDate:_source[indexPath.section][@"created_at"]
-                                         andSysDate : [NSString stringWithFormat:@"%@", [NSDate dateWithTimeIntervalSinceNow:8*3600]]];
     
-    NSString * state = [ [ [ [_source[indexPath.section][@"source"] componentsSeparatedByString:@">"] objectAtIndex:1] componentsSeparatedByString:@"<"]  objectAtIndex:0];
+    if ([_source[indexPath.section][@"user"][@"verified"] intValue] == 1 && [_source[indexPath.section][@"user"][@"verified_type"] intValue] != -1)
+    {
+        
+        UIImageView * verified_typeImage = [[UIImageView alloc] initWithFrame : CGRectMake(15, 15, 15, 15) ];
+        [user_Image addSubview:verified_typeImage];
+        
+        switch ([_source[indexPath.section][@"user"][@"verified_type"] intValue])
+        {
+                
+            case 0:
+                
+                [verified_typeImage setImage : [UIImage imageNamed:@"avatar_vip@2x.png"]];
+                
+                break;
+                
+            case 220:
+                
+                [verified_typeImage setImage : [UIImage imageNamed:@"avatar_grassroot@2x.png"]];
+                
+                break;
+                
+            default:
+                
+                [verified_typeImage setImage : [UIImage imageNamed:@"avatar_enterprise_vip@2x.png"]];
+                
+                break;
+                
+        }
+        
+    }
     
     //发布时间
-    UILabel * time_Label = [[UILabel alloc] initWithFrame : CGRectMake(40, 22, time.length*10, 10)];
+    UILabel * time_Label = [[UILabel alloc] initWithFrame : CGRectMake(40, 25, [Factory contentWidth:time height:10 fontSize:10], 10)];
     
     time_Label.font = [UIFont fontWithName:Nil
                                       size:10];
@@ -661,28 +759,30 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath
     [view addSubview:time_Label];
     
     //发布平台
-    UILabel * state_Label = [[UILabel alloc] initWithFrame : CGRectMake(45 + time.length*10, 22, (state.length + 2)*18, 10)];
-    state_Label.text = [NSString stringWithFormat:@"来自%@",state];
+    UILabel * state_Label = [[UILabel alloc] initWithFrame : CGRectMake(45 + [Factory contentWidth:time height:10 fontSize:10], 25, [Factory contentWidth:state height:10 fontSize:10], 10)];
+    state_Label.text = state;
     state_Label.font = [UIFont systemFontOfSize:10];
     [view addSubview:state_Label];
     
     NSArray * content_Pic = _source[indexPath.section][@"pic_urls"];
     
     //微博底层view
-    UIView * content_View = [[UIView alloc] initWithFrame : CGRectMake(0, 35, _width, [Factory contentHeight:_source[indexPath.section][@"text"]] + ceil(content_Pic.count/3.0) * 70 + 5)];
+    UIView * content_View = [[UIView alloc] initWithFrame : CGRectMake(0, 35, _width, [Factory contentHeight:_source[indexPath.section][@"text"] width:_width-10] + ceil(content_Pic.count/3.0) * 70 + 5)];
     content_View.backgroundColor = [UIColor whiteColor];
     content_View.userInteractionEnabled = 1;
     [cell.contentView addSubview:content_View];
     
     //为cell添加长按手势
-    UILongPressGestureRecognizer * press = [[UILongPressGestureRecognizer alloc] initWithTarget:self.tabBarController
+    UILongPressGestureRecognizer * press = [[UILongPressGestureRecognizer alloc] initWithTarget:self
                                                                                          action:@selector(viewAppearance:)];
     
     [cell addGestureRecognizer:press];
     
     //微博内容
-    UITextView * text = [[UITextView alloc] initWithFrame : CGRectMake(5, 5, _width-10, [Factory contentHeight:_source[indexPath.section][@"text"]])];
+    UITextView * text = [[UITextView alloc] initWithFrame : CGRectMake(5, 5, _width-10, [Factory contentHeight:_source[indexPath.section][@"text"] width:_width-10])];
     text.text = _source[indexPath.section][@"text"];
+    
+    text.userInteractionEnabled = 1;
     
     text.font = [UIFont fontWithName:nil
                                 size:15];
@@ -700,15 +800,20 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath
         NSArray * content_Pic1 = _source[indexPath.section][@"retweeted_status"][@"pic_urls"];
         
         //转发的微博的底层view
-        UIView * content_View1 = [[UIView alloc] initWithFrame : CGRectMake(0, text.frame.origin.y + 5 + CGRectGetHeight(text.frame), _width, [Factory contentHeight:_source[indexPath.section][@"retweeted_status"][@"text"]] + ceil(content_Pic1.count/3.0) * 70 + 10)];
+        UIView * content_View1 = [[UIView alloc] initWithFrame : CGRectMake(0, text.frame.origin.y + 5 + CGRectGetHeight(text.frame), _width, [Factory contentHeight:_source[indexPath.section][@"retweeted_status"][@"text"] width:_width-10] + ceil(content_Pic1.count/3.0) * 70 + 10)];
+        content_View1.userInteractionEnabled = 1;
         
         content_View1.backgroundColor = [UIColor colorWithWhite:0.9
                                                           alpha:1];
         
-        content_View.frame = CGRectMake(0, 35, _width, [Factory contentHeight:_source[indexPath.section][@"text"]] + [Factory contentHeight:_source[indexPath.section][@"retweeted_status"][@"text"]] + ceil(content_Pic1.count/3.0) * 60);
+        UITapGestureRecognizer * reportWeiboTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(clickReportContentView:)];
+        [content_View1 addGestureRecognizer:reportWeiboTap];
+
+        
+        content_View.frame = CGRectMake(0, 35, _width, [Factory contentHeight:_source[indexPath.section][@"text"] width:_width-10] + [Factory contentHeight:_source[indexPath.section][@"retweeted_status"][@"text"] width:_width-10] + ceil(content_Pic1.count/3.0) * 60);
         
         //转发的微博内容
-        UITextView * text1 = [[UITextView alloc] initWithFrame : CGRectMake(5, 5, _width-10, [Factory contentHeight:_source[indexPath.section][@"retweeted_status"][@"text"]])];
+        UITextView * text1 = [[UITextView alloc] initWithFrame : CGRectMake(5, 5, _width-10, [Factory contentHeight:_source[indexPath.section][@"retweeted_status"][@"text"] width:_width-10])];
         text1.text = [NSString stringWithFormat:@"@%@ :%@",_name[indexPath.section] , _source[indexPath.section][@"retweeted_status"][@"text"]];
         
         text1.font = [UIFont fontWithName:nil
@@ -720,16 +825,19 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath
         text1.editable = NO;
         [content_View1 addSubview:text1];
        
-#warning ....
-//        UILabel * user_Name_Label = [[UILabel alloc] initWithFrame : CGRectMake(10, 10, [_name[indexPath.section] length]*18, 20)];
-//        user_Name_Label.text = [NSString stringWithFormat:@"@%@",_name[indexPath.section]];
-//        user_Name_Label.backgroundColor = content_View1.backgroundColor;
+        UILabel * user_Name_Label = [[UILabel alloc] initWithFrame : CGRectMake(10, 10, [Factory contentWidth:[NSString stringWithFormat:@"@%@",_name[indexPath.section]] height:20 fontSize:15], 20)];
+        user_Name_Label.text = [NSString stringWithFormat:@"@%@",_name[indexPath.section]];
+        user_Name_Label.backgroundColor = content_View1.backgroundColor;
+        user_Name_Label.userInteractionEnabled = 1;
         
-//        user_Name_Label.font = [UIFont fontWithName:nil
-//                                               size:15];
+        user_Name_Label.font = [UIFont fontWithName:nil
+                                               size:15.0f];
         
-//        user_Name_Label.textColor = [UIColor blueColor];
-//        [content_View1 addSubview:user_Name_Label];
+        user_Name_Label.textColor = [UIColor blueColor];
+        [content_View1 addSubview:user_Name_Label];
+        
+        UITapGestureRecognizer * userNameTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(clickUserNameLabel:)];
+        [user_Name_Label addGestureRecognizer:userNameTap];
         
         //转发的微博的配图
         NSMutableArray * pic_Array1 = _weibo_Content_Pic1[indexPath.section];
@@ -739,6 +847,12 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath
             
             [pic_Array1 addObject : [UIImage imageNamed:@"message_placeholder_picture@2x.png"]];
             UIImageView * image1 = [[UIImageView alloc] initWithFrame : CGRectMake(5 + (i%3)*70, text1.frame.origin.y + 5 + CGRectGetHeight(text1.frame) + (i/3)*70, 60, 60)];
+            
+            if (content_Pic1.count == 4)
+            {
+                image1.frame = CGRectMake(5 + (i%2)*70, text1.frame.origin.y + 5 + CGRectGetHeight(text1.frame) + (i/2)*70, 60, 60);
+            }
+            
             image1.userInteractionEnabled = 1;
             image1.tag = indexPath.section*100 + i;
             image1.image = _weibo_Content_Pic1[indexPath.section][i];
@@ -771,7 +885,7 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath
         }
         
         [content_View addSubview:content_View1];
-        button_y = [Factory contentHeight:_source[indexPath.section][@"text"]] + 52 + [Factory contentHeight:_source[indexPath.section][@"retweeted_status"][@"text"]] + ceil(content_Pic1.count/3.0) * 70;
+        button_y = [Factory contentHeight:_source[indexPath.section][@"text"] width:_width-10] + 52 + [Factory contentHeight:_source[indexPath.section][@"retweeted_status"][@"text"] width:_width-10] + ceil(content_Pic1.count/3.0) * 70;
         
     }
     
@@ -786,6 +900,12 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath
             
             [pic_Array addObject:[UIImage imageNamed:@"message_placeholder_picture@2x.png"]];
             UIImageView * image = [[UIImageView alloc]initWithFrame:CGRectMake(5 + (i%3)*70, text.frame.origin.y + 5+ CGRectGetHeight(text.frame) + (i/3)*70, 60, 60)];
+            
+            if (content_Pic.count == 4)
+            {
+                image.frame = CGRectMake(5 + (i%2)*70, text.frame.origin.y + 5 + CGRectGetHeight(text.frame) + (i/2)*70, 60, 60);
+            }
+            
             image.userInteractionEnabled = 1;
             image.tag = indexPath.section*100+i;
             image.image = _weibo_Content_Pic[indexPath.section][i];
@@ -818,7 +938,7 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath
             
         }
         
-        button_y = ceil(content_Pic.count/3.0) * 70 + [Factory contentHeight:_source[indexPath.section][@"text"]] + 42;
+        button_y = ceil(content_Pic.count/3.0) * 70 + [Factory contentHeight:_source[indexPath.section][@"text"] width:_width-10] + 42;
         
     }
     
@@ -873,6 +993,36 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath
     
 }
 
+#warning ...
+- (void)clickUserView:(UITapGestureRecognizer *)sender
+{
+    
+}
+
+- (void)clickReportContentView:(UITapGestureRecognizer *)sender
+{
+    
+}
+
+- (void)clickUserNameLabel:(UITapGestureRecognizer *)sender
+{
+    
+    UILabel * label = (UILabel *)sender.view;
+    NSString * str = [[label.text componentsSeparatedByString:@"@"]lastObject];
+    
+    NSDictionary * dic = [MicroBlogOperateForSina getDetailOfUserWithAccessToken:_access_token name:nil orId:@"3270561561"];
+    NSLog(@"%@",dic);
+    
+    BaseViewController * userDetaileViewController = [BaseViewController new];
+    userDetaileViewController.access_token = _access_token;
+    userDetaileViewController.userLoginName = str;
+    userDetaileViewController.identifier = 4;
+    [userDetaileViewController init_View];
+    [self.navigationController pushViewController:userDetaileViewController animated:YES];
+    
+    
+}
+
 #pragma mark 选择cell
 - (void)tableView:(UITableView *)tableView
 didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -881,6 +1031,16 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
     [tableView deselectRowAtIndexPath:indexPath
                              animated:YES];
     
+    FindFriendAndWeiboDetaileViewController * weiboDetaile = [FindFriendAndWeiboDetaileViewController new];
+    weiboDetaile.weiboSource = [MicroBlogOperateForSina getDetaileOfWeiboWithAccessToken:_access_token andId:_source[indexPath.section][@"id"]];//_source[indexPath.section];
+    NSLog(@"%@",weiboDetaile.weiboSource);
+    weiboDetaile.hidesBottomBarWhenPushed = YES;
+    weiboDetaile.access_token = _access_token;
+    weiboDetaile.type = @"weiboDetaile";
+    weiboDetaile.name = _userLoginName;
+    [weiboDetaile init_View];
+    [self.navigationController pushViewController:weiboDetaile animated:YES];
+    
 }
 
 #pragma mark 弹出选项列表
@@ -888,16 +1048,30 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
     PopoverView * popover = [PopoverView new];
-    popover.table = _tableView;
     popover.player = _player;
-    popover.count = _count;
-    popover.base = self;
-    
+
     //设置弹出位置和显示内容
     popover = [popover initWithPoint:CGPointMake(sender.frame.origin.x + sender.frame.size.width/2, sender.frame.origin.y + sender.frame.size.height+15)
                               titles:@[@"扫一扫",@"刷新"]
                               images:@[@"navigationbar_pop1.png",@"navigationbar_refresh@2x.png"]];
    
+    popover.selectRowAtIndex = ^(NSInteger index)
+    {
+        switch (index)
+        {
+            case 0:
+                
+                break;
+            case 1:
+            {
+                
+                
+                [_tableView reloadData];
+            }
+                break;
+        }
+    };
+    
     [popover show];
     
 }
@@ -906,9 +1080,11 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 - (void)findFriends:(UIButton *)sender
 {
     
-    FindFriendViewController * find = [FindFriendViewController new];
+    FindFriendAndWeiboDetaileViewController * find = [FindFriendAndWeiboDetaileViewController new];
     find.access_token = _access_token;
     find.name = _userLoginName;
+    find.type = @"findFriend";
+    [find init_View];
     find.hidesBottomBarWhenPushed = YES;
     
     [self.navigationController pushViewController:find
@@ -970,6 +1146,411 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
     
 }
 
+#pragma mark 点击了微博的倒三角按钮
+- (void)viewAppear:(UIButton *)sender
+{
+    
+    __weak TabbarViewController * tabBar = (TabbarViewController *)self.tabBarController;
+    
+    tabBar.cellName = @[@"收藏",@"取消关注",@"屏蔽",@"举报"];
+    
+    if ([_source[sender.tag-10][@"user"][@"name"] isEqualToString:_userLoginName])
+    {
+        tabBar.cellName = @[@"收藏" , @"推广" , @"删除"];
+        
+        tabBar.selectRowAtIndex = ^(NSInteger index)
+        {
+            switch (index)
+            {
+                    
+                case 0:
+                    
+                    [MicroBlogOperateForSina createFavoriteWithAccessToken:_access_token
+                                                                     andId:[_source[sender.tag-10][@"id"] integerValue]];
+                    
+                    break;
+                    
+                case 1:
+#warning ...
+                    break;
+                    
+                case 2:
+                    
+                    [MicroBlogOperateForSina destroyWeiBoWithAcccessToken:_access_token
+                                                                       iD:[_source[sender.tag-10][@"id"] integerValue]];
+                    
+                    break;
+                    
+            }
+            
+            [tabBar viewDisappear];
+            
+        };
+        
+    }
+    
+    else
+    {
+    
+        tabBar.selectRowAtIndex = ^(NSInteger index)
+        {
+            
+            switch (index)
+            {
+                    
+                case 0:
+                    
+                    [MicroBlogOperateForSina createFavoriteWithAccessToken:_access_token
+                                                                     andId:[_source[sender.tag-10][@"user"][@"id"] integerValue]];
+                    
+                    break;
+                    
+                case 1:
+                    
+                    [MicroBlogOperateForSina destroyFollowingWithAcccessToken:_access_token
+                                                                           iD:[_source[sender.tag-10][@"user"][@"id"] integerValue]];
+                    
+                    break;
+                    
+                case 2:
+                    
+                    [MicroBlogOperateForSina setUserUninterestedWithAccessToken:_access_token
+                                                                          andId:[_source[sender.tag-10][@"user"][@"id"] integerValue]];
+                    
+                    break;
+                    
+                case 3:
+                    
+                    break;
+                    
+            }
+            
+        };
+   
+    }
+    
+    [tabBar.table_View reloadData];
+    
+    [UIView animateWithDuration:0.5
+                    animations : ^{
+                        
+                        tabBar.hide_View.frame = CGRectMake(0, 0, _width, _high);
+                        tabBar.table_View.frame = CGRectMake(10, _high/2-100, _width-20, tabBar.cellName.count*50);
+                        
+                    }];
+    
+}
+
+#pragma mark 对首页的cell进行长按
+- (void)viewAppearance:(UILongPressGestureRecognizer *)sender
+{
+    
+    __weak TabbarViewController * tabBar = (TabbarViewController *)self.tabBarController;
+    
+    UITableViewCell * cell = (UITableViewCell *)sender.view;
+    NSIndexPath * indexPath = [_tableView indexPathForCell:cell];
+
+    if(_source[indexPath.section][@"retweeted_status"])
+    {
+        
+        if ([_source[indexPath.section][@"user"][@"name"] isEqualToString:_userLoginName])
+        {
+            
+            tabBar.cellName = @[@"转发" , @"评论" , @"收藏" , @"删除" , @"转发原微博"];
+            
+            tabBar.selectRowAtIndex = ^(NSInteger index)
+            {
+                switch (index)
+                {
+                        
+                    case 0:
+                    {
+                        
+                        EditViewController * edit = [EditViewController new];
+                        edit.source = _source[indexPath.section];
+                        edit.access_token = _access_token;
+                        edit.name = _userLoginName;
+                        edit.type = @"report";
+                        
+                        [self.navigationController pushViewController:edit
+                                                             animated:YES];
+                        
+                    }
+                        break;
+                        
+                    case 1:
+                    {
+                        
+                        EditViewController * edit = [EditViewController new];
+                        edit.source = _source[indexPath.section];
+                        edit.access_token = _access_token;
+                        edit.name = _userLoginName;
+                        edit.type = @"comment";
+                        
+                        [self.navigationController pushViewController:edit
+                                                             animated:YES];
+                        
+                    }
+                        break;
+                        
+                    case 2:
+                        
+                        [MicroBlogOperateForSina createFavoriteWithAccessToken:_access_token
+                                                                         andId:[_source[indexPath.section][@"id"] integerValue]];
+                        
+                        break;
+                        
+                    case 3:
+                        
+                        [MicroBlogOperateForSina destroyWeiBoWithAcccessToken:_access_token
+                                                                           iD:[_source[indexPath.section][@"id"] integerValue]];
+                        
+                        break;
+                        
+                    case 4:
+                    {
+                        
+                        if (_source[indexPath.section][@"retweeted_status"])
+                        {
+                            
+                            EditViewController * edit = [EditViewController new];
+                            edit.source = _source[indexPath.section][@"retweeted_status"];
+                            edit.access_token = _access_token;
+                            edit.name = _userLoginName;
+                            edit.type = @"report";
+                            
+                            [self.navigationController pushViewController:edit
+                                                                 animated:YES];
+                            
+                        }
+                        
+                    }
+                        break;
+                        
+                }
+                
+                [tabBar viewDisappear];
+                
+            };
+
+        }
+        
+        else
+        {
+            
+            tabBar.cellName = @[@"转发" , @"评论" , @"收藏" , @"转发原微博"];
+            
+            tabBar.selectRowAtIndex = ^(NSInteger index)
+            {
+                
+                switch (index)
+                {
+                        
+                    case 0:
+                    {
+                        
+                        EditViewController * edit = [EditViewController new];
+                        edit.source = _source[indexPath.section];
+                        edit.access_token = _access_token;
+                        edit.name = _userLoginName;
+                        edit.type = @"report";
+                        
+                        [self.navigationController pushViewController:edit
+                                                             animated:YES];
+                        
+                    }
+                        break;
+                        
+                    case 1:
+                    {
+                        
+                        EditViewController * edit = [EditViewController new];
+                        edit.source = _source[indexPath.section];
+                        edit.access_token = _access_token;
+                        edit.name = _userLoginName;
+                        edit.type = @"comment";
+                        
+                        [self.navigationController pushViewController:edit
+                                                             animated:YES];
+                        
+                    }
+                        break;
+                        
+                    case 2:
+                    {
+                        
+                        [MicroBlogOperateForSina createFavoriteWithAccessToken:_access_token
+                                                                         andId:[_source[indexPath.section][@"id"] integerValue]];
+                        
+                    }
+                        break;
+                        
+                    case 3:
+                    {
+                        
+                        if (_source[indexPath.section][@"retweeted_status"])
+                        {
+                            
+                            EditViewController * edit = [EditViewController new];
+                            edit.source = _source[indexPath.section][@"retweeted_status"];
+                            edit.access_token = _access_token;
+                            edit.name = _userLoginName;
+                            edit.type = @"report";
+                            
+                            [self.navigationController pushViewController:edit
+                                                                 animated:YES];
+                            
+                        }
+                        
+                    }
+                        break;
+                        
+                }
+                
+                [tabBar viewDisappear];
+                
+            };
+            
+        }
+        
+    }
+    
+    else
+    {
+        
+        if ([_source[indexPath.section][@"user"][@"name"] isEqualToString:_userLoginName])
+        {
+            tabBar.cellName = @[@"转发" , @"评论" , @"收藏" , @"删除"];
+            
+            tabBar.selectRowAtIndex = ^(NSInteger index)
+            {
+                switch (index)
+                {
+                        
+                    case 0:
+                    {
+                        
+                        EditViewController * edit = [EditViewController new];
+                        edit.source = _source[indexPath.section];
+                        edit.access_token = _access_token;
+                        edit.name = _userLoginName;
+                        edit.type = @"report";
+                        
+                        [self.navigationController pushViewController:edit
+                                                             animated:YES];
+                        
+                    }
+                        break;
+                        
+                    case 1:
+                    {
+                        
+                        EditViewController * edit = [EditViewController new];
+                        edit.source = _source[indexPath.section];
+                        edit.access_token = _access_token;
+                        edit.name = _userLoginName;
+                        edit.type = @"comment";
+                        
+                        [self.navigationController pushViewController:edit
+                                                             animated:YES];
+                        
+                    }
+                        break;
+                        
+                    case 2:
+                        
+                        [MicroBlogOperateForSina createFavoriteWithAccessToken:_access_token
+                                                                         andId:[_source[indexPath.section][@"id"] integerValue]];
+                        
+                        break;
+                        
+                    case 3:
+                        
+                        [MicroBlogOperateForSina destroyWeiBoWithAcccessToken:_access_token
+                                                                           iD:[_source[indexPath.section][@"id"] integerValue]];
+                        
+                        break;
+                        
+                }
+                
+                [tabBar viewDisappear];
+                
+            };
+            
+        }
+        
+        else
+        {
+            
+            tabBar.cellName = @[@"转发" , @"评论" , @"收藏"];
+            
+            tabBar.selectRowAtIndex = ^(NSInteger index)
+            {
+                
+                switch (index)
+                {
+                        
+                    case 0:
+                    {
+                        
+                        EditViewController * edit = [EditViewController new];
+                        edit.source = _source[indexPath.section];
+                        edit.access_token = _access_token;
+                        edit.name = _userLoginName;
+                        edit.type = @"report";
+                        
+                        [self.navigationController pushViewController:edit
+                                                             animated:YES];
+                        
+                    }
+                        break;
+                        
+                    case 1:
+                    {
+                        
+                        EditViewController * edit = [EditViewController new];
+                        edit.source = _source[indexPath.section];
+                        edit.access_token = _access_token;
+                        edit.name = _userLoginName;
+                        edit.type = @"comment";
+                        
+                        [self.navigationController pushViewController:edit
+                                                             animated:YES];
+                        
+                    }
+                        break;
+                        
+                    case 2:
+                    {
+                        
+                        [MicroBlogOperateForSina createFavoriteWithAccessToken:_access_token
+                                                                         andId:[_source[indexPath.section][@"id"] integerValue]];
+                        
+                    }
+                        break;
+                        
+                }
+                
+                [tabBar viewDisappear];
+                
+            };
+            
+        }
+        
+    }
+    
+    [tabBar.table_View reloadData];
+    
+    [UIView animateWithDuration:0.5
+                    animations : ^{
+                        
+                        tabBar.hide_View.frame = CGRectMake(0, 0, _width, _high);
+                        tabBar.table_View.frame = CGRectMake(10, _high/2-100, _width-20, tabBar.cellName.count*50);
+                        
+                    }];
+    
+}
+
 #pragma 我页面下:主页,微博,相册,更多之间的跳转
 -(void)clickSection:(UIButton *)sender
 {
@@ -982,39 +1563,147 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
     if (sender.tag == 2)
     {
         
-        [pt removeFromSuperview];
+        if (mv)
+        {
+            mv = nil;
+            [mv removeFromSuperview];
+        }
+        
+        if (pt)
+        {
+            pt = nil;
+            [pt removeFromSuperview];
+        }
         
         NSDictionary * data = [MicroBlogOperateForSina getWeiboOfUserWithAccessToken:_access_token
                                                                                 name:_userLoginName
-                                                                             andtype:WeiboTypeAll];
+                                                                             andtype:WeiboTypeAll
+                                                                               andId:@"0"];
+        max_id = data[@"max_id"];
         
         mv = [[MyView alloc] initWithFrame:self.view.frame];
-        mv.dataText = data;
+        mv.dataText = data.mutableCopy;
         mv.username = _userLoginName;
         mv.acc_token = _access_token;
 
         
         [mv createMe:self];
         
+        __weak UITableView * tableview = mv.tableview;
+        
+        //准备上拉加载
+        [tableview addRefreshFooterViewWithAniViewClass : [JHRefreshCommonAniView class]
+                                           beginRefresh : ^{
+                                               
+           //延时隐藏refreshView;
+           double delayInSeconds = 2.0;
+           //创建延期的时间 2S
+           dispatch_time_t delayInNanoSeconds = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+           
+           //延期执行
+           dispatch_after(delayInNanoSeconds, dispatch_get_main_queue(), ^{
+               
+               //获取最新微博
+               NSDictionary * data = [MicroBlogOperateForSina getWeiboOfUserWithAccessToken:_access_token
+                                                                                       name:_userLoginName
+                                                                                    andtype:WeiboTypeAll
+                                                                                      andId:max_id];
+               
+               max_id = data[@"max_id"];
+               
+               NSArray * status = data[@"statuses"];
+               
+               NSMutableArray * statuses = [mv.dataText[@"statuses"] mutableCopy];
+               
+               for (int i = 0; i < status.count; i++)
+               {
+                   [statuses addObject:status[i]];
+               }
+               
+               [mv.dataText setObject:statuses forKey:@"statuses"];
+               
+               [tableview reloadData];
+               
+               //事情做完了别忘了结束刷新动画~~~
+               [tableview footerEndRefreshing];
+               
+           });
+           
+       }];
+
+        
     }
     
     if (sender.tag == 3)
     {
-        [mv removeFromSuperview];
         
-        pt = [[PhotoTableView alloc] initWithFrame:self.view.frame];
-        pt.username = _userLoginName;
-        pt.acc_token = _access_token;
+        if (mv)
+        {
+            mv = nil;
+            [mv removeFromSuperview];
+        }
         
+        if (pt)
+        {
+            pt = nil;
+            [pt removeFromSuperview];
+        }
+                
         
         
         NSDictionary * data = [MicroBlogOperateForSina getPicListWithAccessToken:_access_token
                                                                            andId:[[MicroBlogOperateForSina getIdWithAccessToken:_access_token][@"uid"] integerValue]];
+        
         NSLog(@"%@",data);
         
-        pt.dataText = data;
+        pt = [[PhotoTableView alloc] initWithFrame:self.view.frame];
+        pt.username = _userLoginName;
+        pt.acc_token = _access_token;
+
+        pt.dataText = data.mutableCopy;
         
         [pt createMe:self];
+        
+        
+        __weak UITableView * tableview = pt.tableview;
+        
+        //准备上拉加载
+        [tableview addRefreshFooterViewWithAniViewClass : [JHRefreshCommonAniView class]
+                                           beginRefresh : ^{
+                                               
+           //延时隐藏refreshView;
+           double delayInSeconds = 2.0;
+           //创建延期的时间 2S
+           dispatch_time_t delayInNanoSeconds = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+           
+           //延期执行
+           dispatch_after(delayInNanoSeconds, dispatch_get_main_queue(), ^{
+               
+               //获取最新微博
+               NSDictionary * data = [MicroBlogOperateForSina getPicListWithAccessToken:_access_token
+                                                                                  andId:[[MicroBlogOperateForSina getIdWithAccessToken:_access_token][@"uid"] integerValue]];
+               
+               
+               NSArray * status = data[@"statuses"];
+               
+               NSMutableArray * statuses = [pt.dataText[@"statuses"] mutableCopy];
+               
+               for (int i = 0; i < status.count; i++)
+               {
+                   [statuses addObject:status[i]];
+               }
+               
+               [pt.dataText setObject:statuses forKey:@"statuses"];
+               
+               [tableview reloadData];
+               
+               //事情做完了别忘了结束刷新动画~~~
+               [tableview footerEndRefreshing];
+               
+           });
+           
+       }];
+
         
     }
     
@@ -1039,6 +1728,111 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
         
     }
     
+    
+}
+
+#pragma mark 选择分享平台
+-(void)buttonWasTapped:(UIButton *)button
+{
+    AAShareBubbleType buttonType = (AAShareBubbleType)[_bubbleIndexTypes[@(button.tag)] intValue];
+    
+    //选择平台
+    if (buttonType == AAShareBubbleTypeFacebook)
+    {
+        
+        //新浪微博
+        [ShareSDK connectSinaWeiboWithAppKey:AppkeyForSinaMicroblog
+                                   appSecret:AppsecretForSinaMicroblog
+                                 redirectUri:RedirectURL];
+        
+        EditViewController * edit = [EditViewController new];
+        edit.type = @"share";
+        edit.name = _userLoginName;
+        
+        [self.navigationController pushViewController:edit
+                                             animated:YES];
+        
+    }
+    
+    if (buttonType == AAShareBubbleTypeTwitter)
+    {
+        
+        //腾讯微博
+        [ShareSDK connectTencentWeiboWithAppKey:AppkeyForTencentMicroblog
+                                      appSecret:AppsecretForTencentMicroblog
+                                    redirectUri:RedirectURL];
+        
+    }
+    
+    if (buttonType == AAShareBubbleTypeGooglePlus)
+    {
+        
+        //易信
+        [ShareSDK connectYiXinTimelineWithAppId:AppIdForYiXin
+                                       yixinCls:nil];
+        
+    }
+    
+    if (buttonType == AAShareBubbleTypeTumblr)
+    {
+        
+        //明道
+        [ShareSDK connectMingDaoWithAppKey:AppkeyForMingDao
+                                 appSecret:AppsecretForMingDao
+                               redirectUri:RedirectURL];
+        
+    }
+    
+    if (buttonType == AAShareBubbleTypeMail)
+    {
+        
+        //邮件
+        [ShareSDK connectMail];
+        
+    }
+    
+    if (buttonType == AAShareBubbleTypeVk)
+    {
+        
+        //网易微博
+        [ShareSDK connect163WeiboWithAppKey:ConsumerkeyForWangYi
+                                  appSecret:ConsumersecretForWangyi
+                                redirectUri:RedirectURL];
+        
+    }
+    
+    if (buttonType == AAShareBubbleTypeLinkedIn)
+    {
+        
+        //豆瓣
+        [ShareSDK connectDoubanWithAppKey:ApikeyforDouBan
+                                appSecret:AppsecretForDouBan
+                              redirectUri:RedirectURL];
+        
+    }
+    
+    if (buttonType == AAShareBubbleTypePinterest)
+    {
+        
+        //人人
+        [ShareSDK connectRenRenWithAppId:AppidForRenRen
+                                  appKey:AppkeyForRenRen
+                               appSecret:SecretkeyForRenRen
+                       renrenClientClass:nil];
+        
+    }
+    
+    if (buttonType == AAShareBubbleTypeYoutube)
+    {
+        
+        //开心网
+        [ShareSDK connectKaiXinWithAppKey:ApikeyForKaiXin
+                                appSecret:SecretkeyForKaixin
+                              redirectUri:RedirectURL];
+        
+    }
+    
+    //    [_shareBubbles shareButtonTappedWithType:buttonType];
     
 }
 

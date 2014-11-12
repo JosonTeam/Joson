@@ -40,7 +40,7 @@
     _webview.delegate = self;
     
 #pragma mark 加载授权页面
-    NSMutableURLRequest * request = [[NSMutableURLRequest alloc] initWithURL : [NSURL URLWithString : InterfaceForSinaToGetCode(AppkeyForSinaMicroblog)]];
+    NSMutableURLRequest * request = [[NSMutableURLRequest alloc] initWithURL : [NSURL URLWithString : InterfaceForSinaToGetCode(AppkeyForSinaMicroblog)]];//@"http://t.cn/zR7wYV8"]];
     [request setHTTPMethod:@"POST"];
     [_webview loadRequest:request];
     [self.view addSubview:_webview];
@@ -51,7 +51,7 @@
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request
  navigationType:(UIWebViewNavigationType)navigationType
 {
-    
+
 #pragma mark 获取access_token
     NSString * token = [GetDataOfLocalFile getContentOfTxtFileAtParh : NSDocumentDirectory
                                                           ForFileName:@"AT"];
@@ -112,7 +112,17 @@
                          completion:nil];
         
     }
+    
     return YES;
 }
+
+//- (void)webViewDidFinishLoad:(UIWebView *)webView
+//{
+//    NSData * data = [NSData dataWithContentsOfURL:webView.request.URL];
+////    NSLog(@"%@",data);
+////    NSLog(@"%@",[[NSMutableString alloc]initWithData:data encoding:NSUTF8StringEncoding]);
+//    NSArray * str = [[[[[NSMutableString alloc]initWithData:data encoding:NSUTF8StringEncoding]componentsSeparatedByString:@"<video src=\""]lastObject]componentsSeparatedByString:@"\""];
+//    NSLog(@"%@\t",str[0]);
+//}
 
 @end

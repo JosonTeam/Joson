@@ -254,10 +254,6 @@ numberOfRowsInSection:(NSInteger)section
 didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    if (indexPath.row == _titleArray.count-1)
-    {
-        [_table scrollRectToVisible:CGRectMake(0, -100, 320, 100) animated:YES];
-    }
     if (self.selectRowAtIndex)
     {
         self.selectRowAtIndex(indexPath.row);

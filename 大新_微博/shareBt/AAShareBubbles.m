@@ -1,6 +1,8 @@
-#import "FindFriendViewController.h"
+#import "FindFriendAndWeiboDetaileViewController.h"
+#import "BaseViewController.h"
 #import <ShareSDK/ShareSDK.h>
 #import "AAShareBubbles.h"
+
 
 @interface AAShareBubbles()
 
@@ -65,7 +67,7 @@
 
 -(void)shareButtonTappedWithType:(AAShareBubbleType)buttonType
 {
-    [self hide];
+    [self hide:nil];
     
     if([self.delegate respondsToSelector:@selector(aaShareBubbles:tappedBubbleWithType:)])
     {
@@ -82,7 +84,7 @@
 
 -(void)shareViewBackgroundTapped:(UITapGestureRecognizer *)tapGesture
 {
-    [self hide];
+    [self hide:nil];
 }
 
 #pragma mark -
@@ -228,12 +230,11 @@
         }
     }
 }
--(void)hide
+-(void)hide:(UIButton *)sender
 {
     
     if(!self.isAnimating)
     {
-        
         self.isAnimating = YES;
         int inetratorI = 0;
         for (UIButton *bubble in bubbles)
@@ -241,8 +242,20 @@
             
             CGFloat delayTime = (CGFloat) (inetratorI * 0.1);
             
+            NSArray * arr;
+            
+            if (sender)
+            {
+                arr = @[bubble,sender];
+            }
+            
+            else
+            {
+                arr = @[bubble];
+            }
+            
             [self performSelector:@selector(hideBubbleWithAnimation:)
-                       withObject:bubble
+                       withObject:arr
                        afterDelay:delayTime];
             
             ++inetratorI;
@@ -302,8 +315,15 @@
     }];
 }
 
--(void)hideBubbleWithAnimation:(UIButton *)bubble
+-(void)hideBubbleWithAnimation:(NSArray *)sender
 {
+    UIButton * bubble = (UIButton *)sender[0];
+    
+    if (sender.count == 2)
+    {
+        UIButton * change = (UIButton *)sender[1];
+        [change setImage:[UIImage imageNamed:@"userinfo_navigationbar_more@2x"] forState:UIControlStateNormal];
+    }
     
     [UIView animateWithDuration:0.2
                      animations:^{
@@ -396,14 +416,30 @@
     [bubbles addObject:button];
     bubbleIndexTypes[@(bubbles.count - 1)] = @(type);
     
-    FindFriendViewController * find = (FindFriendViewController *)vc;
-    find.bubbleIndexTypes = [NSMutableDictionary new];
-    find.bubbleIndexTypes = bubbleIndexTypes;
-    
+    if ([vc isMemberOfClass:[FindFriendAndWeiboDetaileViewController class]])
+    {
+        
+        FindFriendAndWeiboDetaileViewController * find = (FindFriendAndWeiboDetaileViewController *)vc;
+        find.bubbleIndexTypes = [NSMutableDictionary new];
+        find.bubbleIndexTypes = bubbleIndexTypes;
+        find.type = _type;
+        
+    }
+   
+    if ([vc isMemberOfClass:[BaseViewController class]])
+    {
+        
+        BaseViewController * base = (BaseViewController *)vc;
+        base.bubbleIndexTypes = [NSMutableDictionary new];
+        base.bubbleIndexTypes = bubbleIndexTypes;
+        
+    }
+
     [self addSubview:button];
 }
 
--(UIColor *)colorFromRGB:(int)rgb {
+-(UIColor *)colorFromRGB:(int)rgb
+{
     return [UIColor colorWithRed:((float)((rgb & 0xFF0000) >> 16))/255.0 green:((float)((rgb & 0xFF00) >> 8))/255.0 blue:((float)(rgb & 0xFF))/255.0 alpha:1.0];
 }
 

@@ -10,8 +10,9 @@
 
 @interface MyView : UIView<UITableViewDataSource,UITableViewDelegate>
 -(void)createMe:(UIViewController *)sender;
-@property(nonatomic,strong)NSDictionary * dataText;
+@property(nonatomic,strong)NSMutableDictionary * dataText;
 @property(nonatomic,strong)NSString * username;//用户名
 @property(nonatomic,strong)NSArray * uids;//用户uid
 @property(nonatomic,strong)NSString * acc_token;//_access_token值
+@property(nonatomic,strong)UITableView * tableview;//我的微博tableview
 @end

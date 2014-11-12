@@ -1,33 +1,46 @@
-
+#import "AAShareBubbles.h"
 #import "PhotoTableView.h"
 #import "Factory.h"
 #import "JSKit.h"
+#import "BaseViewController.h"
 @implementation PhotoTableView
 {
     int _width;
     int _high;
     PhotoTableView * photoTableView;//相册tableview
-    UITableView * tableview;//我的微博tableview
     UIView * meView;//表头
     
     NSArray * picUrlArr;
+    
+    BaseViewController * base;
+    AAShareBubbles * _shareBubbles;
+}
+
+- (id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self)
+    {
+        // Initialization code
+    }
+    return self;
 }
 
 -(void)createMe:(UIViewController *)sender
 {
     
+    base = (BaseViewController *)sender;
+    
     NSArray * widthAndHigh = [Factory getHeigtAndWidthOfDevice];
     _width = [widthAndHigh[0] intValue];
     _high = [widthAndHigh[1] intValue];
     
-    tableview = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, 320, 568) style:UITableViewStyleGrouped];
-    tableview.showsHorizontalScrollIndicator = NO;
-    tableview.showsVerticalScrollIndicator = NO;
-    tableview.bounces = YES;
+    _tableview = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, _width, _high) style:UITableViewStyleGrouped];
+    _tableview.showsHorizontalScrollIndicator = NO;
+    _tableview.showsVerticalScrollIndicator = NO;
+    _tableview.bounces = YES;
     
-    
-    
-    meView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 250)];
+    meView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, _width, 260)];
     meView.backgroundColor = [UIColor whiteColor];
     meView.userInteractionEnabled = YES;
     
@@ -36,7 +49,7 @@
     
     for (int i = 0; i < arr.count; i++)
     {
-        UIButton * btn = [[UIButton alloc]initWithFrame:CGRectMake(i * 50 + 55, 230, 50, 30)];
+        UIButton * btn = [[UIButton alloc]initWithFrame:CGRectMake(i * 50 + 55, _high-338, 50, 30)];
         [btn setTitle:arr[i] forState:UIControlStateNormal];
         [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         btn.tag = i + 1;
@@ -45,17 +58,17 @@
     }
     
     
-    tableview.delegate = self;
-    tableview.dataSource = self;
+    _tableview.delegate = self;
+    _tableview.dataSource = self;
     
     UIImageView * headImageView = [[UIImageView alloc]init];
-    headImageView.frame = CGRectMake(0, 0, 320, 170);
+    headImageView.frame = CGRectMake(0, 0, _width, 170);
     headImageView.image = [UIImage imageNamed:@"login_introduce_bg4.jpg"];
     headImageView.userInteractionEnabled = YES;
     [meView addSubview:headImageView];
     
     UIButton * shareBtn = [UIButton new];
-    shareBtn.frame = CGRectMake(280, 5, 30, 30);
+    shareBtn.frame = CGRectMake(_width-40, 5, 30, 30);
     [shareBtn setImage:[UIImage imageNamed:@"userinfo_navigationbar_more@2x"] forState:UIControlStateNormal];
     shareBtn.backgroundColor = [UIColor blackColor];
     shareBtn.alpha = 0.7;
@@ -63,14 +76,31 @@
     [shareBtn addTarget:self action:@selector(clickShare:) forControlEvents:UIControlEventTouchUpInside];
     [headImageView addSubview:shareBtn];
     
-    UIButton * search = [[UIButton alloc]initWithFrame:CGRectMake(240, 5, 35, 30)];
+    //设置分享平台
+    _shareBubbles = [[AAShareBubbles alloc] initWithPoint : CGPointMake(_width/2, _high/2)
+                                                    radius:160
+                                                    inView:sender.view];
+    
+    _shareBubbles.type = @"findFriend";
+    _shareBubbles.showTencentMicroblogBubble = 1;
+    _shareBubbles.showSinaMicroblogBubble = 1;
+    _shareBubbles.showMingdaoBubble = 1;
+    _shareBubbles.showDouBanBubble = 1;
+    _shareBubbles.showKaixinBubble = 1;
+    _shareBubbles.showRenRenBubble = 1;
+    _shareBubbles.showWangyiBubble = 1;
+    _shareBubbles.showYixinBubble = 1;
+    _shareBubbles.showMailBubble = 1;
+
+    
+    UIButton * search = [[UIButton alloc]initWithFrame:CGRectMake(_width-80, 5, 35, 30)];
     [search setImage:[UIImage imageNamed:@"userinfo_navigationbar_search@2x"] forState:UIControlStateNormal];
     search.backgroundColor = [UIColor blackColor];
     search.alpha = 0.7;
     [headImageView addSubview:search];
     
     UIView * view = [UIView new];
-    view.frame = CGRectMake(115, 25, 80, 80);
+    view.frame = CGRectMake(_width-205, 25, 80, 80);
     view.backgroundColor = [UIColor whiteColor];
     view.alpha = 0.6;
     view.layer.masksToBounds = YES;
@@ -78,7 +108,7 @@
     [headImageView addSubview:view];
     
 #pragma 用户头像
-    UIImageView * TXimage = [[UIImageView alloc]initWithFrame:CGRectMake(120, 30, 70, 70)];
+    UIImageView * TXimage = [[UIImageView alloc]initWithFrame:CGRectMake(_width-200, 30, 70, 70)];
     TXimage.layer.masksToBounds = YES;
     TXimage.layer.cornerRadius = 35;
     
@@ -94,13 +124,13 @@
     
     [headImageView addSubview:TXimage];
 #pragma 用户名字
-    UILabel * nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(105, 105, 200, 30)];
+    UILabel * nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(_width-215, 105, 200, 30)];
     nameLabel.textColor = [UIColor whiteColor];
     nameLabel.text = _username;
     nameLabel.font = [UIFont systemFontOfSize:20];
     [headImageView addSubview:nameLabel];
 #pragma 用户关注数粉丝数
-    UILabel * fanLabel = [[UILabel alloc]initWithFrame:CGRectMake(70, 130, 200, 30)];
+    UILabel * fanLabel = [[UILabel alloc]initWithFrame:CGRectMake(_width-250, 130, 200, 30)];
     fanLabel.textColor = [UIColor whiteColor];
     //    fanLabel.text = @"关注 300 | 粉丝 150";
     fanLabel.font = [UIFont systemFontOfSize:20];
@@ -140,9 +170,9 @@
     editlabel.text = @"编辑资料";
     [editBtn addSubview:editlabel];
     
-    tableview.tableHeaderView = meView;
+    _tableview.tableHeaderView = meView;
     
-    [self addSubview:tableview];
+    [self addSubview:_tableview];
     [sender.view addSubview:self];
     
     
@@ -150,15 +180,12 @@
     NSInteger t = [uid integerValue];
     
     NSLog(@"_acc_token = %@",_acc_token);
-    NSLog(@"%d",t);
+    NSLog(@"%ld",(long)t);
     
     NSDictionary * picDic = _dataText;
     NSLog(@"picDic = %@",picDic);
     
     picUrlArr = picDic[@"statuses"];
-    
-    
-    
     
 }
 
@@ -240,7 +267,7 @@
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 20;
+    return 5;
 }
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {

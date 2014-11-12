@@ -12,13 +12,17 @@
 #import "Factory.h"
 #import "JSKit.h"
 #import "TabbarViewController.h"
+#import "AAShareBubbles.h"
+#import "BaseViewController.h"
+
 @implementation MyView
 {
     int _width;
     int _high;
     PhotoTableView * photoTableView;//相册tableview
-    UITableView * tableview;//我的微博tableview
     UIView * meView;//表头
+    BaseViewController * base;
+    AAShareBubbles * _shareBubbles;
 }
 - (id)initWithFrame:(CGRect)frame
 {
@@ -35,19 +39,20 @@
 
 -(void)createMe:(UIViewController *)sender
 {
+    base = (BaseViewController *)sender;
     
     NSArray * widthAndHigh = [Factory getHeigtAndWidthOfDevice];
     _width = [widthAndHigh[0] intValue];
     _high = [widthAndHigh[1] intValue];
     
-    tableview = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, _width, _high) style:UITableViewStyleGrouped];
-    tableview.showsHorizontalScrollIndicator = NO;
-    tableview.showsVerticalScrollIndicator = NO;
-    tableview.bounces = YES;
+    _tableview = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, _width, _high) style:UITableViewStyleGrouped];
+    _tableview.showsHorizontalScrollIndicator = NO;
+    _tableview.showsVerticalScrollIndicator = NO;
+    _tableview.bounces = YES;
     
     
     
-    meView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, _width, _high-308)];
+    meView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, _width, 260)];
     meView.backgroundColor = [UIColor whiteColor];
     meView.userInteractionEnabled = YES;
     
@@ -65,11 +70,11 @@
     }
     
     
-    tableview.delegate = self;
-    tableview.dataSource = self;
+    _tableview.delegate = self;
+    _tableview.dataSource = self;
     
     UIImageView * headImageView = [[UIImageView alloc]init];
-    headImageView.frame = CGRectMake(0, 0, _width, _high-398);
+    headImageView.frame = CGRectMake(0, 0, _width, 170);
     headImageView.image = [UIImage imageNamed:@"login_introduce_bg4.jpg"];
     headImageView.userInteractionEnabled = YES;
     [meView addSubview:headImageView];
@@ -82,6 +87,22 @@
     shareBtn.tag = 99;
     [shareBtn addTarget:self action:@selector(clickShare:) forControlEvents:UIControlEventTouchUpInside];
     [headImageView addSubview:shareBtn];
+    
+    //设置分享平台
+    _shareBubbles = [[AAShareBubbles alloc] initWithPoint : CGPointMake(_width/2, _high/2)
+                                                    radius:160
+                                                    inView:sender.view];
+    
+    _shareBubbles.type = @"findFriend";
+    _shareBubbles.showTencentMicroblogBubble = 1;
+    _shareBubbles.showSinaMicroblogBubble = 1;
+    _shareBubbles.showMingdaoBubble = 1;
+    _shareBubbles.showDouBanBubble = 1;
+    _shareBubbles.showKaixinBubble = 1;
+    _shareBubbles.showRenRenBubble = 1;
+    _shareBubbles.showWangyiBubble = 1;
+    _shareBubbles.showYixinBubble = 1;
+    _shareBubbles.showMailBubble = 1;
     
     UIButton * search = [[UIButton alloc]initWithFrame:CGRectMake(_width-80, 5, 35, 30)];
     [search setImage:[UIImage imageNamed:@"userinfo_navigationbar_search@2x"] forState:UIControlStateNormal];
@@ -121,13 +142,11 @@
 #pragma 用户关注数粉丝数
     UILabel * fanLabel = [[UILabel alloc]initWithFrame:CGRectMake(70, 130, 200, 30)];
     fanLabel.textColor = [UIColor whiteColor];
-//    fanLabel.text = @"关注 300 | 粉丝 150";
     fanLabel.font = [UIFont systemFontOfSize:20];
     
     //获取access_token和 uid 然后获取粉丝数和关注数
     NSDictionary * iddata = [MicroBlogOperateForSina getIdWithAccessToken:_acc_token];
     NSArray * AFdata = [MicroBlogOperateForSina getCountOfAllWithAccessToken:_acc_token andUid:@[[NSString stringWithFormat:@"%@",iddata[@"uid"]]]];
-    NSLog(@"AFdata = %@",AFdata);
     fanLabel.text = [[NSString alloc]initWithFormat:@"关注 %@ | 粉丝 %@",AFdata[0][@"friends_count"],AFdata[0][@"followers_count"]];
     
     
@@ -157,9 +176,9 @@
     editlabel.text = @"编辑资料";
     [editBtn addSubview:editlabel];
     
-    tableview.tableHeaderView = meView;
+    _tableview.tableHeaderView = meView;
     
-    [self addSubview:tableview];
+    [self addSubview:_tableview];
     [sender.view addSubview:self];
     
 }
@@ -167,7 +186,36 @@
 -(void)clickShare:(UIButton *)sender
 {
     UIButton * shareBtn = (UIButton *)[self viewWithTag:99];
-    [shareBtn setImage:[UIImage imageNamed:@"userinfo_navigationbar_more_highlighted@2x"] forState:UIControlStateNormal];
+    if ([shareBtn.imageView.image isEqual:[UIImage imageNamed:@"userinfo_navigationbar_more@2x"]])
+    {
+        [shareBtn setImage:[UIImage imageNamed:@"userinfo_navigationbar_more_highlighted@2x"] forState:UIControlStateNormal];
+        
+        [_shareBubbles show:base];
+        
+    }
+    else
+    {
+        
+            [_shareBubbles hide:shareBtn];
+        
+            //设置分享平台
+            _shareBubbles = [[AAShareBubbles alloc] initWithPoint : CGPointMake(_width/2, _high/2)
+                                                            radius:160
+                                                            inView:self];
+        
+            _shareBubbles.type = @"findFriend";
+            _shareBubbles.showTencentMicroblogBubble = 1;
+            _shareBubbles.showSinaMicroblogBubble = 1;
+            _shareBubbles.showMingdaoBubble = 1;
+            _shareBubbles.showDouBanBubble = 1;
+            _shareBubbles.showKaixinBubble = 1;
+            _shareBubbles.showRenRenBubble = 1;
+            _shareBubbles.showWangyiBubble = 1;
+            _shareBubbles.showYixinBubble = 1;
+            _shareBubbles.showMailBubble = 1;
+
+    }
+    
 }
 
 
@@ -225,7 +273,7 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString * content = _dataText[@"statuses"][indexPath.section][@"text"];
-    CGFloat h = [Factory contentHeight:content];
+    CGFloat h = [Factory contentHeight:content width:_width-10];
     
     
     NSString * picStr = _dataText[@"statuses"][indexPath.section][@"bmiddle_pic"];
@@ -234,7 +282,7 @@
     if ([arr containsObject:@"retweeted_status"])
     {
         NSString * reContent = _dataText[@"statuses"][indexPath.section][@"retweeted_status"][@"text"];
-        CGFloat h1 = [Factory contentHeight:reContent];
+        CGFloat h1 = [Factory contentHeight:reContent width:_width-10];
         return 2 * h + h1 + 95;//有转发的返回这高度
     }
     
@@ -286,10 +334,10 @@
     [cell.contentView addSubview:nameLable];
     
     NSString * time = [Factory getDateWithSourceDate:_dataText[@"statuses"][indexPath.section][@"created_at"]
-                                         andSysDate : [NSString stringWithFormat:@"%@", [NSDate dateWithTimeIntervalSinceNow:8*3600]]];
+                                         andSysDate : [NSString stringWithFormat:@"%@", [NSDate dateWithTimeIntervalSinceNow:8*3600]] andType:nil];
     
     //时间的label
-    UILabel * timeLbel = [[UILabel alloc]initWithFrame:CGRectMake(10, 30, time.length*10, 10)];
+    UILabel * timeLbel = [[UILabel alloc]initWithFrame:CGRectMake(10, 30, [Factory contentWidth:time height:10 fontSize:10], 10)];
     timeLbel.font = [UIFont systemFontOfSize:10];
     timeLbel.text = time;
     timeLbel.textColor = [UIColor grayColor];
@@ -306,19 +354,19 @@
     NSString * fromStr = _dataText[@"statuses"][indexPath.section][@"source"];
     NSArray * a = [fromStr componentsSeparatedByString:@">"];
     NSArray * b = [a[1] componentsSeparatedByString:@"<"];
-    fromStr = b[0];
+    fromStr = [@"来自" stringByAppendingString:b[0]];
     
-    UILabel * fromLabel = [[UILabel alloc]initWithFrame:CGRectMake(15+time.length*10, 30, (fromStr.length + 2)*18, 10)];
+    UILabel * fromLabel = [[UILabel alloc]initWithFrame:CGRectMake(15+[Factory contentWidth:time height:10 fontSize:10], 30, [Factory contentWidth:fromStr height:10 fontSize:10], 10)];
     fromLabel.font = [UIFont systemFontOfSize:10];
     fromLabel.textColor = [UIColor grayColor];
-    fromLabel.text = [[NSString alloc]initWithFormat:@"来自%@",fromStr];
+    fromLabel.text = fromStr;
     [cell.contentView addSubview:fromLabel];
     
     
     
     //求高度设置
     NSString * content = _dataText[@"statuses"][indexPath.section][@"text"];
-    CGFloat h = [Factory contentHeight:content];
+    CGFloat h = [Factory contentHeight:content width:_width-10];
     
     
     UILabel * label = [[UILabel alloc]initWithFrame:CGRectMake(10, 40 , _width-20, h)];
@@ -332,6 +380,14 @@
     if (picStr != nil)
     {
         UIImageView * imageView = [[UIImageView alloc]initWithFrame:CGRectMake(10, h + 50, 70, 70)];
+        
+//        if ([_dataText[@"statuses"][indexPath.section][@"source"] rangeOfString:@"app.weibo.com"].location != NSNotFound)
+//        {
+//            UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(aa)];
+//            [imageView addGestureRecognizer:tap];
+//            imageView.userInteractionEnabled = 1;
+//        }
+        
         
         //图片下载
         NSURLRequest * request1 = [NSURLRequest requestWithURL:[NSURL URLWithString:_dataText[@"statuses"][indexPath.section][@"bmiddle_pic"]] cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:10];
@@ -347,7 +403,7 @@
     if ([arr containsObject:@"retweeted_status"])
     {
         NSString * reContent = _dataText[@"statuses"][indexPath.section][@"retweeted_status"][@"text"];
-        CGFloat h1 = [Factory contentHeight:reContent];
+        CGFloat h1 = [Factory contentHeight:reContent width:_width-10];
         
         
         UIView * view = [UIView new];
@@ -392,7 +448,10 @@
     return cell;
 }
 
-
+- (void)aa
+{
+    NSLog(@"aaa");
+}
 
 
 @end

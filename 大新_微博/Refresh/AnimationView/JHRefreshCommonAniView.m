@@ -1,11 +1,3 @@
-//
-//  JHRefreshCommonAniView.m
-//  JHRefresh
-//
-//  Created by Jiahai on 14-9-15.
-//  Copyright (c) 2014年 Jiahai. All rights reserved.
-//
-
 #import "JHRefreshCommonAniView.h"
 #import "UIView+JHExtension.h"
 #import "JHREfreshConfig.h"
@@ -95,6 +87,9 @@ NSString *const JHRefreshFooterStatusTextFailure = @"加载失败";
     switch (self.refreshViewType) {
         case JHRefreshViewTypeHeader:
         {
+            _player = [[AVAudioPlayer alloc]initWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"prlm_sound_pull" ofType:@"wav"]] error:nil];
+            [_player play];
+            
             _statusLabel.text = JHRefreshHeaderStatusTextPulling;
             
             [UIView animateWithDuration:JHRefreshFastAnimationDuration animations:^{
@@ -118,6 +113,10 @@ NSString *const JHRefreshFooterStatusTextFailure = @"加载失败";
     switch (self.refreshViewType) {
         case JHRefreshViewTypeHeader:
         {
+            
+            _player = [[AVAudioPlayer alloc]initWithContentsOfURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"prlm_sound_release" ofType:@"wav"]] error:nil];
+            [_player play];
+            
             _statusLabel.text = JHRefreshHeaderStatusTextNormal;
             
             [UIView animateWithDuration:JHRefreshFastAnimationDuration animations:^{

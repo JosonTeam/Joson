@@ -1057,15 +1057,17 @@
  access_token ---用户授权码
  name ---用户名
  type ---微博类型
+ max_id ---开始位置
  */
 + (NSDictionary *)getWeiboOfUserWithAccessToken:(NSString *)access_token
                                            name:(NSString *)name
                                         andtype:(WeiboType *)type
+                                          andId:(NSString *)max_id
 {
     
     NSError * error;
     static NSDictionary * dic;
-    NSURL * url = [NSURL URLWithString : [NSString stringWithFormat:@"%@?access_token=%@&screen_name=%@&feature=%d",InterfaceForSinaToGetWeiboOfUser , access_token , name , (int)type]];
+    NSURL * url = [NSURL URLWithString : [NSString stringWithFormat:@"%@?access_token=%@&screen_name=%@&feature=%d&max_id=%@",InterfaceForSinaToGetWeiboOfUser , access_token , name , (int)type , max_id]];
     NSMutableURLRequest * request = [[NSMutableURLRequest alloc] initWithURL:url];
     
     NSData * data = [NSURLConnection sendSynchronousRequest:request
@@ -1153,7 +1155,7 @@
  */
 + (NSDictionary *)getDetailOfUserWithAccessToken:(NSString *)access_token
                                             name:(NSString *)name
-                                             orId:(NSInteger)uid
+                                             orId:(NSString *)uid
 {
     
     NSError * error;
@@ -1168,7 +1170,7 @@
     else if (uid)
     {
         
-        url = [NSURL URLWithString : [NSString stringWithFormat:@"%@?access_token=%@&uid=%d",InterfaceForSinaToGetDetaileOfUser , access_token , uid]];
+        url = [NSURL URLWithString : [NSString stringWithFormat:@"%@?access_token=%@&uid=%@",InterfaceForSinaToGetDetaileOfUser , access_token , uid]];
    
     }
     
@@ -1615,12 +1617,12 @@
  iD ---微博id
  */
 + (NSDictionary *)getDetaileOfWeiboWithAccessToken:(NSString *)access_token
-                                             andId:(NSInteger)iD
+                                             andId:(NSString *)iD
 {
     
     NSError * error;
     static NSDictionary * dic;
-    NSURL * url = [NSURL URLWithString : [NSString stringWithFormat:@"%@?access_token=%@&id=%ld",InterfaceForSinaToGetDetailOfWeibo , access_token , (long)iD]];
+    NSURL * url = [NSURL URLWithString : [NSString stringWithFormat:@"%@?access_token=%@&id=%@",InterfaceForSinaToGetDetailOfWeibo , access_token , iD]];
   
     NSURLRequest * request = [[NSURLRequest alloc] initWithURL:url
                                                    cachePolicy:NSURLRequestReloadIgnoringCacheData

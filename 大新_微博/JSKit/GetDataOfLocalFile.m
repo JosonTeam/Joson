@@ -58,13 +58,13 @@
     if (error)
     {
         
-        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error"
-                                                        message:@"Faile to get"
-                                                       delegate:nil
-                                              cancelButtonTitle:@"Cancel"
-                                              otherButtonTitles:nil];
-        
-        [alert show];
+//        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error"
+//                                                        message:@"Faile to get"
+//                                                       delegate:nil
+//                                              cancelButtonTitle:@"Cancel"
+//                                              otherButtonTitles:nil];
+//        
+//        [alert show];
         
     }
     
@@ -193,13 +193,13 @@
     if (error)
     {
         
-        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error"
-                                                        message:@"Faile to get"
-                                                       delegate:nil
-                                              cancelButtonTitle:@"Cancel"
-                                              otherButtonTitles:nil];
-        
-        [alert show];
+//        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"Error"
+//                                                        message:@"Faile to get"
+//                                                       delegate:nil
+//                                              cancelButtonTitle:@"Cancel"
+//                                              otherButtonTitles:nil];
+//        
+//        [alert show];
         
     }
     

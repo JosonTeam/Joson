@@ -402,7 +402,7 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
  */
 + (NSDictionary *)getDetailOfUserWithAccessToken:(NSString *)access_token
                                             name:(NSString *)name
-                                            orId:(NSInteger)uid;
+                                            orId:(NSString *)uid;
 
 
 #pragma mark 获得用户发表的微博
@@ -411,10 +411,12 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
  access_token ---用户授权码
  name ---用户名
  type ---微博类型
+ max_id ---起始位置
  */
 + (NSDictionary *)getWeiboOfUserWithAccessToken:(NSString *)access_token
                                            name:(NSString *)name
-                                        andtype:(WeiboType *)type;
+                                        andtype:(WeiboType *)type
+                                          andId:(NSString *)max_id;
 
 #pragma mark 获得用户发表的微博的id
 /*
@@ -566,7 +568,7 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
  iD ---微博id
  */
 + (NSDictionary *)getDetaileOfWeiboWithAccessToken:(NSString *)access_token
-                                             andId:(NSInteger)iD;
+                                             andId:(NSString *)iD;
 
 
 #pragma mark 获取用户的微博数，关注数，粉丝数

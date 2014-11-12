@@ -4,10 +4,13 @@
 
 @property (nonatomic ,assign)int count; //cell的个数
 @property (nonatomic ,assign)int identifier; //界面身份标识
+@property (nonatomic ,strong)NSString * uid;
 @property (nonatomic ,strong)NSMutableArray * name; //所转发原微博博主用户名
 @property (nonatomic ,strong)NSString * access_token; //用户授权码
 @property (nonatomic ,strong)NSMutableArray * source; //数据源
 @property (nonatomic ,strong)NSString * userLoginName; //用户名
+@property (nonatomic ,strong)NSDictionary * userDetaileSource;
+@property (nonatomic ,strong)NSMutableDictionary * bubbleIndexTypes; //分享平台类别
 
 //初始化界面
 - (void)init_View;

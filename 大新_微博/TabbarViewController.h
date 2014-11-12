@@ -8,7 +8,12 @@
 @property(nonatomic, strong)UIImage * imageURL; //大图图片
 @property(nonatomic, strong)NSArray * cellName; //cell的textView上的显示内容
 
+@property (nonatomic, copy) void (^selectRowAtIndex)(NSInteger index);
+
+
 //初始化界面
 - (void)init_View;
+
+- (void)viewDisappear;
 
 @end

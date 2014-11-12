@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "JHRefreshMacro.h"
 #import "JHRefreshAniBaseView.h"
+#import <AVFoundation/AVFoundation.h>
 
 @interface JHRefreshCommonAniView : JHRefreshAniBaseView
 {
@@ -16,7 +17,7 @@
     UIActivityIndicatorView *_activityView;
     UILabel         *_statusLabel;
     UILabel         *_lastUpdateTimeLabel;
+    AVAudioPlayer   *_player;
 }
-
 
 @end

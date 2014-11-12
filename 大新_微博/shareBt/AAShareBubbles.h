@@ -49,6 +49,8 @@ typedef enum AAShareBubbleType : int {
 // The fader view alpha, by default is 0.15
 @property(nonatomic, assign) CGFloat faderAlpha;
 
+@property(nonatomic, strong) NSString * type;
+
 @property (nonatomic, assign) int googlePlusBackgroundColorRGB;
 @property (nonatomic, assign) int pinterestBackgroundColorRGB;
 @property (nonatomic, assign) int instagramBackgroundColorRGB;
@@ -75,7 +77,7 @@ typedef enum AAShareBubbleType : int {
 
 -(void)show:(UIViewController *)vc;
 
--(void)hide;
+-(void)hide:(UIButton *)sender;
 
 @end
 

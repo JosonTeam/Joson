@@ -346,6 +346,7 @@
                         _weiboImage.image = [UIImage imageWithData:data];
                         
                     });
+                    
                 });
                 
             }
@@ -414,7 +415,6 @@
     [bgView addSubview:view];
     
     [self.view addSubview:bgView];
-    _textView.inputAccessoryView = bgView;
     
     for (int i = 0; i < _buttonImage.count; i++)
     {
@@ -821,7 +821,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info
         else
         {
             
-            NSArray * arr = @[[NSNumber numberWithInt:_textView.text.length] , [NSNumber numberWithInt : [ [ [ [ [ [ [_picName[sender.view.tag/100][sender.view.tag%100] componentsSeparatedByString:@"/"] lastObject] componentsSeparatedByString:@"."] objectAtIndex:0] componentsSeparatedByString:@"@"]objectAtIndex:0] length]+2]];
+            NSArray * arr = @[[NSNumber numberWithInteger:_textView.text.length] , [NSNumber numberWithInteger : [ [ [ [ [ [ [_picName[sender.view.tag/100][sender.view.tag%100] componentsSeparatedByString:@"/"] lastObject] componentsSeparatedByString:@"."] objectAtIndex:0] componentsSeparatedByString:@"@"]objectAtIndex:0] length]+2]];
             
             [_rangArray addObject:arr];
             
@@ -851,7 +851,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info
         else
         {
             
-            NSArray * arr = @[[NSNumber numberWithInt:_textView.text.length] , [NSNumber numberWithInt:[ [ [ [ [ [ [_picName[sender.view.tag/100][sender.view.tag%100] componentsSeparatedByString:@"/"] lastObject] componentsSeparatedByString:@"."] objectAtIndex:0] componentsSeparatedByString:@"@"]objectAtIndex:0] length]+2]];
+            NSArray * arr = @[[NSNumber numberWithInteger:_textView.text.length] , [NSNumber numberWithInteger:[ [ [ [ [ [ [_picName[sender.view.tag/100][sender.view.tag%100] componentsSeparatedByString:@"/"] lastObject] componentsSeparatedByString:@"."] objectAtIndex:0] componentsSeparatedByString:@"@"]objectAtIndex:0] length]+2]];
             
             [_rangArray addObject:arr];
             
@@ -872,9 +872,19 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info
     }
 }
 
+- (BOOL)textViewShouldBeginEditing:(UITextView *)textView
+{
+    [_button_View removeFromSuperview];
+    _textView.inputAccessoryView = _button_View;
+    return YES;
+}
+
 #pragma mark 开始编辑
 - (void)textViewDidBeginEditing:(UITextView *)textView
 {
+    
+    [textView becomeFirstResponder];
+    
     if ([_textView.text isEqualToString:@"说说分享心得..."] || [_textView.text isEqualToString:@"写评论..."]|| [_textView.text isEqualToString:@"分享新鲜事..."])
     {
         _textView.text = nil;

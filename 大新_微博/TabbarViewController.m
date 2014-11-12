@@ -56,14 +56,15 @@
     BaseViewController * v3 = [BaseViewController new];
     BaseViewController * v4 = [BaseViewController new];
     BaseViewController * v5 = [BaseViewController new];
-  
+    
 #pragma mark 获取当前用户的用户名
     _userLoginName = [MicroBlogOperateForSina getDetailOfUserWithAccessToken:_access_token
                                                                         name:nil
-                                                                       orId : [[MicroBlogOperateForSina getIdWithAccessToken:_access_token][@"uid"] intValue]][@"name"];
-    
+                                                                       orId : [MicroBlogOperateForSina getIdWithAccessToken:_access_token][@"uid"] ][@"name"];
     _v1.userLoginName = _userLoginName;
     v5.userLoginName = _userLoginName;
+    
+    v5.uid = [MicroBlogOperateForSina getIdWithAccessToken:_access_token][@"uid"];
     
     //传递access_token
     _v1.access_token = _access_token;
@@ -137,8 +138,8 @@
         
         if (i == 2)
         {
-            button.frame = CGRectMake(20+62*i, 5, 40, 40);
-            button.backgroundColor = [UIColor colorWithPatternImage : [UIImage imageNamed:@"compose_guide_button_default@2x.png"]];
+            button.frame = CGRectMake(_width/5*2, 5, _width/5+2, 40);
+            button.backgroundColor = [UIColor orangeColor];
         }
         
     }
@@ -154,9 +155,14 @@
     _imageScrollView.contentSize = CGSizeMake(_width, _imageURL.scale*_width);
     _imageScrollView.showsHorizontalScrollIndicator = 0;
     _imageScrollView.showsVerticalScrollIndicator = 0;
+    _imageScrollView.userInteractionEnabled = 1;
     _imageScrollView.bounces = 0;
     
     [self.view addSubview:_imageScrollView];
+    
+    UITapGestureRecognizer * scrollViewTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(scrollViewDisappear)];
+    [_imageScrollView addGestureRecognizer:scrollViewTap];
+    
     
     //添加显示大图的imageView
     _bigImage = [[UIImageView alloc] initWithFrame : CGRectMake(0, 0, _width, _imageURL.scale*_width)];
@@ -170,7 +176,7 @@
     [_hide_View addGestureRecognizer:tap];
     
     //添加tableView
-    _table_View = [[UITableView alloc] initWithFrame : CGRectMake(10, _high/2-100+_high, _width-20, 200)];
+    _table_View = [[UITableView alloc] initWithFrame : CGRectMake(10, _high/2-100+_high, _width-20, _cellName.count*50)];
     _table_View.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
     _table_View.backgroundColor = [UIColor whiteColor];
     _table_View.showsHorizontalScrollIndicator = NO;
@@ -215,7 +221,7 @@
 - (NSInteger)tableView:(UITableView *)tableView
  numberOfRowsInSection:(NSInteger)section
 {
-    return 4;
+    return _cellName.count;
 }
 
 #pragma mark 返回各区域的cell
@@ -231,7 +237,7 @@
                                        reuseIdentifier:@"_cell"];
         
     }
-    
+  
     if (_cellName)
     {
         cell.textLabel.text = _cellName[indexPath.row];
@@ -239,6 +245,11 @@
         if ([_cellName[indexPath.row] isEqualToString:@"删除"])
         {
             cell.textLabel.textColor = [UIColor orangeColor];
+        }
+        
+        else
+        {
+            cell.textLabel.textColor = [UIColor blackColor];
         }
         
     }
@@ -252,7 +263,7 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 50;
 }
-#warning 方法未实现
+
 #pragma mark 选择cell
 - (void)tableView:(UITableView *)tableView
 didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -261,74 +272,10 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
     [tableView deselectRowAtIndexPath:indexPath
                              animated:YES];
     
-    if ([_cellName isEqual : @[@"收藏" , @"取消关注" , @"屏蔽" , @"举报"]])
+    if (self.selectRowAtIndex)
     {
-        
-        switch (indexPath.row)
-        {
-                
-            case 0:
-            
-                break;
-                
-            case 1:
-                
-                break;
-                
-            case 2:
-                
-                break;
-                
-            case 3:
-                
-                break;
-                
-        }
-        
+        self.selectRowAtIndex(indexPath.row);
     }
-    
-    else
-    {
-        
-        switch (indexPath.row)
-        {
-                
-            case 0:
-                
-                break;
-                
-            case 1:
-                
-                break;
-                
-            case 2:
-                
-                break;
-                
-            case 3:
-                
-                break;
-                
-        }
-        
-    }
-    
-}
-
-#pragma mark 点击了微博的倒三角按钮
-- (void)viewAppear
-{
-    
-    _cellName = @[@"收藏",@"取消关注",@"屏蔽",@"举报"];
-    [_table_View reloadData];
-    
-    [UIView animateWithDuration:0.5
-                    animations : ^{
-                        
-         _hide_View.frame = CGRectMake(0, 0, _width, _high);
-        _table_View.frame = CGRectMake(10, _high/2-100, _width-20, 200);
-                        
-    }];
     
 }
 
@@ -348,38 +295,6 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
     
 }
 
-#pragma mark 对首页的cell进行长按
-- (void)viewAppearance:(UILongPressGestureRecognizer *)sender
-{
-    
-#warning ...
-    UITableViewCell * cell = (UITableViewCell *)sender.view;
-    NSIndexPath * indexPath = [_table_View indexPathForCell:cell];
-    NSLog(@"%@",indexPath);
-    
-    _cellName = @[@"转发" , @"评论" , @"收藏"];
-    
-//    if (!_v1.source[indexPath.section][@"retweeted_status"] )
-//    {
-        _cellName = @[@"转发" , @"评论" , @"收藏" , @"转发原微博"];
-//    }
-    if ([_v1.source[indexPath.section][@"user"][@"name"] isEqualToString:_userLoginName])
-    {
-        _cellName = @[@"收藏" , @"推广" , @"删除"];
-    }
-    
-    [_table_View reloadData];
-    
-    [UIView animateWithDuration:0.5
-                    animations : ^{
-                        
-        _hide_View.frame = CGRectMake(0, 0, _width, _high);
-        _table_View.frame = CGRectMake(10, _high/2-100, _width-20, 200);
-                        
-    }];
-    
-}
-
 #pragma mark 查看大图
 - (void)getBigImage:(UITapGestureRecognizer *)sender
 {
@@ -394,10 +309,20 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
     [UIView animateWithDuration:0.5
                     animations : ^{
                          
-        _imageScrollView.frame = CGRectMake(0, 0, _width, _high);
+                        _imageScrollView.frame = CGRectMake(0, 0, _width, _high);
                          
-    }];
+                    }];
     
+}
+
+- (void)scrollViewDisappear
+{
+    [UIView animateWithDuration:0.5
+                    animations : ^{
+                        
+                        _imageScrollView.frame = CGRectMake(0, _high, _width, _high);
+                        
+                    }];
 }
 
 @end

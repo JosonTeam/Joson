@@ -71,7 +71,6 @@
 		A56B8DAB1A062443006EBC66 /* MicroBlogOperateForSina.m in Sources */ = {isa = PBXBuildFile; fileRef = A56B87171A062430006EBC66 /* MicroBlogOperateForSina.m */; };
 		A56B8DAC1A062443006EBC66 /* NavigationControllerCustomer.m in Sources */ = {isa = PBXBuildFile; fileRef = A56B871A1A062430006EBC66 /* NavigationControllerCustomer.m */; };
 		A56B8DAD1A062443006EBC66 /* provinces.xml in Resources */ = {isa = PBXBuildFile; fileRef = A56B871B1A062430006EBC66 /* provinces.xml */; };
-		A56B8DAE1A062443006EBC66 /* RecentEmotion.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A56B871C1A062430006EBC66 /* RecentEmotion.bundle */; };
 		A56B8DAF1A062443006EBC66 /* account_active_indicator@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A56B871E1A062430006EBC66 /* account_active_indicator@2x.png */; };
 		A56B8DB01A062443006EBC66 /* account_inactive_indicator@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A56B871F1A062430006EBC66 /* account_inactive_indicator@2x.png */; };
 		A56B8DB11A062443006EBC66 /* accountmanage_add@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A56B87201A062430006EBC66 /* accountmanage_add@2x.png */; };
@@ -1728,8 +1727,11 @@
 		A56B94321A062663006EBC66 /* TabbarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A56B94301A062662006EBC66 /* TabbarViewController.m */; };
 		A575AC451A09D8A300F86164 /* EditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A575AC441A09D8A300F86164 /* EditViewController.m */; };
 		A575AC471A09F31400F86164 /* toolbar_rightarrow@2x2.png in Resources */ = {isa = PBXBuildFile; fileRef = A575AC461A09F31400F86164 /* toolbar_rightarrow@2x2.png */; };
-		A575AC4A1A0A409300F86164 /* FindFriendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A575AC491A0A409300F86164 /* FindFriendViewController.m */; };
-		A5AF34A81A071CA400740855 /* Source.plist in Resources */ = {isa = PBXBuildFile; fileRef = A5AF34A71A071CA400740855 /* Source.plist */; };
+		A575AC4A1A0A409300F86164 /* FindFriendAndWeiboDetaileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A575AC491A0A409300F86164 /* FindFriendAndWeiboDetaileViewController.m */; };
+		A59B43CB1A11C2FE00199498 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A59B43CA1A11C2FE00199498 /* CoreMedia.framework */; };
+		A59B43CD1A11C30600199498 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A59B43CC1A11C30600199498 /* CoreVideo.framework */; };
+		A59B43CF1A11C31800199498 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A59B43CE1A11C31800199498 /* libiconv.dylib */; };
+		A59B43D11A11C32400199498 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A59B43D01A11C32400199498 /* AVFoundation.framework */; };
 		A5AF34FC1A07204700740855 /* JHRefreshAmazingAniView.m in Sources */ = {isa = PBXBuildFile; fileRef = A5AF34E51A07204700740855 /* JHRefreshAmazingAniView.m */; };
 		A5AF34FD1A07204700740855 /* JHRefreshAniBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = A5AF34E71A07204700740855 /* JHRefreshAniBaseView.m */; };
 		A5AF34FE1A07204700740855 /* JHRefreshCommonAniView.m in Sources */ = {isa = PBXBuildFile; fileRef = A5AF34E91A07204700740855 /* JHRefreshCommonAniView.m */; };
@@ -1744,9 +1746,11 @@
 		A5B355E51A0DB5C2005583F6 /* AlartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5B355E41A0DB5C2005583F6 /* AlartViewController.m */; };
 		A5B355EF1A0DDF18005583F6 /* MyView.m in Sources */ = {isa = PBXBuildFile; fileRef = A5B355EC1A0DDF18005583F6 /* MyView.m */; };
 		A5B355F01A0DDF18005583F6 /* PhotoTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = A5B355EE1A0DDF18005583F6 /* PhotoTableView.m */; };
+		A5B355F21A0E0794005583F6 /* RecentEmotion.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A5B355F11A0E0794005583F6 /* RecentEmotion.bundle */; };
 		A5B9E94A1A08B1BE000C47C1 /* PopoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = A5B9E9491A08B1BE000C47C1 /* PopoverView.m */; };
 		A5B9E94C1A08BCCE000C47C1 /* navigationbar_pop1.png in Resources */ = {isa = PBXBuildFile; fileRef = A5B9E94B1A08BCCE000C47C1 /* navigationbar_pop1.png */; };
 		A5C4115D1A0CCE9700B286A9 /* LimitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5C4115C1A0CCE9700B286A9 /* LimitViewController.m */; };
+		E417E8C81A11001B004F597D /* File in Resources */ = {isa = PBXBuildFile; fileRef = E417E8C71A11001B004F597D /* File */; };
 		E434443B1A07E6E500A8B078 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E434443A1A07E6E500A8B078 /* LoginViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -1852,7 +1856,6 @@
 		A56B87191A062430006EBC66 /* NavigationControllerCustomer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavigationControllerCustomer.h; sourceTree = "<group>"; };
 		A56B871A1A062430006EBC66 /* NavigationControllerCustomer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavigationControllerCustomer.m; sourceTree = "<group>"; };
 		A56B871B1A062430006EBC66 /* provinces.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = provinces.xml; sourceTree = "<group>"; };
-		A56B871C1A062430006EBC66 /* RecentEmotion.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = RecentEmotion.bundle; sourceTree = "<group>"; };
 		A56B871E1A062430006EBC66 /* account_active_indicator@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "account_active_indicator@2x.png"; sourceTree = "<group>"; };
 		A56B871F1A062430006EBC66 /* account_inactive_indicator@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "account_inactive_indicator@2x.png"; sourceTree = "<group>"; };
 		A56B87201A062430006EBC66 /* accountmanage_add@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "accountmanage_add@2x.png"; sourceTree = "<group>"; };
@@ -3515,9 +3518,12 @@
 		A575AC431A09D8A300F86164 /* EditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditViewController.h; sourceTree = "<group>"; };
 		A575AC441A09D8A300F86164 /* EditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditViewController.m; sourceTree = "<group>"; };
 		A575AC461A09F31400F86164 /* toolbar_rightarrow@2x2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toolbar_rightarrow@2x2.png"; sourceTree = "<group>"; };
-		A575AC481A0A409300F86164 /* FindFriendViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FindFriendViewController.h; sourceTree = "<group>"; };
-		A575AC491A0A409300F86164 /* FindFriendViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FindFriendViewController.m; sourceTree = "<group>"; };
-		A5AF34A71A071CA400740855 /* Source.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Source.plist; sourceTree = "<group>"; };
+		A575AC481A0A409300F86164 /* FindFriendAndWeiboDetaileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FindFriendAndWeiboDetaileViewController.h; sourceTree = "<group>"; };
+		A575AC491A0A409300F86164 /* FindFriendAndWeiboDetaileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FindFriendAndWeiboDetaileViewController.m; sourceTree = "<group>"; };
+		A59B43CA1A11C2FE00199498 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		A59B43CC1A11C30600199498 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		A59B43CE1A11C31800199498 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
+		A59B43D01A11C32400199498 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		A5AF34E41A07204700740855 /* JHRefreshAmazingAniView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JHRefreshAmazingAniView.h; sourceTree = "<group>"; };
 		A5AF34E51A07204700740855 /* JHRefreshAmazingAniView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JHRefreshAmazingAniView.m; sourceTree = "<group>"; };
 		A5AF34E61A07204700740855 /* JHRefreshAniBaseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JHRefreshAniBaseView.h; sourceTree = "<group>"; };
@@ -3548,11 +3554,13 @@
 		A5B355EC1A0DDF18005583F6 /* MyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyView.m; sourceTree = "<group>"; };
 		A5B355ED1A0DDF18005583F6 /* PhotoTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoTableView.h; sourceTree = "<group>"; };
 		A5B355EE1A0DDF18005583F6 /* PhotoTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoTableView.m; sourceTree = "<group>"; };
+		A5B355F11A0E0794005583F6 /* RecentEmotion.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = RecentEmotion.bundle; sourceTree = "<group>"; };
 		A5B9E9481A08B1BE000C47C1 /* PopoverView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopoverView.h; sourceTree = "<group>"; };
 		A5B9E9491A08B1BE000C47C1 /* PopoverView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopoverView.m; sourceTree = "<group>"; };
 		A5B9E94B1A08BCCE000C47C1 /* navigationbar_pop1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navigationbar_pop1.png; sourceTree = "<group>"; };
 		A5C4115B1A0CCE9700B286A9 /* LimitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LimitViewController.h; sourceTree = "<group>"; };
 		A5C4115C1A0CCE9700B286A9 /* LimitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LimitViewController.m; sourceTree = "<group>"; };
+		E417E8C71A11001B004F597D /* File */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = File; sourceTree = "<group>"; };
 		E43444391A07E6E400A8B078 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		E434443A1A07E6E500A8B078 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -3562,6 +3570,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A59B43D11A11C32400199498 /* AVFoundation.framework in Frameworks */,
+				A59B43CF1A11C31800199498 /* libiconv.dylib in Frameworks */,
+				A59B43CD1A11C30600199498 /* CoreVideo.framework in Frameworks */,
+				A59B43CB1A11C2FE00199498 /* CoreMedia.framework in Frameworks */,
 				A52003481A0B4613000EF9CF /* libYixinSDK.a in Frameworks */,
 				A520033B1A0B4612000EF9CF /* SinaWeiboConnection.framework in Frameworks */,
 				A520033A1A0B4612000EF9CF /* RenRenConnection.framework in Frameworks */,
@@ -3610,6 +3622,7 @@
 		A5005DAD1A038DBD00487FEC = {
 			isa = PBXGroup;
 			children = (
+				E417E8C71A11001B004F597D /* File */,
 				A5B355EA1A0DDF04005583F6 /* LiShiJu */,
 				A5B355E31A0DB5C2005583F6 /* AlartViewController.h */,
 				A5B355E41A0DB5C2005583F6 /* AlartViewController.m */,
@@ -3618,7 +3631,6 @@
 				A52003101A0B4612000EF9CF /* ShareSDK */,
 				A52002BD1A0B1077000EF9CF /* shareBt */,
 				A5AF34E21A07204700740855 /* Refresh */,
-				A5AF34A71A071CA400740855 /* Source.plist */,
 				A56B86F51A062430006EBC66 /* JSKit */,
 				A56B8D921A062443006EBC66 /* Tool */,
 				A5005DBF1A038DBD00487FEC /* 大新_微博 */,
@@ -3640,6 +3652,10 @@
 		A5005DB81A038DBD00487FEC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A59B43D01A11C32400199498 /* AVFoundation.framework */,
+				A59B43CE1A11C31800199498 /* libiconv.dylib */,
+				A59B43CC1A11C30600199498 /* CoreVideo.framework */,
+				A59B43CA1A11C2FE00199498 /* CoreMedia.framework */,
 				A520030E1A0B43BD000EF9CF /* MessageUI.framework */,
 				A520030C1A0B439C000EF9CF /* libstdc++.dylib */,
 				A520030A1A0B4392000EF9CF /* Security.framework */,
@@ -3824,9 +3840,9 @@
 				A56B87191A062430006EBC66 /* NavigationControllerCustomer.h */,
 				A56B871A1A062430006EBC66 /* NavigationControllerCustomer.m */,
 				A56B871B1A062430006EBC66 /* provinces.xml */,
-				A56B871C1A062430006EBC66 /* RecentEmotion.bundle */,
 				A56B871D1A062430006EBC66 /* Sina_Pic */,
 				A56B8D841A062442006EBC66 /* Sina_Sound */,
+				A5B355F11A0E0794005583F6 /* RecentEmotion.bundle */,
 			);
 			path = JSKit;
 			sourceTree = "<group>";
@@ -5589,8 +5605,8 @@
 			children = (
 				A5C4115B1A0CCE9700B286A9 /* LimitViewController.h */,
 				A5C4115C1A0CCE9700B286A9 /* LimitViewController.m */,
-				A575AC481A0A409300F86164 /* FindFriendViewController.h */,
-				A575AC491A0A409300F86164 /* FindFriendViewController.m */,
+				A575AC481A0A409300F86164 /* FindFriendAndWeiboDetaileViewController.h */,
+				A575AC491A0A409300F86164 /* FindFriendAndWeiboDetaileViewController.m */,
 				A575AC431A09D8A300F86164 /* EditViewController.h */,
 				A575AC441A09D8A300F86164 /* EditViewController.m */,
 				A5B9E9481A08B1BE000C47C1 /* PopoverView.h */,
@@ -6887,6 +6903,7 @@
 				A56B8DBD1A062443006EBC66 /* adward_background_bottom@2x.png in Resources */,
 				A56B8DF41A062443006EBC66 /* bg4.jpg in Resources */,
 				A56B92981A062443006EBC66 /* tabbar_compose_background_icon_return@2x.png in Resources */,
+				A5B355F21A0E0794005583F6 /* RecentEmotion.bundle in Resources */,
 				A56B90831A062443006EBC66 /* messages_maybe_bubble@2x.png in Resources */,
 				A56B912C1A062443006EBC66 /* navigationbar_refresh_highlighted@2x.png in Resources */,
 				A56B93B21A062443006EBC66 /* userinfo_navigationbar_cover@2x.png in Resources */,
@@ -6972,7 +6989,6 @@
 				A56B8FC41A062443006EBC66 /* icon.png in Resources */,
 				A56B90841A062443006EBC66 /* messages_photo_focus@2x.png in Resources */,
 				A56B918C1A062443006EBC66 /* poi_place_restaurant@2x.png in Resources */,
-				A56B8DAE1A062443006EBC66 /* RecentEmotion.bundle in Resources */,
 				A56B8E2A1A062443006EBC66 /* camera_revolve@2x.png in Resources */,
 				A56B92FF1A062443006EBC66 /* timeline_group_visible_button_background@2x.png in Resources */,
 				A56B8E8A1A062443006EBC66 /* common_card_top_background@2x.png in Resources */,
@@ -7053,7 +7069,6 @@
 				A56B8DEF1A062443006EBC66 /* background_b.png in Resources */,
 				A56B90131A062443006EBC66 /* login_introduce_bg3@2x.jpg in Resources */,
 				A56B8F2F1A062443006EBC66 /* d_dalian@2x.png in Resources */,
-				A5AF34A81A071CA400740855 /* Source.plist in Resources */,
 				A56B93941A062443006EBC66 /* userinfo_membership_expired@2x.png in Resources */,
 				A575AC471A09F31400F86164 /* toolbar_rightarrow@2x2.png in Resources */,
 				A56B8F851A062443006EBC66 /* friendcircle_other_button_white@2x.png in Resources */,
@@ -7262,6 +7277,7 @@
 				A56B915D1A062443006EBC66 /* page_score_pic_2.png in Resources */,
 				A56B8E061A062443006EBC66 /* camera_camera_highlighted@2x.png in Resources */,
 				A56B91E21A062443006EBC66 /* qrcode_tabbar_icon_qrcode@2x.png in Resources */,
+				E417E8C81A11001B004F597D /* File in Resources */,
 				A56B90731A062443006EBC66 /* messages_card_background_below@2x.png in Resources */,
 				A56B93E71A062443006EBC66 /* visitordiscover_feed_image_smallicon@2x.png in Resources */,
 				A56B94171A062443006EBC66 /* composer_open.wav in Resources */,
@@ -7391,7 +7407,7 @@
 				A5B355EF1A0DDF18005583F6 /* MyView.m in Sources */,
 				A56B8DAB1A062443006EBC66 /* MicroBlogOperateForSina.m in Sources */,
 				A5AF35021A07204700740855 /* JHRefreshFooterView.m in Sources */,
-				A575AC4A1A0A409300F86164 /* FindFriendViewController.m in Sources */,
+				A575AC4A1A0A409300F86164 /* FindFriendAndWeiboDetaileViewController.m in Sources */,
 				A5B355F01A0DDF18005583F6 /* PhotoTableView.m in Sources */,
 				A5AF34FE1A07204700740855 /* JHRefreshCommonAniView.m in Sources */,
 				A56B94211A062443006EBC66 /* Factory.m in Sources */,
@@ -7550,6 +7566,7 @@
 					"$(PROJECT_DIR)/ShareSDK/Extend/SinaWeiboSDK",
 					"$(PROJECT_DIR)/ShareSDK/Extend/TencentWeiboSDK",
 					"$(PROJECT_DIR)/ShareSDK/Extend/YiXinSDK",
+					"/Users/bk01/Downloads/ZBarSDK-master",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -7578,6 +7595,7 @@
 					"$(PROJECT_DIR)/ShareSDK/Extend/SinaWeiboSDK",
 					"$(PROJECT_DIR)/ShareSDK/Extend/TencentWeiboSDK",
 					"$(PROJECT_DIR)/ShareSDK/Extend/YiXinSDK",
+					"/Users/bk01/Downloads/ZBarSDK-master",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
