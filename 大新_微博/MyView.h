@@ -14,5 +14,11 @@
 @property(nonatomic,strong)NSString * username;//用户名
 @property(nonatomic,strong)NSArray * uids;//用户uid
 @property(nonatomic,strong)NSString * acc_token;//_access_token值
+<<<<<<< Updated upstream
 @property(nonatomic,strong)UITableView * tableview;//我的微博tableview
+=======
+
+
+
+>>>>>>> Stashed changes
 @end

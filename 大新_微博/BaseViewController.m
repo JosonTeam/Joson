@@ -11,8 +11,16 @@
 #import "PopoverView.h"
 #import "JHRefresh.h"
 #import "MyView.h"
+<<<<<<< Updated upstream
 //#import "YXApi.h"
 
+=======
+#import "MoreViewController.h"
+#import "FavoriteViewController.h"
+#import "BgPicViewController.h"
+#import "BaseInforViewController.h"
+#import "EditTableViewController.h"
+>>>>>>> Stashed changes
 @interface BaseViewController ()
 {
     
@@ -54,6 +62,108 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+}
+
+#warning mark 下拉刷新出新问题
+- (void)viewDidAppear:(BOOL)animated
+{
+
+    if (_identifier == 0)
+    {
+        
+        //准备下拉刷新
+        __weak UITableView * tableview = _tableView;
+        
+        [tableview addRefreshHeaderViewWithAniViewClass : [JHRefreshCommonAniView class]
+                                           beginRefresh : ^{
+                                               
+           //延时隐藏refreshView;
+           double delayInSeconds = 2.0;
+           //创建延期的时间 2S
+           dispatch_time_t delayInNanoSeconds = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+           //延期执行
+           
+           dispatch_after(delayInNanoSeconds, dispatch_get_main_queue(), ^{
+               
+               
+               
+               NSDictionary * dic11 = [MicroBlogOperateForSina getRecentWeiboOfUserWithAccessToken:self.access_token
+                                                                                           andtype:WeiboTypeAll
+                                                                                         andMax_id:@"0"];
+               
+               NSData * data = [NSJSONSerialization dataWithJSONObject:dic11
+                                                               options:NSJSONWritingPrettyPrinted
+                                                                 error:nil];
+               
+               [data writeToFile:_path
+                      atomically:YES];
+               
+               
+               max_id = dic11[@"max_id"];
+               
+               _source = [dic11[@"statuses"] mutableCopy];
+               _weibo_Content_Pic1 = [NSMutableArray new];
+               _weibo_Content_Pic = [NSMutableArray new];
+               _name = [NSMutableArray new];
+               [self getAppearSource];
+               self.count = 20;
+               [tableview reloadData];
+               
+               //事情做完了别忘了结束刷新动画~~~
+               [tableview headerEndRefreshingWithResult:JHRefreshResultSuccess];
+               [_player play];
+               
+           });
+           
+        }];
+        
+        //准备上拉加载
+        [tableview addRefreshFooterViewWithAniViewClass : [JHRefreshCommonAniView class]
+                                           beginRefresh : ^{
+                                               
+               //延时隐藏refreshView;
+               double delayInSeconds = 2.0;
+               //创建延期的时间 2S
+               dispatch_time_t delayInNanoSeconds = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+               
+               //延期执行
+               dispatch_after(delayInNanoSeconds, dispatch_get_main_queue(), ^{
+                   //            if (self.count == _source.count-_source.count%20)
+                   //            {
+                   
+                   //            }
+                   //            else if (_source.count%20 == 0)
+                   //            {
+                   //                self.count += _source.count%20;
+                   //            }
+                   
+                   //获取最新微博
+                   NSDictionary * dic11 = [MicroBlogOperateForSina getRecentWeiboOfUserWithAccessToken:self.access_token
+                                                                                               andtype:WeiboTypeAll
+                                                                                             andMax_id:max_id];
+                   max_id = dic11[@"max_id"];
+                   
+                   NSArray * status = dic11[@"statuses"];
+                   
+                   for (int i = 0; i < status.count; i++)
+                   {
+                       [_source addObject:status[i]];
+                   }
+                   
+                   [self getAppearSource];
+                   self.count += 20;
+                   
+                   [tableview reloadData];
+                   
+                   //事情做完了别忘了结束刷新动画~~~
+                   [tableview footerEndRefreshing];
+                   
+               });
+               
+           }];
+        
+    }
+        
 }
 
 #pragma mark 初始化界面
@@ -113,6 +223,7 @@
             
             //准备声音
             _player = [[AVAudioPlayer alloc] initWithContentsOfURL : [NSURL fileURLWithPath : [[NSBundle mainBundle] pathForResource:@"composer_open"
+                                                                                               
                                                                                                                               ofType:@"wav"]]
                                                               error:nil];
             
@@ -140,6 +251,7 @@
         case 4:
         {
             
+<<<<<<< Updated upstream
             //添加标题栏右侧按钮
 //            [NavigationControllerCustomer createRightBarButtonItemForViewController:self
 //                                                                            withTag:2
@@ -148,20 +260,29 @@
 //                                                                           andType : UIButtonTypeCustom];
           
             max_id = @"0";
+=======
+            
+>>>>>>> Stashed changes
             
             mv = [[MyView alloc]initWithFrame:self.view.frame];
             
             NSDictionary * data = [MicroBlogOperateForSina getWeiboOfUserWithAccessToken:_access_token
                                                                                     name:_userLoginName
+<<<<<<< Updated upstream
                                                                                  andtype:WeiboTypeAll
                                                                                    andId:@"0"];
             
             max_id = data[@"max_id"];
             mv.dataText = data.mutableCopy;
+=======
+                                                                                 andtype:WeiboTypeAll];
+            mv.dataText = data;
+>>>>>>> Stashed changes
             mv.username = _userLoginName;
             mv.acc_token = _access_token;
-            
+
             [mv createMe:self];
+<<<<<<< Updated upstream
             
             __weak UITableView * tableview = mv.tableview;
             
@@ -206,9 +327,10 @@
            }];
 
             
+=======
+>>>>>>> Stashed changes
         }
             break;
-            
     }
     
 }
@@ -276,9 +398,14 @@
         NSData * data = [NSJSONSerialization dataWithJSONObject:dic11
                                                         options:NSJSONWritingPrettyPrinted
                                                           error:nil];
+<<<<<<< Updated upstream
         if (dic11.count != 3)
         {
             [data writeToFile:_path
+=======
+        
+        [data writeToFile:_path
+>>>>>>> Stashed changes
                 atomically:YES];
         }
         
@@ -286,7 +413,7 @@
     
     //准备数据源
     _source = [dic11[@"statuses"] mutableCopy];
-    
+
     _userPic_Source = [NSMutableArray new];
     
     //获得显示数据
@@ -302,6 +429,7 @@
     _tableView.delegate = self;
     _tableView.bounces = YES;
     [self.view addSubview:_tableView];
+<<<<<<< Updated upstream
     
     //准备下拉刷新
     __weak UITableView * tableview = _tableView;
@@ -393,6 +521,8 @@
        
    }];
     
+=======
+>>>>>>> Stashed changes
 }
 
 #pragma mark 创建广场那一页
@@ -406,6 +536,7 @@
 #pragma mark 获取显示资源
 - (void)getAppearSource
 {
+    
     for (int i = 0; i < _source.count; i ++)
     {
         
@@ -1558,22 +1689,28 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
     if (sender.tag == 1)
     {
         
-    }
-    
-    if (sender.tag == 2)
-    {
+        if (pt)
+        {
+            pt = nil;
+            [pt removeFromSuperview];
+        }
         
         if (mv)
         {
             mv = nil;
             [mv removeFromSuperview];
         }
+<<<<<<< Updated upstream
         
         if (pt)
         {
             pt = nil;
             [pt removeFromSuperview];
         }
+=======
+
+      
+>>>>>>> Stashed changes
         
         NSDictionary * data = [MicroBlogOperateForSina getWeiboOfUserWithAccessToken:_access_token
                                                                                 name:_userLoginName
@@ -1634,8 +1771,24 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
         
     }
     
-    if (sender.tag == 3)
+    if (sender.tag == 2)
     {
+<<<<<<< Updated upstream
+=======
+        
+        if (pt)
+        {
+            pt = nil;
+            [pt removeFromSuperview];
+        }
+        
+        if (mv)
+        {
+            mv = nil;
+            [mv removeFromSuperview];
+        }
+
+>>>>>>> Stashed changes
         
         if (mv)
         {
@@ -1707,23 +1860,96 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
         
     }
     
-    if (sender.tag == 4)
+    if (sender.tag == 3)
     {
         
         //sender.frame.origin.x + sender.frame.size.width/2, sender.frame.origin.y + sender.frame.size.height
         CGPoint point = CGPointMake(sender.frame.origin.x + sender.frame.size.width/2, sender.frame.origin.y + sender.frame.size.height);
-        NSArray * titles = @[@"新的好友",@"我的收藏",@"赞",@"微博支付",@"个性化",@"我的名片"];
-        NSArray * images =@[@"",@"",@"",@"",@"",@""];
+        NSArray * titles = @[@"新的好友",@"我的收藏",@"微博支付",@"个性化",@"我的名片",@"设置"];
+//        NSArray * images =@[@"poi_icon_myplace@2x",@"tabbar_compose_photo@2x",@"messagescenter_good@2x",@"tabbar_compose_envelope@2x.png",@"findfriend_icon_star@2x",@"qrcode_tabbar_icon_qrcode_highlighted@2x"];
         
         PopoverView * pop = [[PopoverView alloc] initWithPoint:point
                                                         titles:titles
-                                                        images:images];
+                                                        images:nil];
         
         pop.selectRowAtIndex = ^(NSInteger index)
         {
+            switch (index)
+            {
+                case 0:
+                {
+                    MoreViewController * mvc = [MoreViewController new];
+                    
+                    mvc.flag = index;
+                    mvc.titleText = titles[index];
+                    
+                    mvc.acctoken = _access_token;
+                    mvc.username = _userLoginName;
+                    NSLog(@"你选中了%@",titles[index]);
+                    [self presentViewController:mvc animated:YES completion:nil];
+
+                }
+                    break;
+                    
+                case 1:
+                {
+                    FavoriteViewController * fvc = [FavoriteViewController new];
+                    fvc.acctoken = _access_token;
+                    fvc.username = _userLoginName;
+                    fvc.titleText = titles[index];
+                    
+                    [self presentViewController:fvc animated:YES completion:nil];
+                
+                    NSLog(@"你选中了%@",titles[index]);
+                }
+                    
+                    break;
+                case 2:
+                    NSLog(@"你选中了%@",titles[index]);
+                    break;
+                case 3:
+                {
+                    BgPicViewController * bvc = [BgPicViewController new];
+                    
+                    
+                    [NavigationControllerCustomer setTitle:titles[index] withColor:[UIColor blackColor] forViewController:bvc];
+                    [NavigationControllerCustomer createBackButtonForViewController:bvc hideOldBackButtonOfNavigationItem:YES withTag:1 andImage:nil orTitile:@"返回" andType:UIButtonTypeCustom];
+                    [NavigationControllerCustomer createRightBarButtonItemForViewController:bvc withTag:2 andTitle:nil andImage:[UIImage imageNamed:@"userinfo_tabicon_more@2x"] andType:UIButtonTypeCustom];
+                    
+                    
+                    UINavigationController * navi =  [NavigationControllerCustomer createNavigationControllerWithViewController:bvc];
+                    NSLog(@"你选中了%@",titles[index]);
+                    [self presentViewController:navi animated:YES completion:nil];
+                }
+                    
+                    break;
+                case 4:
+         
+                    NSLog(@"你选中了%@",titles[index]);
+                    break;
+                
+                case 5:
+                {
+                    EditTableViewController * etvc = [EditTableViewController new];
+                    
+                    
+                    [NavigationControllerCustomer setTitle:@"设置" withColor:[UIColor blackColor] forViewController:etvc];
+                    [NavigationControllerCustomer createBackButtonForViewController:etvc hideOldBackButtonOfNavigationItem:YES withTag:1 andImage:[UIImage imageNamed:@"userinfo_tabicon_back@2x"] orTitile:nil andType:UIButtonTypeCustom];
+                    
+                    
+                    UINavigationController * navi =  [NavigationControllerCustomer createNavigationControllerWithViewController:etvc];
+                    
+                    [self presentViewController:navi animated:YES completion:nil];
+
+                }
+                    break;
+                    
+                    
+                default:
+                    break;
+            }
             
-            NSLog(@"你选中了%@",titles[index]);
-        };
+                    };
         [pop show];
         
     }
@@ -1731,6 +1957,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
     
 }
 
+<<<<<<< Updated upstream
 #pragma mark 选择分享平台
 -(void)buttonWasTapped:(UIButton *)button
 {
@@ -1836,4 +2063,24 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
     
 }
 
+=======
+-(void)clickEdit:(UIButton *)sender
+{
+    BaseInforViewController * bivc = [BaseInforViewController new];
+    bivc.acc_token = _access_token;
+    bivc.username  = _userLoginName;
+    
+    
+    [NavigationControllerCustomer setTitle:@"基本信息" withColor:[UIColor blackColor] forViewController:bivc];
+    [NavigationControllerCustomer createBackButtonForViewController:bivc hideOldBackButtonOfNavigationItem:YES withTag:1 andImage:[UIImage imageNamed:@"userinfo_tabicon_back@2x"] orTitile:nil andType:UIButtonTypeCustom];
+    
+    
+    UINavigationController * navi =  [NavigationControllerCustomer createNavigationControllerWithViewController:bivc];
+
+    [self presentViewController:navi animated:YES completion:nil];
+    
+}
+
+
+>>>>>>> Stashed changes
 @end

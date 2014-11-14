@@ -1187,20 +1187,20 @@
                                                        delegate:nil
                                               cancelButtonTitle:@"Cancel"
                                               otherButtonTitles:nil];
-        
-        [alert show];
+
+//        [alert show];
         
     }
     
     else
     {
-        
+    
         dic = [NSJSONSerialization JSONObjectWithData:data
                                               options:NSJSONReadingAllowFragments
                                                 error:nil];
    
     }
-    
+
     return dic;
 }
 
@@ -1726,12 +1726,12 @@
  suid ---对方用户id
  */
 + (NSDictionary *)getsFollowTogetherWithAccessToken:(NSString *)access_token
-                                             andUid:(NSInteger)suid
+                                             andUid:(NSString *)suid
 {
     
     NSError * error;
     static NSDictionary * dic;
-    NSURL * url = [NSURL URLWithString : [NSString stringWithFormat:@"%@?access_token=%@&suid=%ld",InterfaceForSinaToGetFollowTogether , access_token , (long)suid]];
+    NSURL * url = [NSURL URLWithString : [NSString stringWithFormat:@"%@?access_token=%@&suid=%@",InterfaceForSinaToGetFollowTogether , access_token , suid]];
   
     NSURLRequest * request = [[NSURLRequest alloc] initWithURL:url
                                                    cachePolicy:NSURLRequestReloadIgnoringCacheData
@@ -3148,11 +3148,11 @@
  其中:
  access_token ---用户授权码
  */
-+ (NSDictionary *)getSuggestedUserByMayInterestedWithAccessToken:(NSString *)access_token
++ (NSArray *)getSuggestedUserByMayInterestedWithAccessToken:(NSString *)access_token
 {
     
     NSError * error;
-    static NSDictionary * dic;
+    static NSArray * dic;
     NSURL * url = [NSURL URLWithString : [NSString stringWithFormat:@"%@?access_token=%@",InterfaceForSinaToGetSuggestedUserByMayInterested , access_token]];
    
     NSURLRequest * request = [[NSURLRequest alloc] initWithURL:url
@@ -3172,7 +3172,7 @@
                                                cancelButtonTitle:@"Cancel"
                                                otherButtonTitles:nil];
         
-        [alert show];
+//        [alert show];
         
     }
     
@@ -3184,7 +3184,7 @@
                                                 error:nil];
    
     }
-    
+
     return dic;
 
 }

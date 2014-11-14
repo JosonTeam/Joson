@@ -21,8 +21,12 @@
     int _high;
     PhotoTableView * photoTableView;//相册tableview
     UIView * meView;//表头
+<<<<<<< Updated upstream
     BaseViewController * base;
     AAShareBubbles * _shareBubbles;
+=======
+    UIImageView * headImageView;
+>>>>>>> Stashed changes
 }
 - (id)initWithFrame:(CGRect)frame
 {
@@ -57,11 +61,11 @@
     meView.userInteractionEnabled = YES;
     
     
-    NSArray * arr = [[NSArray alloc]initWithObjects:@"主页",@"微博",@"相册",@"更多", nil];
+    NSArray * arr = [[NSArray alloc]initWithObjects:@"微博",@"相册",@"更多", nil];
     
     for (int i = 0; i < arr.count; i++)
     {
-        UIButton * btn = [[UIButton alloc]initWithFrame:CGRectMake(i * 50 + 55, _high-338, 50, 40)];
+        UIButton * btn = [[UIButton alloc]initWithFrame:CGRectMake(i * 50 + 75, 230, 60, 40)];
         [btn setTitle:arr[i] forState:UIControlStateNormal];
         [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         btn.tag = i + 1;
@@ -73,14 +77,24 @@
     _tableview.delegate = self;
     _tableview.dataSource = self;
     
+<<<<<<< Updated upstream
     UIImageView * headImageView = [[UIImageView alloc]init];
     headImageView.frame = CGRectMake(0, 0, _width, 170);
     headImageView.image = [UIImage imageNamed:@"login_introduce_bg4.jpg"];
+=======
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(passVlaue:) name:@"passvalue" object:nil];
+    
+    
+    headImageView = [[UIImageView alloc]init];
+    headImageView.frame = CGRectMake(0, 0, _width, 170);
+    headImageView.image = [UIImage imageNamed:@"bg0.jpg"];
+    
+>>>>>>> Stashed changes
     headImageView.userInteractionEnabled = YES;
     [meView addSubview:headImageView];
     
     UIButton * shareBtn = [UIButton new];
-    shareBtn.frame = CGRectMake(_width-40, 5, 30, 30);
+    shareBtn.frame = CGRectMake(_width - 40, 5, 30, 30);
     [shareBtn setImage:[UIImage imageNamed:@"userinfo_navigationbar_more@2x"] forState:UIControlStateNormal];
     shareBtn.backgroundColor = [UIColor blackColor];
     shareBtn.alpha = 0.7;
@@ -119,7 +133,7 @@
     [headImageView addSubview:view];
     
 #pragma 用户头像
-    UIImageView * TXimage = [[UIImageView alloc]initWithFrame:CGRectMake(_width-200, 30, 70, 70)];
+    UIImageView * TXimage = [[UIImageView alloc]initWithFrame:CGRectMake(_width - 200, 30, 70, 70)];
     TXimage.layer.masksToBounds = YES;
     TXimage.layer.cornerRadius = 35;
     
@@ -148,13 +162,17 @@
     NSDictionary * iddata = [MicroBlogOperateForSina getIdWithAccessToken:_acc_token];
     NSArray * AFdata = [MicroBlogOperateForSina getCountOfAllWithAccessToken:_acc_token andUid:@[[NSString stringWithFormat:@"%@",iddata[@"uid"]]]];
     fanLabel.text = [[NSString alloc]initWithFormat:@"关注 %@ | 粉丝 %@",AFdata[0][@"friends_count"],AFdata[0][@"followers_count"]];
-    
-    
     [headImageView addSubview:fanLabel];
     
-    UILabel * introView = [[UILabel alloc]initWithFrame:CGRectMake(105, 170, 100, 30)];
-    introView.text = @"简介:暂无简介";
+    UILabel * introView = [[UILabel alloc]initWithFrame:CGRectMake(20, 135, 320, 100)];
+    
+    //获取简介
+    NSDictionary * detailData = [MicroBlogOperateForSina getDetailOfUserWithAccessToken:_acc_token name:_username orId:iddata[@"uid"]];
+    
+    introView.text = [NSString stringWithFormat:@"简介: %@",detailData[@"description"]];
     introView.font = [UIFont systemFontOfSize:15];
+    introView.lineBreakMode = NSLineBreakByCharWrapping;
+    introView.numberOfLines = 0;
     [meView addSubview:introView];
     
     UIButton * editBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -163,6 +181,7 @@
     editBtn.layer.borderColor = [UIColor blackColor].CGColor;
     editBtn.layer.borderWidth = 1.0;
     editBtn.alpha = 0.7;
+    [editBtn addTarget:sender action:@selector(clickEdit:) forControlEvents:UIControlEventTouchUpInside];
     
     [meView addSubview:editBtn];
     
@@ -173,7 +192,7 @@
     [editBtn addSubview:editImg];
     
     UILabel * editlabel = [[UILabel alloc]initWithFrame:CGRectMake(25, 0, 70, 30)];
-    editlabel.text = @"编辑资料";
+    editlabel.text = @"个人资料";
     [editBtn addSubview:editlabel];
     
     _tableview.tableHeaderView = meView;
@@ -182,6 +201,35 @@
     [sender.view addSubview:self];
     
 }
+
+
+-(void)passVlaue:(NSNotification *)sender
+{
+    NSArray * arrPic = [[NSArray alloc]initWithObjects:@"bg0.jpg",@"bg1.jpg",@"bg2.jpg",@"bg3.jpg",@"bg4.jpg",@"bg5.jpg",@"bg6.jpg",@"bg7.jpg",@"bg8.jpg", nil];
+    NSDictionary * dic = [sender userInfo];
+    int i = [dic[@"tag"] integerValue] - 1;
+    if (i > 0 && i < 9)
+    {
+        headImageView.image = [UIImage imageNamed:arrPic[i]];
+    }
+    else
+    {
+        headImageView.image = dic[@"image"];
+    }
+    
+    
+    
+    NSLog(@"userinfo = %@",[sender userInfo]);
+}
+
+
+-(void)clickEdit:(UIButton *)sender
+{
+
+}
+
+
+
 
 -(void)clickShare:(UIButton *)sender
 {
@@ -262,7 +310,6 @@
 
 
 
-
 //返回section的高度
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
@@ -282,8 +329,13 @@
     if ([arr containsObject:@"retweeted_status"])
     {
         NSString * reContent = _dataText[@"statuses"][indexPath.section][@"retweeted_status"][@"text"];
+<<<<<<< Updated upstream
         CGFloat h1 = [Factory contentHeight:reContent width:_width-10];
         return 2 * h + h1 + 95;//有转发的返回这高度
+=======
+        CGFloat h1 = [Factory contentHeight:reContent];
+        return 2 * h + h1 + 75;//有转发的返回这高度
+>>>>>>> Stashed changes
     }
     
     
@@ -292,7 +344,7 @@
         return h + 165;//判断有图片的返回高度
     }
     
-    return h + 80;//按照只有文本返回的高度
+    return h + 70;//按照只有文本返回的高度
 }
 
 
@@ -371,7 +423,7 @@
     
     UILabel * label = [[UILabel alloc]initWithFrame:CGRectMake(10, 40 , _width-20, h)];
     label.text = _dataText[@"statuses"][indexPath.section][@"text"];
-    
+    label.font = [UIFont systemFontOfSize:15];
     //自动换行设置
     label.lineBreakMode = NSLineBreakByCharWrapping;
     label.numberOfLines = 0;
@@ -412,7 +464,7 @@
         
         UILabel * reLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 0, view.frame.size.width - 10, view.frame.size.height)];
         reLabel.text = [[NSString alloc]initWithFormat:@"@%@:%@",_dataText[@"statuses"][indexPath.section][@"retweeted_status"][@"user"][@"name"],reContent ];
-        
+        reLabel.font = [UIFont systemFontOfSize:14];
         reLabel.lineBreakMode = NSLineBreakByCharWrapping;
         reLabel.numberOfLines = 0;
         [view addSubview:reLabel];
@@ -448,9 +500,15 @@
     return cell;
 }
 
+<<<<<<< Updated upstream
 - (void)aa
 {
     NSLog(@"aaa");
+=======
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"passvalue" object:nil];
+>>>>>>> Stashed changes
 }
 
 

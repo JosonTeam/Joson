@@ -60,7 +60,12 @@
 #pragma mark 获取当前用户的用户名
     _userLoginName = [MicroBlogOperateForSina getDetailOfUserWithAccessToken:_access_token
                                                                         name:nil
+<<<<<<< Updated upstream
                                                                        orId : [MicroBlogOperateForSina getIdWithAccessToken:_access_token][@"uid"] ][@"name"];
+=======
+                                                                       orId : [MicroBlogOperateForSina getIdWithAccessToken:_access_token][@"uid"]][@"name"];
+    
+>>>>>>> Stashed changes
     _v1.userLoginName = _userLoginName;
     v5.userLoginName = _userLoginName;
     
@@ -139,7 +144,11 @@
         if (i == 2)
         {
             button.frame = CGRectMake(_width/5*2, 5, _width/5+2, 40);
+<<<<<<< Updated upstream
             button.backgroundColor = [UIColor orangeColor];
+=======
+            button.backgroundColor = [UIColor colorWithPatternImage : [UIImage imageNamed:@"compose_guide_button_default@2x.png"]];
+>>>>>>> Stashed changes
         }
         
     }

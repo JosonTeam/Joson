@@ -588,7 +588,7 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
  suid ---对方用户id
  */
 + (NSDictionary *)getsFollowTogetherWithAccessToken:(NSString *)access_token
-                                             andUid:(NSInteger)suid;
+                                             andUid:(NSString *)suid;
 
 
 #pragma mark 获取用户互粉列表
@@ -870,7 +870,7 @@ typedef NS_ENUM(NSInteger, UnderlyingType)
  其中:
  access_token ---用户授权码
  */
-+ (NSDictionary *)getSuggestedUserByMayInterestedWithAccessToken:(NSString *)access_token;
++ (NSArray *)getSuggestedUserByMayInterestedWithAccessToken:(NSString *)access_token;
 
 
 #pragma mark 获取微博内容相关用户

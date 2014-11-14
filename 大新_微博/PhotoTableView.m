@@ -9,7 +9,7 @@
     int _high;
     PhotoTableView * photoTableView;//相册tableview
     UIView * meView;//表头
-    
+    UIImageView * headImageView;
     NSArray * picUrlArr;
     
     BaseViewController * base;
@@ -35,21 +35,35 @@
     _width = [widthAndHigh[0] intValue];
     _high = [widthAndHigh[1] intValue];
     
+<<<<<<< Updated upstream
     _tableview = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, _width, _high) style:UITableViewStyleGrouped];
     _tableview.showsHorizontalScrollIndicator = NO;
     _tableview.showsVerticalScrollIndicator = NO;
     _tableview.bounces = YES;
     
+=======
+    tableview = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, _width, _high) style:UITableViewStyleGrouped];
+    tableview.showsHorizontalScrollIndicator = NO;
+    tableview.showsVerticalScrollIndicator = NO;
+    tableview.bounces = YES;
+    
+    
+    
+>>>>>>> Stashed changes
     meView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, _width, 260)];
     meView.backgroundColor = [UIColor whiteColor];
     meView.userInteractionEnabled = YES;
     
     
-    NSArray * arr = [[NSArray alloc]initWithObjects:@"主页",@"微博",@"相册",@"更多", nil];
+    NSArray * arr = [[NSArray alloc]initWithObjects:@"微博",@"相册",@"更多", nil];
     
     for (int i = 0; i < arr.count; i++)
     {
+<<<<<<< Updated upstream
         UIButton * btn = [[UIButton alloc]initWithFrame:CGRectMake(i * 50 + 55, _high-338, 50, 30)];
+=======
+        UIButton * btn = [[UIButton alloc]initWithFrame:CGRectMake(i * 50 + 75, 230, 60, 30)];
+>>>>>>> Stashed changes
         [btn setTitle:arr[i] forState:UIControlStateNormal];
         [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         btn.tag = i + 1;
@@ -61,14 +75,26 @@
     _tableview.delegate = self;
     _tableview.dataSource = self;
     
+<<<<<<< Updated upstream
     UIImageView * headImageView = [[UIImageView alloc]init];
     headImageView.frame = CGRectMake(0, 0, _width, 170);
     headImageView.image = [UIImage imageNamed:@"login_introduce_bg4.jpg"];
+=======
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(passVlaue:) name:@"passvalue" object:nil];
+    
+    headImageView = [[UIImageView alloc]init];
+    headImageView.frame = CGRectMake(0, 0, _width, 170);
+    headImageView.image = [UIImage imageNamed:@"bg0.jpg"];
+>>>>>>> Stashed changes
     headImageView.userInteractionEnabled = YES;
     [meView addSubview:headImageView];
     
     UIButton * shareBtn = [UIButton new];
+<<<<<<< Updated upstream
     shareBtn.frame = CGRectMake(_width-40, 5, 30, 30);
+=======
+    shareBtn.frame = CGRectMake(_width-120, 5, 30, 30);
+>>>>>>> Stashed changes
     [shareBtn setImage:[UIImage imageNamed:@"userinfo_navigationbar_more@2x"] forState:UIControlStateNormal];
     shareBtn.backgroundColor = [UIColor blackColor];
     shareBtn.alpha = 0.7;
@@ -76,6 +102,7 @@
     [shareBtn addTarget:self action:@selector(clickShare:) forControlEvents:UIControlEventTouchUpInside];
     [headImageView addSubview:shareBtn];
     
+<<<<<<< Updated upstream
     //设置分享平台
     _shareBubbles = [[AAShareBubbles alloc] initWithPoint : CGPointMake(_width/2, _high/2)
                                                     radius:160
@@ -93,6 +120,8 @@
     _shareBubbles.showMailBubble = 1;
 
     
+=======
+>>>>>>> Stashed changes
     UIButton * search = [[UIButton alloc]initWithFrame:CGRectMake(_width-80, 5, 35, 30)];
     [search setImage:[UIImage imageNamed:@"userinfo_navigationbar_search@2x"] forState:UIControlStateNormal];
     search.backgroundColor = [UIColor blackColor];
@@ -146,11 +175,16 @@
     
     [headImageView addSubview:fanLabel];
     
-    UILabel * introView = [[UILabel alloc]initWithFrame:CGRectMake(105, 170, 100, 30)];
-    introView.text = @"简介:暂无简介";
-    introView.font = [UIFont systemFontOfSize:15];
-    [meView addSubview:introView];
+    UILabel * introView = [[UILabel alloc]initWithFrame:CGRectMake(20, 135, 320, 100)];
     
+    //获取简介
+    NSDictionary * detailData = [MicroBlogOperateForSina getDetailOfUserWithAccessToken:_acc_token name:_username orId:iddata[@"uid"] ];
+    
+    introView.text = [NSString stringWithFormat:@"简介: %@",detailData[@"description"]];
+    introView.font = [UIFont systemFontOfSize:15];
+    introView.lineBreakMode = NSLineBreakByCharWrapping;
+    introView.numberOfLines = 0;
+    [meView addSubview:introView];
     UIButton * editBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     editBtn.frame = CGRectMake(105, 200, 100, 30);
     editBtn.layer.cornerRadius = 5;
@@ -167,7 +201,7 @@
     [editBtn addSubview:editImg];
     
     UILabel * editlabel = [[UILabel alloc]initWithFrame:CGRectMake(25, 0, 70, 30)];
-    editlabel.text = @"编辑资料";
+    editlabel.text = @"个人资料";
     [editBtn addSubview:editlabel];
     
     _tableview.tableHeaderView = meView;
@@ -189,6 +223,20 @@
     
 }
 
+
+-(void)passVlaue:(NSNotification *)sender
+{
+    NSArray * arrPic = [[NSArray alloc]initWithObjects:@"bg0.jpg",@"bg1.jpg",@"bg2.jpg",@"bg3.jpg",@"bg4.jpg",@"bg5.jpg",@"bg6.jpg",@"bg7.jpg",@"bg8.jpg", nil];
+    NSDictionary * dic = [sender userInfo];
+    int i = [dic[@"tag"] integerValue] - 1;
+    headImageView.image = [UIImage imageNamed:arrPic[i]];
+    
+    NSLog(@"userinfo = %@",[sender userInfo]);
+}
+
+
+
+
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString * indetity = @"_cell";
@@ -207,7 +255,6 @@
     int x = 0;
     int y = 0;
     int count = ceilf(picUrlArr.count / 3);NSLog(@"%@",picUrlArr);
-//    count = count + 1;
     static int imgcount = 0;
     NSLog(@"count = %d",count);
     for (int i = 0; i < count; i++)
@@ -215,8 +262,6 @@
         for (int j = 0; j < 3; j++)
         {
             UIImageView * imgView = [[UIImageView alloc]initWithFrame:CGRectMake(x + j * 109, y , 104, 104)];
-            
-//            imgView.image = picUrlArr[imgcount++];
             [cell.contentView addSubview:imgView];
             
             //GCD图片下载
@@ -224,33 +269,12 @@
                 NSData * data = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:picUrlArr[imgcount++][@"bmiddle_pic"]]];
                 dispatch_async(dispatch_get_main_queue(), ^{
                     imgView.image = [UIImage imageWithData:data];
-                    
-                    
                 });
             });
-
-            
-            
-            
-//            //图片下载
-//            NSURLRequest * request1 = [NSURLRequest requestWithURL:[NSURL URLWithString:picUrlArr[imgcount++][@"bmiddle_pic"]] cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:10];
-//            [NSURLConnection sendAsynchronousRequest:request1 queue:[NSOperationQueue new] completionHandler:^(NSURLResponse *response, NSData * data, NSError *connectionError)
-//             {
-//                 imgView.image = [UIImage imageWithData:data];
-//             }];
-            
-            
-            
-            
-        }
+      }
         x = 0;
         y += 109;
     }
-    
-    
-    
-    
-    
     return cell;
 }
 
@@ -272,6 +296,11 @@
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
+}
+
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"passvalue" object:nil];
 }
 
 @end
